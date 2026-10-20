@@ -34,8 +34,9 @@ The recommendation combines useful carpentry-specific work preparation with a si
 | A06 | Clients prefer private offers over a public bidding contest | Shared knowledge must exclude pricing and private messages | UX interviews |
 | A07 | A small team can operate a modular monolith | More runtime separation only if measurements justify it | Tech lead |
 | A08 | Reviews can be verified as platform interactions, not as payments for construction | Completion claims need accurate labels | Trust lead |
+| A09 | **User-confirmed:** desktop Web and Android/iPhone PWA first; dedicated mobile apps after maturity | MVP needs real mobile-browser and installed-PWA acceptance, not separate native builds | Product + tech lead; native release has a later approval gate |
 
-Working name, launch geography, provider contracts, pricing duration and the public launch budget require approval. These are not facts inferred from the user request.
+Working name, launch geography, provider contracts, pricing duration and the public launch budget require approval. These are not facts inferred from the user request. Platform delivery A09 was explicitly confirmed by the user; detailed support/release policies are in [Cross-platform delivery](14-cross-platform-and-pwa.md).
 
 ## 4. Scope and non-goals
 

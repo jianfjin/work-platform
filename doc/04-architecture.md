@@ -4,7 +4,7 @@
 
 ## 1. Architectural choice
 
-Use a **TypeScript modular monolith**: Next.js responsive web UI and server API, PostgreSQL as transactional authority, and one background worker using the same domain modules. Private EU object storage holds scanned media; a PSP handles hosted checkout for platform access only. Use managed operations where practical.
+Use a **TypeScript modular monolith**: one Next.js responsive Web/PWA UI for desktop, Android and iPhone, a shared server API, PostgreSQL as transactional authority, and one background worker using the same domain modules. A manifest and narrowly scoped service worker provide installation and a public offline fallback, not offline private-data access. Private EU object storage holds scanned media; a PSP handles hosted checkout for platform access only. Use managed operations where practical.
 
 The business problem needs strong consistency across price, balance, lifetime capacity and entitlement. One database transaction is simpler than distributed billing/messaging services. No Kubernetes, Kafka, vector search, separate search engine or native mobile app in MVP.
 
@@ -12,8 +12,8 @@ The business problem needs strong consistency across price, balance, lifetime ca
 
 ```mermaid
 flowchart LR
-    Client[Client browser] --> App[HoutMatch application]
-    Carpenter[Carpenter browser] --> App
+    Client[Client desktop browser or mobile PWA] --> App[HoutMatch application]
+    Carpenter[Carpenter desktop browser or mobile PWA] --> App
     Operator[Staff browser with MFA] --> App
     App --> PSP[Mollie hosted checkout / payment API]
     PSP --> App
@@ -83,7 +83,7 @@ Do not claim exactly-once webhook delivery. Deliver events at least once and enf
 
 | Layer | Proposal | Reason / alternative |
 |---|---|---|
-| UI + API | Next.js App Router, React, TypeScript | One web/codebase; SvelteKit is viable but adds no product advantage here |
+| UI + API | Next.js App Router, React, TypeScript; Web manifest and public-static-only service worker | One desktop/Android/iPhone Web/PWA codebase; platform APIs progressively enhance ordinary browser functionality |
 | Persistence | Managed PostgreSQL, SQL migrations, Drizzle or equivalent typed query layer | Must support explicit transactions/row locks and reviewed SQL |
 | Validation/contracts | Shared schema validation and generated OpenAPI in implementation | DTO allowlists; no database entity serialization |
 | Authentication | Maintained OIDC/auth library or managed EU-capable identity provider | Shortlist during G0; no custom password cryptography |
@@ -113,3 +113,11 @@ Deploy backward-compatible expand/backfill/contract migrations. Retain previous 
 - Initial infrastructure budget assumption €150–400/month, excluding staff, acquisition, verification labor and PSP fees. Obtain vendor quotes before approval; this is not a sourced price promise.
 
 Technical invariants and protocols are in [Technical design](05-technical-design.md); ADRs and unresolved vendor choices are in [Decisions](12-decisions-and-risks.md).
+
+## 9. PWA now, dedicated mobile clients later
+
+The user confirmed Web/PWA-first delivery. Android and iPhone are MVP platforms, not merely future native-app targets. All three surfaces use the same backend authority and policy; installation must not introduce another balance or entitlement store. See [Cross-platform delivery](14-cross-platform-and-pwa.md) for the versioned support matrix, cache allowlist, checkout recovery and maturity gate.
+
+The service worker is browser-side delivery infrastructure, separate from the server-side outbox worker. It cannot decide entitlement, replay financial writes or cache private render/API/media responses. Hosting must serve the worker script revalidatably and retain compatible versioned public assets long enough for old installed clients to reload safely.
+
+Keep API adapters separate from server domain services so future dedicated clients can reuse policy/data contracts. Native UI, device authentication, app-store payments/review, native push and release pipelines require a later design and budget; neither a wrapper nor a framework selection is authorized by this phase.

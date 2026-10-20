@@ -119,7 +119,7 @@ Three consistent offer cards, then a comparison table on desktop. Mobile lets us
 | No client response | Deadline and objective eligibility; show pending/restored state without implying no-award compensation |
 | Moderation hold / blocked participant | Stop unsafe actions, provide case link; do not reveal reporter identity |
 | Upload failed or quarantined | Preserve form/message draft; show retry/remove; do not send an unreadable attachment silently |
-| Network lost | Preserve unsent message locally for session recovery; no false “sent”; wipe sensitive drafts on logout |
+| Network lost | Keep an unsent message in current-view memory only while it survives; no false “sent” or automatic resend; explain that reload/OS termination loses unsaved text; wipe on logout; server-saved job drafts resume online |
 | Retention deletion | Tombstone with minimal receipt; no dangling download links |
 
 ## 6. Dutch microcopy examples
@@ -149,3 +149,13 @@ Dutch copy needs native-speaker review before launch. Use locale-aware EUR forma
 ## 8. Prototype validation
 
 Test the free/paid boundary, €10 top-up versus €1 price comprehension, shared versus private audience, slot-race failure and quote comparison with at least five participants on mobile. Include one keyboard-only and one screen-reader session. Record tasks completed, misunderstandings and time, not a visual preference vote. No live payment is required for prototype testing.
+
+## 9. Desktop and installed-mobile experience
+
+Use the same account and server-side jobs/balance across desktop, Android and iPhone; switching devices does not purchase access again. Installation is an optional convenience after the user has seen value, not an onboarding/paywall requirement. Android shows the browser-supported installation action when available, otherwise instructions. iPhone provides Safari Share → Add to Home Screen guidance, following [Apple's installation instructions](https://support.apple.com/guide/iphone/open-as-web-app-iphea86e5236/ios); do not present a non-working universal install prompt.
+
+Standalone mobile views need visible back/home navigation, safe-area padding, a keyboard-safe composer, readable €1/€10 disclosures and ordinary file/photo selection. Camera capture is optional; denied permission still allows file selection. HEIC/HEIF photos need a supported safe conversion path or a clear JPEG/PNG alternative before upload; never silently attach an unsupported file.
+
+On app switch/resume, refresh job status, balance and conversation permissions before enabling actions. Checkout may return from a bank app to a browser rather than the installed window; recover the owned pending payment through authenticated server status, with reauthentication if needed. Never infer payment success from where the window opened.
+
+Offline view explains that private jobs/messages/payments are unavailable without connectivity. Keep only unsent in-memory text when possible; no promise of durable offline drafts or background send. After reconnection show current state and require a fresh intentional action; resolve ambiguous previous operations first. A waiting update prompts a reload after unsaved work is saved online or explicitly discarded, never during checkout. Full support/recovery rules are in [Cross-platform delivery](14-cross-platform-and-pwa.md).

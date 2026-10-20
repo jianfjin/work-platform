@@ -18,6 +18,12 @@ The carpenter sees the €10 commitment before checkout. This may reduce convers
 
 Alternative A: direct €1 checkout per thread is simpler to explain and avoids a prepaid balance but has disproportionate PSP cost and a harder capacity/payment race. Alternative B: monthly postpaid billing reduces checkout friction but adds credit risk and collections. Do not silently switch models: revise the PRD/transaction design before implementing either alternative.
 
+### Confirmed Web/PWA-first distribution
+
+Desktop, Android and iPhone currently use browser-delivered Web/PWA checkout, not App Store/Google Play distribution or native in-app purchases. The proposed €10 funding/€1 unlock rules and shared server balance are unchanged by adding a home-screen icon. Test hosted checkout, bank-app switching, cancelled returns and an authenticated return in a different browser/PWA context; there is no automatic unlock or second charge on return.
+
+When dedicated mobile apps are justified later, reassess then-current store rules for paid digital thread access, regional payment options, fees, refunds, taxes and cross-platform entitlements. Do not assume the physical nature of carpentry exempts a digital-access purchase, or assume today's PSP-only margin carries over. Native receipt validation/accounting changes require a separate design before release; no store fee is modeled in the current browser-only economics.
+
 ## 3. Payment boundary and fulfillment
 
 HoutMatch sells its own access service; the client pays the carpenter separately for carpentry work. Use hosted checkout and never collect card/bank credentials in our application. Merchant onboarding and prepaid-service acceptance must be confirmed with the PSP.

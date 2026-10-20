@@ -2,7 +2,7 @@
 
 > **Execution boundary:** this is a proposed backlog, not authorization to implement it. After G0 approval, execute sequentially using the approved plan; respect repository instructions and do not delegate or create infrastructure without authorization. All boxes below intentionally remain unchecked.
 
-**Goal:** validate and deliver a privacy-safe carpentry marketplace with one-time paid thread access.
+**Goal:** validate and deliver a privacy-safe carpentry marketplace with one-time paid thread access on desktop Web and Android/iPhone browser plus installed PWA.
 **Architecture:** modular monolith with server-only domain/DAL, PostgreSQL financial transactions and a restartable worker.
 **Proposed stack:** TypeScript, Next.js/React, PostgreSQL, private object storage, hosted PSP checkout, real-DB integration and browser tests.
 
@@ -12,12 +12,13 @@
 |---|---|---|
 | G0 — approve scope before development | Founder + legal/accountant + tech lead | Interviews; categories/region; €1 gross/€10 funding; three lifetime firms; restoration rules; PSP/prepayment classification; privacy scope; build/beta budget |
 | G1 — internal alpha | Tech lead + QA + product | Real-DB money/capacity tests; private-data authorization; coherent prototype; no outstanding critical/high-risk findings |
-| G2 — capped paid beta | Founder + finance + trust | PSP production approval; terms/invoices ready; restoration/cash refund/reconciliation working; restore drill; staffed moderation/support; seeded real supply |
+| G2 — capped paid beta | Founder + finance + trust | PSP production approval; terms/invoices ready; restoration/cash refund/reconciliation working; restore drill; real Android/iPhone browser and installed-PWA acceptance; staffed moderation/support; seeded real supply |
 | G3 — public growth | Founder | At least 100 eligible jobs/four weeks directional evidence; liquidity and comprehension targets; positive post-variable-CAC contribution and fixed-cost funding plan |
+| G4 — later dedicated mobile apps | Founder + product + tech/finance/legal | Maturity and validated native-only needs; new store/payment/auth/release design and separately approved budget; not part of current implementation |
 
 Suggested team: two engineers, fractional product/design/QA, named trust/finance operator, external legal/accountant. A role is not an assigned person; name real owners at G0. Workstreams below are dependencies, not instructions to spawn parallel agents.
 
-Proposed timing after G0: weeks 1–2 foundation and jobs; weeks 3–4 funding/atomic unlock and media; weeks 5–6 messaging/quotes/trust; weeks 7–8 hardening and alpha; weeks 9–12 capped beta/learning. Discovery/G0 may add 1–2 weeks beforehand. These are estimates, not deadlines or a commitment that all gates will pass.
+Proposed timing after G0: weeks 1–2 foundation and jobs; weeks 3–4 funding/atomic unlock and media; weeks 5–6 messaging/quotes/trust; weeks 7–9 PWA hardening, real-device checkout/recovery and alpha; weeks 10–13 capped beta/learning. Discovery/G0 may add 1–2 weeks beforehand. These are revised estimates including PWA work, not deadlines or a commitment that all gates will pass. G4 has no calendar commitment.
 
 ## 2. Proposed code ownership map (nothing scaffolded yet)
 
@@ -32,6 +33,8 @@ Proposed timing after G0: weeks 1–2 foundation and jobs; weeks 3–4 funding/a
 | `src/modules/offers/` | Quote versions, award, completion and review eligibility |
 | `src/modules/trust/` | Reports, moderation cases, appeals and audit |
 | `src/components/` / `src/styles/` | Accessible shared components and DESIGN.md tokens |
+| `src/app/manifest.ts`, `public/icons/`, `public/offline.html` | Web manifest, reviewed install artwork and non-personal offline fallback |
+| `public/sw.js`, `src/components/pwa/` | Narrow cache allowlist, safe update lifecycle and optional installation guidance |
 | `src/workers/` / `db/migrations/` | Durable processing and reviewed schema |
 | `tests/unit/`, `tests/integration/`, `tests/e2e/` | Policy, real database and user-flow verification |
 
@@ -56,11 +59,14 @@ Effort is estimated **engineering person-days**, excluding external waiting, dis
 | T10 | P0 | Full-stack | T05,T09 | 3–4 | Quote versions, comparison, atomic award/complete/review; AT-13/14 |
 | T11 | P0 | Backend + finance | T06,T07,T09 | 4–5 | Automatic/manual restorations, cash reservations/refunds, payment disputes/reconciliation; AT-16/17/18 |
 | T12 | P0 | Full-stack + trust | T03,T09,T10,T11 | 3–4 | Scoped operations, reports, holds, appeals, export/deletion; AT-19/20 |
-| T13 | P0 | Tech lead + QA | T05–T12 | 4–6 | End-to-end/adversarial/load/a11y suite, restore drill, observability/runbooks; G1/G2 evidence |
+| T16 | P0 | Frontend + tech lead | T01,T04,T05 | 3–4 | Manifest/icons/install help, public-static-only worker/offline page, safe updates and no private persistence; AT-22/23/26 |
+| T17 | P0 | Full-stack + QA | T06–T12,T16 | 2–3 eng + device QA | Android/iPhone installed/browser checkout, resume, camera/file selection and cross-device entitlement recovery; AT-22–AT-26 |
+| T13 | P0 | Tech lead + QA | T05–T12,T16,T17 | 4–6 | End-to-end/adversarial/load/a11y suite, restore drill, observability/runbooks; G1/G2 evidence |
 | T14 | P0 | Product + operations | G2,T13 | 1–2 eng + 4 weeks ops | Capped paid beta, real supply, support/economics dashboard; G3 review |
 | T15 | P1 | Product | G3 | Re-estimate | Saved searches, workflow integrations and optional language assistance, only if validated |
+| T18 | Later, gated | Product + mobile/tech lead | G4 | Separate estimate | Dedicated Android/iPhone clients; choose technology and store/payment/auth strategy only after maturity approval |
 
-Range total T00–T14: approximately 46–63 engineering person-days; do not add P1 without re-estimation. Two engineers have limited overlap and noncoding work, so person-days are not calendar days.
+Range total for current P0 tasks T00–T14 plus T16/T17: approximately 51–70 engineering person-days, including an estimated 5–7 additional engineering days for PWA delivery/device recovery. P1 and later T18 are excluded. Two engineers have limited overlap and noncoding work, so person-days are not calendar days; real-device QA needs separately allocated time/hardware.
 
 ## 4. Executable checklist
 
@@ -73,6 +79,7 @@ Range total T00–T14: approximately 46–63 engineering person-days; do not add
 - [ ] T03: Test failed verification, suspended account and own-job restrictions before implementing happy paths.
 - [ ] T04: Implement semantic tokens and all critical component states; test Dutch/English and mobile purchase comprehension.
 - [ ] T05: Test safe raw payloads before implementing previews; add wizard, moderation, freshness, revisions and expiry.
+- [ ] T16: Define exact supported browser/OS versions; write cache/privacy and lifecycle tests before manifest/install/worker implementation; add icon variants and offline help.
 
 ### Chunk B — access sales and privacy boundary
 
@@ -88,6 +95,7 @@ Range total T00–T14: approximately 46–63 engineering person-days; do not add
 - [ ] T10: Test latest-scope/quote validity and simultaneous awards; implement comparison/selection, completion labels and reviews.
 - [ ] T11: Test every policy boundary, restore-once rule, cash refund/spend race and ambiguous PSP outcome; implement reversals and holds.
 - [ ] T12: Test support/finance privilege separation, legal holds and third-party redaction; implement case-based operations and rights workflows.
+- [ ] T17: Execute Android/iPhone browser and installed-PWA scenarios on real devices: install, file/camera permissions, bank-app return, session loss, app termination, logout/account switch and stale worker update; resolve every incorrect purchase/replay outcome.
 
 ### Chunk D — verify, pilot and decide
 
@@ -97,6 +105,7 @@ Range total T00–T14: approximately 46–63 engineering person-days; do not add
 - [ ] T14: Recruit 15–20 verified businesses; establish adequate craft/area coverage; seed only real consented jobs.
 - [ ] T14: Run bounded paid beta; monitor daily balance/capacity/privacy and weekly liquidity/economics.
 - [ ] G3: Decide iterate/stop/scale from evidence; preserve original purchase terms in any pricing change.
+- [ ] G4/T18 later: Only after maturity evidence and a separate decision, plan dedicated Android/iPhone apps, storefront/payment compliance, native auth/push and release operations; do not bundle them into the PWA budget.
 
 ## 5. Critical-task example: T07 atomic unlock
 
@@ -113,7 +122,7 @@ The suggested npm scripts are to be created by T01/T02; they do not exist in thi
 
 ## 6. Budget envelope and scope control
 
-Illustrative planning budget, **not a quote**: 60 engineering days × €600 = €36,000; 10 product/design days × €600 = €6,000; eight QA days × €500 = €4,000; external legal/accounting €2,500; pilot infrastructure/operations tools €500; acquisition experiment €1,000. Subtotal €50,000; 20% contingency → approximately €60,000 before applicable taxes and ongoing support staffing. Rates and hours are assumptions to replace with real quotes.
+Illustrative revised planning budget, **not a quote**: 67 engineering days × €600 = €40,200; 10 product/design days × €600 = €6,000; 10 QA days × €500 = €5,000; external legal/accounting €2,500; pilot infrastructure/operations tools €500; acquisition experiment €1,000. Subtotal €55,200; 20% contingency → approximately €66,240 before applicable taxes, test-device purchase/rental and ongoing support staffing. This adds PWA delivery/recovery and extra device QA to the previous envelope; dedicated mobile apps and optional Web Push remain excluded. Rates and hours are assumptions to replace with real quotes.
 
 Approve a separate beta spend ceiling and refund reserve. No public paid acquisition if contribution remains negative. Cut P1 first; never cut privacy, transaction consistency, financial reconciliation or cash-refund controls to meet a date.
 

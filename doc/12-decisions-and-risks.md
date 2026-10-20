@@ -1,6 +1,6 @@
 # Decisions, assumptions and risk register
 
-**Status:** proposed defaults; no human approval implied · **Review date:** 20 October 2026
+**Status:** proposed defaults except user-confirmed Web/PWA-first platform delivery (ADR-12); other gates are not approved · **Review date:** 20 October 2026
 
 ## 1. Architecture/product decision records
 
@@ -17,6 +17,7 @@
 | ADR-09 | Hosted PSP only for platform access | Construction escrow, split payouts | Cannot verify construction payment; label reviews honestly; revisit via separate scoped project |
 | ADR-10 | Automatic earned no-response restoration with lot provenance | Manual-only support; no response safeguard | Risk of gaming and more liabilities; tune prospectively after fraud/economics review |
 | ADR-11 | Original Workshop Daylight system; DESIGN.md contract | Clone an existing brand; generic dashboard theme | Requires prototype testing; visual references inform specification discipline only |
+| ADR-12 | **User-confirmed:** desktop Web + Android/iPhone PWA now; dedicated mobile apps after maturity | Separate native clients or store wrappers in MVP | Real-device installation/checkout/lifecycle acceptance required now; native technology/store policy/budget revisited only at G4 |
 
 ## 2. Open decisions and accountable roles
 
@@ -34,6 +35,8 @@
 | Content/finance retention and legal holds | Purpose-separated proposed schedule | Legal/privacy/finance | G0/G2 |
 | Support staffing and business-hour promises | Named trust/finance owner, two-day decision target | Founder/trust | G2 |
 | Paid-beta budget and refund reserve | Bounded experiment; no scaling at negative contribution | Founder/finance | G0/G2 |
+| Exact Web/PWA support versions and test devices | Desktop major browsers; Android Chrome; iPhone Safari; normal and installed modes | Tech lead + QA | T16 before G2; refresh every release |
+| Dedicated-app maturity gate | Validated native-only benefit and stable marketplace economics, not a promised date | Founder/product | G4; separate design and budget |
 
 If a blocking decision cannot be approved, keep the product in prototype/test mode. Do not create production accounts or change the business model as a silent fallback.
 
@@ -57,6 +60,9 @@ Likelihood/impact are qualitative planning judgments, not measured probabilities
 | Payment/email outage or lost worker | Medium / medium | Pending states, durable inbox/outbox, retries, reconciliation | Tech; fail closed for unverified funds |
 | Backup restore loses paid events | Low / critical | Post-restore PSP reconciliation, idempotent replay, controlled reopening | Tech/finance; no purchase writes until reconciled |
 | Unsupported all-platform superiority claims | Medium / medium | Evidence-based comparisons and interview validation | Product; remove claims beyond research scope |
+| PWA private-data persistence or stale account display | Medium / critical | Static-only allowlist, no private offline store, resume/logout checks and real-device storage inspection | Tech/privacy; block G2 on any leak |
+| Phone bank-app return or update causes repeated purchase | Medium / critical | Recover owned server intent/entitlement, stable idempotency, no auto-replay or forced mid-checkout reload | Tech/finance; block G2 on duplicate/incorrect outcome |
+| Treating PWA as full native capability parity | Medium / medium | Optional install/push, browser fallback, documented offline limits, tested support matrix | Product/QA; correct unsupported claims before release |
 
 ## 4. Change management
 
@@ -64,4 +70,4 @@ Before changing fee semantics, top-up minimum, lifetime cap, shared/private visi
 
 ## 5. Current completion status
 
-This pack proposes the product, design system, architecture, technical rules and delivery backlog. It does not claim interviews, business validation, regulatory approval, independent security review, implemented features, test execution or production readiness. The next human decision is G0 scope/discovery approval, not a production deploy.
+This pack proposes the product, design system, architecture, technical rules and delivery backlog. The user confirmed desktop Web and Android/iPhone PWA first, then dedicated mobile apps after maturity. It does not claim interviews, business validation, regulatory approval, independent security review, implemented features, test execution or production readiness. The remaining human decision is G0 scope/discovery approval, not a production deploy. See [Cross-platform delivery](14-cross-platform-and-pwa.md).

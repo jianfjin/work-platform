@@ -38,6 +38,11 @@ Local/test environments use generated identities and synthetic home images. Stag
 | AT-19 Operations privilege | FR-14 | Given normal support, when accessing private chat or executing unauthorized finance action, then denied; break-glass requires separate privilege/case/reason and immutable audit |
 | AT-20 Rights/retention | FR-14; NFR-08 | Given export/deletion request, when processed, then scoped export, third-party redactions, expired media inaccessible, minimum lawful finance retained; restored backups reapply tombstones |
 | AT-21 Matching transparency | FR-15 | Given category/radius/date filters, when results rendered, then explain declared fit, city-based distance and availability uncertainty; no paid ranking |
+| AT-22 Cross-platform parity/install | FR-16; NFR-09 | Given supported desktop, real Android and real iPhone devices, when using browser and installed mobile modes, then both user roles complete core flows, icons/launch/back navigation work, no install/push permission is required and an existing entitlement is not repurchased on another device |
+| AT-23 Offline/cache isolation | FR-17; NFR-08, NFR-09 | Given installed PWA after private activity, when offline, account-switched or storage-inspected, then only allowlisted public static assets/offline page persist; no private content/media/balance/token or queued mutation exists; stale private views are hidden until authorized online revalidation |
+| AT-24 Mobile checkout recovery | FR-11, FR-16, FR-17; NFR-09 | Given bank-app/browser switches, terminated PWA, cancelled/pending/late-paid outcome or return to another browser, when reauthenticated, then owned server payment status recovers one verified grant; no automatic job unlock, inferred success or second purchase |
+| AT-25 Device input and resume | FR-08, FR-16, FR-17; NFR-09 | Given mobile keyboard/safe areas, denied camera permission, ordinary phone photos and app suspension, when composing/uploading/resuming, then controls remain usable, unsupported media has a safe alternative, saved server drafts resume, unsent memory-only text is not falsely saved/sent and permissions/state revalidate |
+| AT-26 PWA update/rollback | FR-17; NFR-09 | Given old installed worker and a waiting new deployment, when composing/in checkout or rolling back, then no forced destructive reload, financial/message replay or private cache exposure; compatible assets remain and approved reload updates safely |
 
 For AT-17: a reply/award committed at or before the deadline defeats no-response eligibility; later events do not erase an already-earned restoration. Evaluate due entitlements under the job lock before accepting late messages/award actions; do not let worker lag change policy outcomes.
 
@@ -53,6 +58,7 @@ For AT-17: a reply/award committed at or before the deadline defeats no-response
 | NFR-06 | Lab budgets initially, then real-user p75 LCP/INP/CLS; exclude no user cohort silently |
 | NFR-07 | G2 timed DB/media restore and post-restore PSP reconciliation; measured RPO/RTO |
 | NFR-08 | Processor/region register, access audit, rights/retention scenarios AT-19/20 and approved legal purpose review |
+| NFR-09 | Version-recorded real-device support matrix and AT-22–AT-26 in normal-browser/installed modes; browser emulation cannot substitute |
 
 ## 3. Adversarial financial test details
 
@@ -76,6 +82,8 @@ Target WCAG 2.2 AA across sign-in, job wizard, preview/unlock, top-up/return, co
 
 Prototype tests: at least five representative users complete the purchase/audience tasks; >=80% correctly explain €1 unlock, €10 funding commitment, no guaranteed award, no automatic contact disclosure and shared/private boundary. A visually polished screen does not waive these comprehension gates.
 
+Cross-platform scope: record exact versions at each release against [the support matrix](14-cross-platform-and-pwa.md). Test core flows on desktop Chrome/Edge/Firefox and macOS Safari within the stated support window, plus real Android Chrome and real iPhone Safari in browser and home-screen modes. Include cold/warm launch, small screens, portrait/landscape, denied permissions, offline/slow network, storage eviction, session expiry, checkout return and worker replacement. No PWA/browser implementation has been tested as part of this documentation update.
+
 ## 5. Release checklist
 
 ### Before internal alpha (G1)
@@ -91,6 +99,7 @@ Prototype tests: at least five representative users complete the purchase/audien
 - [ ] Production PSP merchant approval, correct webhook reachability and verified paid fulfillment proven.
 - [ ] One controlled top-up, unlock, restoration, partial unused-funds cash refund and reconciliation completed end to end with receipts.
 - [ ] Backup restore measures RPO <=1h and RTO <=4h; reconciles PSP activity before re-enabling purchase writes.
+- [ ] AT-22–AT-26 pass on real Android/iPhone browser and installed PWA; exact OS/browser versions, private-storage inspection and bank-app checkout return evidence recorded.
 - [ ] Staff MFA, secrets, incident owner/backup, scoped roles, alerts and support hours verified.
 - [ ] Fraud holds, report/appeal routes and data rights operations tested.
 - [ ] Genuine supply/demand coverage confirmed; beta budget/refund reserve approved.

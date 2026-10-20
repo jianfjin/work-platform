@@ -60,7 +60,7 @@ Status taxonomy: 400 malformed; 401 sign-in required; 403 known account/verifica
 | `POST /uploads` | Authorized parent owner/participant | Presigned quarantine upload; typed parent and limits |
 | `POST /uploads/{id}/complete` | Upload owner | Queue server-side scan; does not mark it safe |
 | `GET /attachments/{id}/download` | Authorized parent reader | Safe short-lived download capability for clean media only |
-| `GET /me/access-balance` | Business owner | Available/pending/reserved/held amounts and journal cursor |
+| `GET /me/access-balance` | Business owner | Available/pending/reserved/held amounts, owned pending top-up references and journal cursor; permits checkout recovery after switching browser/PWA context |
 | `POST /me/topups` | Approved business owner | Fixed €10 intent and hosted checkout URL; idempotent |
 | `GET /me/topups/{id}` | Intent owner | Local pending/credited/refund/dispute status |
 | `GET /me/operations/{key}?operation=unlock` | Original actor only | Operation receipt/resource/status, never a private body cache |
@@ -133,3 +133,9 @@ Message input includes `clientMessageId`, text up to 5,000 characters and clean 
 Initial tunable rate limits: 60 preview reads/minute/account; 10 unlock attempts/minute/business; 30 message sends/minute/account; three new jobs/day/client; five top-up creations/hour/business. Use risk review rather than relying on IP alone for shared networks. Add independent callback bounds and worker deduplication. Return `Retry-After` where appropriate.
 
 Bound query complexity, file sizes and list lengths. Reject unknown mutation fields. Validate external checkout redirect hosts against the PSP configuration; reject arbitrary user-supplied callback/return URLs. Integration tests must inspect raw JSON/HTML/RSC and storage URLs, not merely rendered UI.
+
+## 7. Browser and installed-PWA contract
+
+Desktop, Android browser/PWA and iPhone Safari/PWA call the same API using the authenticated session available in that context. They share server-side jobs, balance and entitlements, not necessarily browser cookies/local storage. No device-local balance or installed-mode authorization exception exists.
+
+All private reads and mutations remain network-only. Do not defer POST requests into a service-worker queue; after an uncertain unlock, check the actor's preview/entitlement or operation receipt, and after checkout inspect the owned pending top-up reference and status. Reauthenticate in a new return context if necessary; never expose a receipt because a URL contains its ID. A fresh device retrieves server history instead of buying access again. Future native bearer authentication/push/store receipt endpoints are not added in this phase; their separate design must reuse the same domain authorization and business-effect uniqueness rules.

@@ -1,6 +1,6 @@
 # Product requirements document (PRD)
 
-**Version:** 0.1 · **Status:** proposed · **Primary owner:** product lead
+**Version:** 0.2 · **Status:** proposed; Web/PWA-first platform direction user-confirmed · **Primary owner:** product lead
 
 ## 1. Users and jobs to be done
 
@@ -15,9 +15,9 @@ Adults only. A user may have client and business-owner roles, but a business can
 
 ## 2. MVP scope
 
-**P0:** sign-in; verified client contact before publishing; manual business/KVK checks; four initial carpentry templates; moderated job publication; safe previews; geographic/category filtering; €10 top-up; atomic €1 unlock; shared scope Q&A; private messages and structured quotes; client selection; completion confirmation; job-linked reviews; billing history; abuse reports; support restoration; operations audit and reconciliation.
+**P0:** desktop Web plus Android/iPhone browser and installable PWA delivery; sign-in; verified client contact before publishing; manual business/KVK checks; four initial carpentry templates; moderated job publication; safe previews; geographic/category filtering; €10 top-up; atomic €1 unlock; shared scope Q&A; private messages and structured quotes; client selection; completion confirmation; job-linked reviews; billing history; abuse reports; support restoration; operations audit and reconciliation. Installation is optional; neither an app-store account nor notification permission is required for core use.
 
-**P1 after beta:** saved searches/digests, richer portfolio verification, optional language assistance, finer availability matching. No AI is necessary to complete the core workflow.
+**P1 after beta:** saved searches/digests, richer portfolio verification, optional language assistance, finer availability matching and optional permission-based Web Push where supported. No AI or push subscription is necessary to complete the core workflow. Dedicated Android/iPhone apps belong to a later maturity-gated phase, not an automatic P1 commitment.
 
 **Not MVP:** other trades, employment vacancies, cross-border business billing, construction escrow/payments, success commissions, native mobile apps, bidding auctions, paid placement, subscriptions, transferable credits, automatic top-ups or automatic price optimization.
 
@@ -53,6 +53,8 @@ Adults only. A user may have client and business-owner roles, but a business can
 | FR-13 | Notifications | Transactional email contains a generic notification and authenticated link, never job body, address, photos or competitors' information; in-app status is authoritative; notifications do not grant access |
 | FR-14 | Trust operations and rights | User can report job/message/profile/review, block harassment and request data export/deletion; operators record reason, audit entry and appeal route; break-glass private access needs separate permission and a case |
 | FR-15 | Spend visibility and matching | Account shows total paid access costs, restorations and client-reported awards; matching uses declared craft, city-based distance and date fit, with explanations; no payment-based ranking |
+| FR-16 | Desktop, Android and iPhone parity | Clients and carpenters complete all core flows on the supported desktop browsers, Android Chrome and iPhone Safari; Android/iPhone also support home-screen PWA use; manifest, icons, installation help and browser fallback work; accounts, balances and entitlements are server-owned and shared across devices |
+| FR-17 | Safe PWA lifecycle and connectivity | Only explicit public static assets/offline page may be persistently cached; private content/API/render payloads/media and financial states are network-only; offline writes are not queued; reconnect/resume revalidates state and ambiguous purchase outcomes; logout clears local sensitive state and updates never auto-replay a mutation |
 
 Quote comparisons show differences in assumptions; the platform does not invent a market price, recommend the cheapest provider or require a carpenter to honor an unmeasured estimate as a binding construction contract.
 
@@ -86,6 +88,7 @@ Participant status is independent: ACTIVE, READ_ONLY_RESTORED, WITHDRAWN or REVO
 | NFR-06 | Mobile p75 LCP <2.5 s, INP <200 ms, CLS <0.1 as initial performance budgets, validated with real-user measurements when sufficient traffic exists |
 | NFR-07 | Recovery target RPO <=1 hour, RTO <=4 hours; prove via timed restore before paid launch |
 | NFR-08 | EU primary hosting; encrypted transport/storage; least privilege, case-scoped support access; approved retention/deletion schedule and processor register |
+| NFR-09 | Release records exact supported OS/browser versions and passes the cross-platform matrix on real Android and iPhone devices in browser and installed modes; includes bank-app checkout return, keyboard/safe-area layout, account switching, cache inspection, offline recovery and service-worker update/rollback; viewport emulation alone cannot pass this gate |
 
 These are engineering/release targets, not an SLA offered to users. Final provider costs and operational coverage are reviewed before promising them.
 

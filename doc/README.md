@@ -1,7 +1,9 @@
 # HoutMatch — carpenter marketplace design pack
 
 **Repository:** work-platform · **Working name:** HoutMatch (not trademark/domain cleared)
-**Version:** 0.1 · **Date:** 20 October 2026 · **Status:** proposal for review, not an implemented product
+**Version:** 0.2 · **Date:** 20 October 2026 · **Status:** proposal for review, not an implemented product
+
+**Confirmed platform direction:** desktop Web plus Android/iPhone progressive web application (PWA) now; dedicated mobile applications after product maturity and a separate release decision. This confirms the delivery approach, not the remaining business/legal launch gates.
 
 ## The proposal in one minute
 
@@ -30,6 +32,7 @@ The proposed advantage is a **quote-ready carpentry brief + shared scope clarifi
 | [Test and launch plan](11-test-and-launch-plan.md) | Requirement traceability, adversarial cases, release gates |
 | [Decisions and risks](12-decisions-and-risks.md) | ADRs, open decisions, owners and stop conditions |
 | [Source register](13-source-register.md) | Primary references, access date and research limitations |
+| [Cross-platform and PWA delivery](14-cross-platform-and-pwa.md) | Desktop/Android/iPhone support, installation, offline/privacy boundaries and later native-app gate |
 
 ## Document contract
 
@@ -43,6 +46,6 @@ The proposed advantage is a **quote-ready carpentry brief + shared scope clarifi
 
 ## Proposed first release
 
-Responsive web application; one local pilot market; client jobs; verified single-owner carpentry businesses; free previews; paid unlocks; private conversations; shared non-commercial Q&A; structured quotes; client selection; job-linked reviews; operations dashboard; refunds and reconciliation.
+One responsive Web/PWA codebase supporting desktop browsers, Android browser/home-screen use and iPhone Safari/home-screen use; one local pilot market; client jobs; verified single-owner carpentry businesses; free previews; paid unlocks; private conversations; shared non-commercial Q&A; structured quotes; client selection; job-linked reviews; operations dashboard; refunds and reconciliation. Installation is optional; core flows work in the browser. Private job data and financial actions require connectivity; an installed icon is not a promise of offline functionality.
 
-No construction payments, escrow, commissions on building work, employment matching, native apps, generative-AI dependencies or nationwide rollout in the MVP.
+No construction payments, escrow, commissions on building work, employment matching, native desktop/mobile binaries, generative-AI dependencies or nationwide rollout in the MVP. Dedicated Android/iPhone apps remain a later phase rather than a rejected platform requirement.

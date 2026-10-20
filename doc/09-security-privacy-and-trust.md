@@ -29,6 +29,7 @@ Suspension, job safety holds, deleted content and revoked grants further restric
 | Threat | Control | Proof obligation |
 |---|---|---|
 | Unpaid preview leaks | Separate safe projection/DTO, server-only DAL, no full text/photos in HTML/JSON/RSC | Inspect raw network payloads and caches with unauthenticated/unpaid principals |
+| Installed-PWA cache/account-switch leakage | Public-static-only worker allowlist; network-only private data; no durable sensitive drafts; resume/logout revalidation | Inspect Cache Storage, IndexedDB, local/session storage and back-forward history on real phones; account B must not see account A's job/balance after logout or restore |
 | Paid competitor reads another firm's offer | Channel/offer row ownership checked for every request and cursor | Cross-business IDOR test matrix including attachments and exports |
 | Double spend / fourth participant | One database transaction, consistent job/wallet locks and unique constraints | Real PostgreSQL concurrent test with 50 contenders |
 | Fake/replayed payment callback | Stored intent lookup + authenticated PSP fetch + unique grant effect | Replayed/unknown/changed amount/wrong environment callbacks never credit |
@@ -87,3 +88,5 @@ These are **scope-assessment tasks**, not claims that all listed duties apply or
 Incident priorities: P0 private-data exposure, ledger corruption, forged paid fulfillment, or systematic duplicate charging; P1 broad messaging/payment outage; P2 isolated support defect. Name an on-call owner and backup before beta. Suspend affected purchases immediately for P0, preserve minimal evidence, revoke exposed capabilities, assess affected users and legal notification obligations, then reconcile before reopening.
 
 Secrets live in a managed secret store, separated by environment; rotate PSP and storage credentials, restrict database network access, and audit staff changes. Dependencies receive vulnerability scanning and supported-version updates. Restore drills prove backup availability; they do not replace authorization tests. No production personal data in test fixtures or developer laptops by default.
+
+PWA rollout must include a service-worker/cache kill-switch procedure for a faulty deployment, compatible assets for old installed versions and evidence that private data was never precached. Do not treat uninstall as server account deletion or entitlement revocation. No notification/camera permission or durable offline private storage is required for core service; optional future Web Push must contain only generic authenticated links, support unsubscribe and have its own processor/privacy review. See [Cross-platform delivery](14-cross-platform-and-pwa.md).

@@ -35,6 +35,11 @@ The actual Markdown files were inspected through their raw GitHub versions as we
 | T5 | [PostgreSQL explicit locking](https://www.postgresql.org/docs/current/explicit-locking.html) | Row-lock/concurrency mechanism, not proof that our future code is correct |
 | T6 | [Next.js data-security guidance](https://nextjs.org/docs/app/guides/data-security) | Server-only DAL, authorization and minimal DTO boundary |
 | T7 | [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/) | Accessibility target, contrast/focus and full-flow evaluation reference |
+| T8 | [MDN installable PWA guidance](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Making_PWAs_installable) | Browser-specific installation/standalone behavior; do not assume one automatic install prompt works everywhere |
+| T9 | [Apple: website as an iPhone web app](https://support.apple.com/guide/iphone/open-as-web-app-iphea86e5236/ios) | Current Safari home-screen installation instructions; recheck UI wording per supported release |
+| T10 | [WebKit: iOS/iPadOS Web Push](https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/) | Home-screen/permission requirements and original iOS 16.4 introduction; not a current-device support guarantee |
+| T11 | [Next.js PWA guide](https://nextjs.org/docs/app/guides/progressive-web-apps) | Manifest and PWA framework integration; not a substitute for our restrictive cache/transaction policy |
+| T12 | [MDN service-worker lifecycle](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers) | Browser worker install/activate/update/cache concepts, distinct from server job workers |
 
 Stack choices are recommendations, not independent feature/version audits. Pin maintained supported releases and test actual provider APIs at implementation kickoff. The design does not depend on guessed webhook signatures or unverified provider idempotency support; verify the chosen product contract.
 
@@ -54,3 +59,5 @@ Stack choices are recommendations, not independent feature/version audits. Pin m
 No customer interviews or transaction experiments; no market-size/revenue forecast validation; no authenticated competitor audit; no actual Werkspot fee quote; no provider commercial agreements; no legal/tax opinion; no live implementation/performance/accessibility results. Target repository inspection found an empty repository with `main` as its configured default branch at the start of this work.
 
 All financial examples, capacity policy, geographic pilot, implementation effort, retention defaults and SLOs are explicitly proposed assumptions. Revalidate claims and mutable sources before external marketing or a paid launch.
+
+**User requirement provenance:** the user explicitly selected mobile option 2 (PWA) for the current stage and option 1 (dedicated Android/iPhone applications) after maturity. This is a confirmed delivery direction, not a conclusion inferred from any external source. Desktop means browser delivery in the current phase, with optional supported-browser installation; no desktop binaries were requested or created.

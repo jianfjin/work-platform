@@ -1,5 +1,5 @@
 ---
-version: "0.1-proposal"
+version: "0.2-proposal"
 name: HoutMatch-workshop-daylight
 description: "An approachable carpentry marketplace: warm workshop neutrals, deep forest actions, clear work-order hierarchy, and explicit shared/private conversation boundaries."
 colors:
@@ -182,3 +182,11 @@ Voice: direct and respectful, no “exclusive lead jackpot,” countdown pressur
 Use these tokens as the source for eventual CSS variables and a component catalogue; no styling framework is mandated by this document. Implement empty/loading/error/disabled/focus/pending/restored states before visual sign-off. Test 320, 375, 768, 1,024 and 1,440px widths, Dutch and English copy, zoom, touch and keyboard.
 
 Reject a handoff with unreadable price disclosure, ambiguous audiences, tiny controls, fabricated proof, unauthorized preview data or untested monetary flows even if it looks polished. Wireframes and user tasks are in [UX](03-ux-and-service-blueprint.md); objective release checks are in [Test plan](11-test-and-launch-plan.md).
+
+## 12. Desktop, Android and iPhone PWA
+
+The confirmed current delivery is a responsive desktop website and installable Android/iPhone PWA; native app binaries come later. Browser and installed modes use the same visual tokens and core flows. Install help is contextual and dismissible; an unsupported automatic prompt becomes honest instructions, not a dead button. Never gate posting, paid access or messaging on installation or push permission.
+
+Provide a recognizable square icon, maskable variant and Apple touch icon with safe artwork margins; actual assets are an implementation task. Match standalone theme/background to the daylight canvas. Show visible back/home actions without relying on browser chrome. Use safe-area insets and dynamic viewport handling; keep private/shared audience labels, quote fields and composers visible above phone keyboards. Test actual Android/iPhone installation and portrait/landscape modes, not only a narrow desktop viewport.
+
+Offline screen: explain connectivity is needed and offer retry/help; do not display cached private jobs, offers or balance. Unsent text is only in-memory while the current view survives; no “saved offline” promise. Update banners defer reload until unsaved work is saved online or discarded. Checkout returning to another window shows authenticated pending/success state from the server, never a visual guess based on a redirect. All supported-mode details are in [Cross-platform delivery](14-cross-platform-and-pwa.md).
