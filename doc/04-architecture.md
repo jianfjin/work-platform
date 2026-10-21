@@ -11,7 +11,7 @@ flowchart LR
     Staff[Scoped staff with MFA] --> Web
     Web --> DB[(Private PostgreSQL)]
     Web --> Media[(Private sanitized media)]
-    Web --> PSP[Platform merchant hosted checkout]
+    Web --> PSP[Stripe hosted Checkout candidate]
     PSP --> Web
     Worker[Outbox and deletion worker] --> DB
     Worker --> Media
@@ -40,12 +40,14 @@ Keep API adapters separate from server-side domain services so future native cli
 |---|---|
 | Web/PWA | Next.js/React/TypeScript, manifest, static-only offline fallback |
 | Database | Managed PostgreSQL; explicit locks and reviewed migrations |
-| Payment | Hosted PSP such as Mollie, platform legal entity as merchant and approved business settlement account |
+| Payment | Preferred candidate: Stripe hosted Checkout + official stripe-node SDK (npm package `stripe`), server-side Node.js; platform legal operator is merchant with approved business settlement account |
 | Location | PDOK Location API candidate for low-cash-cost Dutch matching; Google Geocoding optional with budget/licensing/privacy review |
 | Email | Transactional provider with authenticated sending domain, opt-in preferences, bounces/unsubscribe and processor review |
 | Photos | Private EU object buckets, real-type checks, metadata stripping and safe variants |
 | Auth | Maintained session/magic-link/OIDC implementation; no homegrown password/token crypto |
 | Worker | PostgreSQL inbox/outbox and leased jobs; no separate message broker initially |
+
+Stripe is a candidate following the user's suggestion, not an executed provider contract. The platform sells its own response-publication service: no Stripe Connect accounts/transfers, contractor payouts, subscriptions or wallet are needed in this scope. Keep a small billing adapter for Checkout creation, verified status and refunds; do not build multiple PSP integrations now. Mollie remains a comparison/fallback if merchant eligibility or economics fails. See [payment evaluation](08-payments-and-economics.md).
 
 Pin maintained supported versions at implementation. No providers, accounts or billing projects are provisioned by this documentation.
 

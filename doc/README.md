@@ -12,6 +12,9 @@ Default: the client initiates contact using company details. A separate explicit
 
 The service is an **information intermediary**, not a workmanship certifier, contractor or construction-payment processor. No routine quality/credential checking or construction monitoring is promised. Email ownership, content security, platform-fee accounting, privacy, abuse reports and applicable legal duties still need operating controls.
 
+## Payment addendum — 21 October 2026
+Following the user's suggestion, **Stripe hosted Checkout + stripe-node (npm `stripe`) is the preferred payment candidate**, pending merchant/method/cost approval. Clients remain free; companies pay only the proposed platform-publication fee, with no construction payments or Connect payouts. Architecture, API, payment economics and tests now describe signed webhooks, idempotent fulfillment/refunds and PWA recovery. See [payments](08-payments-and-economics.md) and [technical mapping](05-technical-design.md). No SDK is installed or live payment configured.
+
 ## Read the documents
 | Document | Purpose |
 |---|---|

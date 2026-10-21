@@ -22,7 +22,20 @@ Use **a PSP merchant account owned by the actual platform legal operator**, sett
 
 Required owner decisions: legal entity/trading name, authorized directors/admins, business IBAN, PSP onboarding/merchant checks, VAT/tax status, refund/dispute authority, finance contact and reserve. These concern the platform merchant, not routine workmanship certification of listed firms. No account has been opened or connected in this task.
 
-Hosted checkout via a provider such as Mollie; initially use merchant-approved local payment methods and show actual available methods. Do not collect card/bank credentials ourselves. Construction payments never pass through this merchant account.
+Preferred candidate following the user's suggestion: **Stripe hosted Checkout + the official stripe-node server SDK (npm package `stripe`)**. This is an evaluation/design choice, not an approved merchant contract. Initially use only merchant-approved, implemented payment methods and show actual availability. Do not collect card/bank credentials ourselves. Construction payments never pass through this merchant account.
+
+### Stripe evaluation and scope
+| Option | Trade-off | Recommendation |
+|---|---|---|
+| Stripe hosted Checkout + stripe-node | Fits the proposed Node.js/TypeScript backend; hosted payment UI; still needs reliable publication/refund/accounting logic | Preferred candidate, gated by merchant approval, method/device tests and actual costs |
+| Stripe custom Elements UI | More UI control, more payment-form integration and testing | Defer; not needed for a €1 pilot |
+| Mollie hosted checkout | Local alternative already evaluated; separate integration if selected | Fallback/comparison only; do not build two PSPs for MVP |
+
+The [official SDK](https://github.com/stripe/stripe-node) is a server library, not a payment method or a mobile UI. Desktop, Android and iPhone PWA redirect to the same hosted Checkout; dedicated mobile SDKs are not required for this phase. No package was installed and no Stripe account/keys were created.
+
+Only the platform's own publication fee is collected. **Stripe Connect is not needed for the current flow**: no connected company merchant accounts, construction fund collection, transfers or escrow. Stripe Billing subscriptions and prepaid wallets also remain out of scope. Stripe Tax is not assumed enabled; any future tax automation must preserve the approved gross price and have a separate cost/configuration review.
+
+Suggested company payment methods: approved iDEAL | Wero and cards; bank-app redirects must be tested on both phones. Stripe's [Dutch bank-payment guidance](https://docs.stripe.com/payments/ideal) describes an iDEAL/Wero transition during 2026–2027: recheck current method identifiers, scheme/merchant requirements, availability and refund windows before launch. Do not promise every bank or enable delayed methods without implementing their lifecycle.
 
 ## 4. Charge and refund rules (proposed R1)
 - Drafting/reading is free. Show €1 gross, no guaranteed job/reply, all interested companies may respond and contact visibility conditions before checkout.
@@ -43,7 +56,15 @@ Propose direct €1 checkout for simplest initial UX/accounting. This replaces t
 PWA browser distribution uses web hosted checkout; same server records on all devices. Bank-app return to another context requires ownership/session recovery, not another automatic purchase. Native apps later need a new storefront/payment/receipt/fee assessment; physical carpentry does not by itself settle rules for paid digital publication.
 
 ## 6. Costs and arithmetic
-[Mollie's Dutch pricing](https://www.mollie.com/nl/pricing), checked 21 October 2026, publicly lists €0.32 for iDEAL/Wero payments. This is indicative, not a merchant contract; other methods/refund/dispute costs differ. At an **illustrative** 21% VAT on this service, €1 gross yields 1/1.21 = €0.8264 before costs, or €0.5064 after a €0.32 payment fee. Accountant confirms actual tax classification/tax point/rounding.
+[Stripe's Netherlands pricing](https://stripe.com/nl/pricing), checked 21 October 2026, lists **€0.29 per iDEAL payment** and **1.5% + €0.25 for standard EEA cards**. These are public indicative rates, not our merchant agreement; other cards/methods, optional products, refunds, disputes and currency conversion can differ. Recheck Wero transition pricing and the actual settlement fee/rounding before launch.
+
+| €1 gross payment scenario | Indicative PSP fee | Before other operating costs, after illustrative 21% VAT and PSP fee |
+|---|---:|---:|
+| Stripe iDEAL baseline | €0.29 | €0.5364 |
+| Stripe standard EEA card | €0.265 arithmetic, before PSP rounding | €0.5614 arithmetic, before PSP rounding |
+| Mollie iDEAL/Wero comparison | €0.32 | €0.5064 |
+
+[Mollie's Dutch pricing](https://www.mollie.com/nl/pricing) remains a comparison, not the Stripe tariff. At an **illustrative** 21% VAT, €1 gross yields 1/1.21 = €0.8264 before costs. Accountant confirms tax classification/tax point/rounding. The baseline below uses Stripe iDEAL €0.29; use actual payment-method mix and settled fees, not a universal SDK fee.
 
 Illustrative cohort model, not observed forecasts:
 - s = original paid response attempts per job; cases shown at 1, 3, 5, not a required/maximum number.
@@ -55,20 +76,20 @@ Illustrative cohort model, not observed forecasts:
 ```text
 Net service revenue/job = s * 0.95 / 1.21
 Contribution before CAC/fixed overhead =
-    s * (0.95/1.21 - 0.32 - 0.10 - 0.03) - 0.20
+    s * (0.95/1.21 - 0.29 - 0.10 - 0.03) - 0.20
 ```
 
 | Paid attempts/job | Net revenue after assumed refunds | Contribution before CAC/fixed | With €2 combined CAC/job |
 |---|---:|---:|---:|
-| 1 | €0.785 | €0.135 | -€1.865 |
-| 3 | €2.355 | €0.805 | -€1.195 |
-| 5 | €3.926 | €1.476 | -€0.524 |
+| 1 | €0.785 | €0.165 | -€1.835 |
+| 3 | €2.355 | €0.895 | -€1.105 |
+| 5 | €3.926 | €1.626 | -€0.374 |
 
 A client-funded single €1 posting would produce roughly the one-attempt contribution under the same simplified inputs, even if many companies respond. Company funding has more revenue potential but a fragile margin and no guarantee of sufficient responses.
 
-At three attempts the acquisition ceiling is only about €0.805/job before fixed costs. With assumed CPC €0.50 and click-to-eligible-post conversion 10%, demand CAC alone is €5, well above this ceiling. These CPC/conversion numbers are examples, not Google quotes or measured local demand. Do not spend based on them as facts.
+At three attempts the acquisition ceiling is only about €0.895/job before fixed costs. With assumed CPC €0.50 and click-to-eligible-post conversion 10%, demand CAC alone is €5, well above this ceiling. These CPC/conversion numbers are examples, not Google quotes or measured local demand. Do not spend based on them as facts.
 
-A later fully used ten-response bundle could amortize a single €0.32 payment to €0.032/response, but that is not the current direct-checkout design or permission to implement stored funds. Track actual method fees, refunds, support time, genuine responses and both sides' acquisition cost.
+A later fully used ten-response bundle could amortize a single €0.29 payment to €0.029/response, but that is not the current direct-checkout design or permission to implement stored funds. Track actual method fees, refunds, support time, genuine responses and both sides' acquisition cost. Dispute/exception losses are excluded from this simplified table; even rare chargebacks can dominate €1 revenue, so maintain a method-specific reserve and include measured losses before scale.
 
 ## 7. Accounting and retained evidence
 Before fulfillment, captured funds are a refundable service obligation; fulfillment records fee revenue under the accountant-approved policy. Refunds append correction/credit-note records, never edit history. No withdrawal balance, contractor payout or job-value commission ledger.

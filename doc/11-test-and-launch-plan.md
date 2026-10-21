@@ -14,7 +14,7 @@ Unit tests for policy/time/normalization; real PostgreSQL integration for fee/pu
 | AT-04 Region/radius | FR-02, FR-04 | Allowlisted Groningen/Fryslân job, category and chosen approximate radius match; Drachten not a separate province; invalid postcode/city/outside area/failed geocode never fake a match |
 | AT-05 Private all-offer list | FR-05, FR-13 | Client sees every eligible own-task offer via pagination; company sees only its own; probing IDs/cursors/counts/analytics/exports reveals no rival information; no three-firm commercial cap |
 | AT-06 Fee payer/event | FR-06, FR-17 | Client never charged; company reads/drafts free; correct verified €1 payment publishes first offer; edits/read/new key for fulfilled response cost zero |
-| AT-07 Duplicate effect | FR-06, FR-17 | Concurrent same/different keys, callback replay and timeout -> one retained fulfilled fee/response and original receipt; mismatched idempotency payload conflicts |
+| AT-07 Duplicate effect | FR-06, FR-17 | Concurrent same/different keys, Stripe event-ID replay, different events for same payment, out-of-order delivery and timeout -> one retained fulfilled fee/response; raw-body tampering/missing or wrong signature rejected; mismatched idempotency payload conflicts |
 | AT-08 Close/edit race | FR-08, FR-18 | Close/deadline/material edit serializes with callback; invalid pending paid offer never publishes and gets unique refund; existing valid visible offer not silently recharged |
 | AT-09 Contact preference | FR-07, FR-13 | Default private even after payment; explicit allowed fields go only to current eligible responders; close/revoke/withdraw stops future disclosure; no automatic full postcode |
 | AT-10 Opt-in alerts | FR-09 | Matching subscribed company receives safe metadata once per delivery key; unsubscribe/close/delete at dispatch suppresses; no photos/contact or guest credential in email |
@@ -25,7 +25,7 @@ Unit tests for policy/time/normalization; real PostgreSQL integration for fee/pu
 | AT-15 PWA lifecycle | FR-14, FR-13 | Desktop plus real Android/iPhone browser/installed flows work; no private cache or offline replay; safe worker update/rollback and keyboard/back navigation |
 | AT-16 Languages/accessibility | FR-15 | Dutch/English critical fee/consent/expiry/mail copy and keyboard/screen-reader/reflow pass; task text not silently translated |
 | AT-17 Growth/privacy | FR-16 | Generic regional SEO only, no live job/contact/photo indexing; opt-in outreach; no unapproved paid campaign or fake reviews |
-| AT-18 Refund/reconciliation | FR-06, FR-17 | Paid-unpublished/duplicate capture produces one bounded original-method refund; lost provider response stays pending and reconciles; no wallet substitute |
+| AT-18 Refund/reconciliation | FR-06, FR-17 | Paid-unpublished/duplicate capture produces one bounded original-method Stripe refund; lost create/refund response stays reserved and reconciles; pending is not succeeded; failed refund alerts; no wallet substitute |
 | AT-19 Hostile media | FR-02, FR-13 | MIME spoof/oversized pixels/unsafe upload rejected/quarantined; EXIF stripped, unsupported HEIC has clear alternative; signed read cannot outlive delete_at |
 | AT-20 Phone payment recovery | FR-14, FR-17 | Bank-app return in different browser, cancelled/pending payment and terminated PWA recover authenticated owned attempt; no inferred success/automatic second checkout |
 | AT-21 Cross-device ownership | FR-01, FR-06, FR-14 | Same owner/response on another device recovers existing server state; cookies need not transfer, no second fee or other client's job access |
@@ -52,7 +52,10 @@ Use synchronized independent PostgreSQL connections, not sequential mocked promi
 - Same company/job attempts and callbacks: unique response/fulfillment, no second retained fee.
 - Client close or material edit versus paid verification: valid first publication or full refund obligation, no orphan.
 - Fake/wrong-amount/wrong-currency/other-merchant/test-mode callback: no publication.
-- PSP create timeout: reconcile stable attempt before another external payment.
+- Stripe Checkout create timeout: reconcile stable attempt before another external payment, including ambiguity beyond the provider idempotency retention window; never infer that a new key is safe.
+- Completed-but-unpaid Checkout, delayed success/failure, wrong merchant/livemode/amount/currency/item/reference and forged success URL: no premature publication. Late valid success after close creates one refund obligation.
+- Valid signature with inbox/outbox transaction failure: 503 and no acknowledged lost event. Duplicate delivery after commit: 200, one verification/effect. Missed webhook: scheduled authenticated retrieval recovers outcome.
+- Test mode uses real hosted Checkout and signed event forwarding in addition to local SDK signature fixtures; no live money is used before the merchant/terms gate.
 - Lost refund response, duplicate refund callback and later chargeback: no double principal payout/reversal.
 - Crash before/after local commit: rollback everything or recover exactly one effect.
 - Deletion while payment pending: no content republished; minimum financial refund continues independently.

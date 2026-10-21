@@ -43,7 +43,9 @@ Errors: 400 malformed, 401 login/session, 403 own-account restriction, 404 absen
 | GET /photos/{id}/download | Authorized task reader | Clean download capability expiring no later than delete_at |
 | POST /reports | Scoped reporter; bounded public illegal-content intake separately | Case/category/target, minimal evidence, status/correction route |
 | POST /me/privacy-requests | Reauthenticated owner/verified guest | Scoped export/delete request with third-party minimization |
-| POST /webhooks/mollie/payments | Bounded PSP notification | Durable verify task; 200 accepted/duplicate, 503 if cannot durably ingest |
+| POST /webhooks/stripe | Stripe-Signature over bounded raw body, not browser session | 400 invalid signature/payload; 200 durably accepted/duplicate/irrelevant valid event; 503 if cannot durably ingest |
+
+The proposed full webhook URL is `/api/v1/webhooks/stripe`. It replaces the earlier Mollie-specific route in this documentation-only repository; do not deploy both providers by default. Keep raw body intact before SDK verification. Only after signature validation store minimal event/object references and schedule authenticated Stripe retrieval; do not trust body-only payment fields. Company payment APIs stay provider-independent and authorize owned attempts before any return-page verification. Checkout Session IDs are not user credentials. See [technical Stripe mapping](05-technical-design.md).
 
 Operator routes under /ops/v1 need staff MFA and action-specific permission: report/hold/notice/appeal, fee exception/refund, delivery suppression, deletion retry and reconciliation. No “verify workmanship” action or arbitrary balance editor.
 
@@ -78,7 +80,7 @@ No full postcode, client identity/contact, guest credential, response count or c
 }
 ```
 
-Example checkout host is illustrative, not a production allowlist. A PUBLISHED result means the server verified payment and committed fulfillment. REFUND_PENDING means no client-visible response on that attempt, not a wallet credit. Same-key replay returns original outcome reference; a previously fulfilled response with a new key must not create a second fee.
+Example checkout host is illustrative, not a production allowlist. For the Stripe candidate, obtain the URL from the server-created hosted Checkout Session and apply reviewed HTTPS/provider-host controls; reject arbitrary caller-supplied return/checkout URLs. A PUBLISHED result means the server verified payment and committed fulfillment. REFUND_PENDING means no client-visible response on that attempt, not a wallet credit. Same-key replay returns original outcome reference; a previously fulfilled response with a new key must not create a second fee.
 
 ## 4. Consent/edit/closure semantics
 A callback-mode write includes expected consent/job version, chosen email/phone fields and acknowledged audience wording. Never default to callback because a phone exists. Contact endpoint checks current mode/fields and published fee-backed own response each request. Previously copied details cannot be revoked remotely.

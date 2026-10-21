@@ -18,12 +18,13 @@ UUID identifiers, UTC timestamptz, integer EUR gross cents. Company fees have a 
 | responses | UNIQUE(job_id, company_id), state, draft/current version, fee fulfillment reference, published/withdrawn times; no competitor visibility relation |
 | response_versions | Introduction, rough range/site-visit-needed, price basis/assumptions, own contact/website snapshot, job revision; task-scoped content deleted at deadline |
 | photo_assets | Job, uploader owner, storage original/variant/version keys, real type/bytes/pixels, scan/privacy state, delete progress; no public URL |
-| payment_attempts | Response opaque reference, company, price/policy/revision snapshots, EUR gross=100 under R1, stable attempt key, provider/environment/merchant/payment ID, state |
+| payment_attempts | Response opaque reference, company, price/policy/revision snapshots, EUR gross=100 under R1, stable attempt key, provider/environment/merchant/payment ID, state; Stripe-specific Checkout Session ID, PaymentIntent ID, charge ID, API version and livemode stored distinctly |
 | response_fulfillments | response_id UNIQUE, successful payment/effect UNIQUE, fulfilled_at, fee amount; retain minimum finance-safe projection after content erasure |
 | refunds/disputes | Payment, stable request/provider reference UNIQUE, reason, amount/reservation/state, timestamps; bounded to captured unreturned principal |
 | journal_transactions/entries | Business effect type+ID UNIQUE; balanced debit/credit rows, immutable correction linkage; no full task body/client email |
 | billing_documents | Company billing snapshot, amount/tax/policy/time, original/corrective document link; statutory retention separate |
 | reports/cases | Reporter contact/evidence in restricted store, category/target, reasoned decision, hold/review expiry, appeal; minimize task copies |
+| provider_events | UNIQUE(provider,environment,merchant_id,event_id), signed event type/object reference, event API version, received/processed/retry state; minimal references, not permanent raw webhook/customer payloads |
 | outbox/inbox/deliveries | Minimal IDs/type/lease/attempt data; UNIQUE(company,job,revision,kind) for alerts; no message/photo/guest-token payload |
 | audit_events/deletion_tombstones | Reason/actor/opaque IDs/action/time/progress; purpose-limited retention; do not hide deleted content in audit JSON |
 
@@ -37,12 +38,14 @@ CREATE UNIQUE INDEX one_response_fulfillment
   ON response_fulfillments (response_id);
 
 CREATE UNIQUE INDEX one_provider_payment
-  ON payment_attempts (provider, environment, provider_payment_id)
+  ON payment_attempts (provider, environment, merchant_id, provider_payment_id)
   WHERE provider_payment_id IS NOT NULL;
 
 CREATE UNIQUE INDEX one_business_effect
   ON journal_transactions (reference_type, reference_id);
 ```
+
+Stripe Checkout Session, PaymentIntent, charge, refund and event IDs are not interchangeable. Unique provider-object references are scoped to the configured merchant/environment; nullable charge IDs are filled when available. Persist an outbox verification job in the same transaction as a new provider-event reference so a crash after acknowledgment cannot lose work. Delivery-event deduplication is additional to, not a replacement for, business fulfillment/refund uniqueness. Long-lived finance records retain only the minimum opaque references; raw Stripe payloads must not become a hidden personal-data archive.
 
 One unresolved payable attempt per response is enforced through a partial uniqueness rule on the real state model plus the response lock. A refunded failed attempt can be followed by a new deliberate attempt; the UNIQUE fulfillment and payment/refund logic ensure only one retained successful publication fee. Never pretend a per-row CHECK validates multi-row journal balance; use a reviewed posting procedure/deferred trigger plus tests.
 

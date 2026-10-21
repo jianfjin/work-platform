@@ -3,7 +3,7 @@
 Public pages support only narrow cited observations. Product rules, budgets and cost assumptions are proposed design, not external findings.
 
 ## 1. User-authoritative direction
-Latest instruction confirms client pays no platform commission; company pays. Conflicting client-€1 examples remain analysis only. Northern pilot, broader maintenance trades, guest posting, private rough offers, contact choice, opt-in SME notices, three-month deletion and an information-intermediary role replace incompatible 0.2 requirements. Earlier confirmed desktop/Android/iPhone PWA-first direction remains.
+Latest instruction confirms client pays no platform commission; company pays. Conflicting client-€1 examples remain analysis only. Northern pilot, broader maintenance trades, guest posting, private rough offers, contact choice, opt-in SME notices, three-month deletion and an information-intermediary role replace incompatible 0.2 requirements. Earlier confirmed desktop/Android/iPhone PWA-first direction remains. The user's later suggestion to consider stripe-node is recorded as a preferred payment candidate, not final merchant/provider approval.
 
 Charge event (first successful offer publication), €1 gross treatment, direct checkout, exact province boundary, guest email security and calendar/purge details are explicit recommendations requiring approval, not secretly “confirmed” facts.
 
@@ -22,6 +22,14 @@ The user's €10–15 competitor-cost concern is a market hypothesis; do not ass
 ## 3. Technical/provider sources
 | Source | Supports |
 |---|---|
+| [Stripe official Node.js SDK](https://github.com/stripe/stripe-node) | Server SDK named stripe-node; npm package `stripe`, supported runtimes/versioning, webhook helper and request options; pin stable versions at implementation |
+| [Stripe hosted Checkout](https://docs.stripe.com/checkout/quickstart) | Hosted one-time-payment setup; no custom card form needed for pilot |
+| [Stripe Checkout fulfillment](https://docs.stripe.com/checkout/fulfillment?payment-ui=stripe-hosted) | Server retrieval, repeated/concurrent fulfillment and delayed payment events |
+| [Stripe webhooks](https://docs.stripe.com/webhooks) | Raw-body signature verification, delivery handling and endpoint secrets |
+| [Stripe API idempotency](https://docs.stripe.com/api/idempotent_requests) | API v1 saved responses including errors and >=24h key pruning; local business uniqueness still required |
+| [Stripe refunds](https://docs.stripe.com/refunds) | PaymentIntent/charge refund references, original-method refund and pending/failed lifecycle |
+| [Stripe Netherlands pricing](https://stripe.com/nl/pricing) | Checked 21 October: iDEAL €0.29, standard EEA cards 1.5% + €0.25; indicative, actual contract/rounding/other products differ |
+| [Stripe iDEAL / Wero](https://docs.stripe.com/payments/ideal) | EUR Dutch bank-payment flow, transition context, merchant eligibility and refund window; recheck before launch |
 | [Mollie Dutch pricing](https://www.mollie.com/nl/pricing) | Public indicative local payment rate checked 21 October; merchant agreement/method/refund fees still required |
 | [Mollie payment flow](https://docs.mollie.com/docs/accepting-payments) | Hosted checkout, webhook notification and authenticated status fetch |
 | [PostgreSQL locks](https://www.postgresql.org/docs/current/explicit-locking.html) | Real row-lock mechanism, not proof our future code is correct |

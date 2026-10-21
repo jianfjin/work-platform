@@ -17,6 +17,7 @@
 |---|---|---|
 | Name | Work Platform working label; no final brand selected | Founder, before public branding |
 | Charge event | €1 gross first successfully published company/task offer; free reading; no construction-success percentage | Founder/product/accountant, G0 |
+| Payment provider/SDK | Stripe hosted Checkout + official stripe-node (`stripe`) preferred candidate following user suggestion; Mollie fallback only; no Connect for own fees | Founder/tech/finance, G0; merchant, method, cost and test approval pending |
 | Direct payment vs prepaid | Direct hosted €1 checkout; optional bundles only later | Founder/finance/PSP, G0 |
 | Geographic interpretation | Groningen and Fryslân provinces; Drachten priority inside Fryslân; confirm city-only alternative | Founder, G0 |
 | Client security minimum | Email confirmation/scoped one-use management session; no compulsory account or phone | Product/security, G0 |
@@ -59,4 +60,4 @@
 ## 5. Change control and current status
 This revision replaces incompatible 0.2 assumptions; Git preserves historical documents. The repository is documentation only: no user/job/PSP data exists to migrate here. Any separately started implementation needs an inventory and an explicit migration plan, not blind deletion or repurposing of its payment records.
 
-Fee payer and PWA direction are user-confirmed. The proposed charge event, exact geography, guest security/retention/merchant details and budgets are not silently approved. No interviews, profitability, legal clearance, application tests or deployment completion is claimed.
+Fee payer and PWA direction are user-confirmed. The user suggested considering stripe-node; treating Stripe as the preferred payment candidate does not approve a provider contract, enable live charges or alter who pays. The proposed charge event, exact geography, guest security/retention/merchant details and budgets are not silently approved. No interviews, profitability, legal clearance, application tests or deployment completion is claimed.

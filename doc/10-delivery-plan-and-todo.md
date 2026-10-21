@@ -21,7 +21,7 @@ Engineering estimates are person-days, not calendar promises. Support/recruitmen
 | T03 | P0 | Full-stack | T02 | 4–6 | Lightweight tasks/photos, safe projections and geocoder/region; AT-03/04/19 |
 | T04 | P0 | Full-stack/mail | T02,T03 | 3–5 | Company profile/radius, opt-in preferences/digests, unsubscribe/dedup; AT-10 |
 | T05 | P0 | Full-stack | T02,T03 | 3–4 | Own rough offer and client-private all-response list; AT-05 |
-| T06 | P0 | Backend/finance | T05 | 4–6 | Direct €1 PSP, unique fulfillment, refunds, journal/reconciliation; AT-06/07/18/20/24/26 |
+| T06 | P0 | Backend/finance | T05 | 4–6 | Stripe Checkout + `stripe` server SDK candidate: direct €1, signed inbox, unique fulfillment, refunds and reconciliation; AT-06/07/18/20/24/26 |
 | T07 | P0 | Full-stack | T03,T05,T06 | 2–3 | Contact preference, close/reopen/material-edit races; AT-08/09 |
 | T08 | P0 | Backend/privacy | T03–T07 | 3–5 | Immutable calendar TTL, token/media/content purge, backup tombstones; AT-11/12/23 |
 | T09 | P0 | Operations/full-stack | T02,T06,T08 | 3–4 | Reports, holds/notices/appeals, staff roles and finance/deletion exception queues; AT-13/14 |
@@ -41,7 +41,7 @@ T00–T14 total: approximately **41–61 engineering person-days**. T15/T16 are 
 | src/modules/identity/ | Guest scoped ownership and company/optional client identity |
 | src/modules/tasks/ | Brief, region, revision, close/delete deadline and contact preference |
 | src/modules/responses/ | Rough offers and client/own-company authorization |
-| src/modules/billing/ | Platform fee intent/fulfillment/refund/journal, not construction payments |
+| src/modules/billing/ | Platform fee intent/fulfillment/refund/journal plus small server-only Stripe adapter, not construction payments |
 | src/modules/matching/ and alerts/ | Licensed geocoder adapter, radius/preferences, opt-in mail |
 | src/modules/privacy/ and operations/ | Purge/tombstones, reports/holds, minimal audit |
 | src/app/ and components/ | Localized responsive views/API adapters |
@@ -55,7 +55,7 @@ T00–T14 total: approximately **41–61 engineering person-days**. T15/T16 are 
 - [ ] T03: Test no private postcode/contact in raw DTO/media; implement brief/photo pipeline and licensed coarse region matching.
 - [ ] T04: Test opt-out/close/deletion before dispatch; implement verified-recipient opt-in alerts with bounce/dedup handling.
 - [ ] T05: Prove paid/unpaid firms cannot list rivals/counts; implement all-response list only for job owner.
-- [ ] T06: Test duplicate/late/forged PSP and close/edit races before coding publication/refund; verify one retained fee.
+- [ ] T06: Confirm Stripe merchant/method/cost approval; pin stable SDK/API versions. Test raw-body signatures, duplicate/out-of-order/async events, unknown-result retry and close/edit races before coding publication/refund; verify one retained fee and refund reconciliation.
 - [ ] T07: Test default private mode and explicit responder callback audience; implement revoke/close with no future disclosure.
 - [ ] T08: Test month-end/DST, deadline access independent of worker, all object versions and restore; implement automatic purge.
 - [ ] T09: Implement case/reason/appeal, staff permissions, fee reconciliation and deletion health; no quality-verification badge.
@@ -68,6 +68,8 @@ T00–T14 total: approximately **41–61 engineering person-days**. T15/T16 are 
 - [ ] T16 later: Validate fee-amortization tools before adding prepaid/recurring accounting.
 
 ## 5. Critical transaction task example
+For T06, use Stripe test mode and the official CLI for real Checkout/webhook forwarding once implementation is approved; synthetic signed fixtures alone do not prove bank-return behavior. Test/live keys and webhook endpoint secrets must be distinct. No SDK/CLI installation or merchant provisioning is performed by this document update.
+
 For T06, first write a real-PostgreSQL integration test: same company/job receives simultaneous fresh-key payment/publication requests, a PSP callback repeats, and client close competes with fulfillment. Before implementation it must fail for missing behavior, not a broken environment.
 
 Implement only the job->response->attempt locked use case. Assert one retained fulfilled fee; either visible valid response before close or tracked full refund if close wins, never a paid orphan or second successful listing. Repeat with lost HTTP response, changed material scope and late-paid callback. Run focused and full suites, inspect raw private DTOs, then commit the slice.
