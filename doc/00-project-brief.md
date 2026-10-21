@@ -1,65 +1,47 @@
-# Project brief and change proposal
+# Project brief and revised scope
+**Version:** 0.3 · **Date:** 21 October 2026 · **Owner role:** founder/product
 
-**Status:** proposed · **Owner role:** founder/product lead · **Date:** 20 October 2026
+## 1. Aim
+An economical local information platform connecting small and medium home-maintenance/carpentry businesses directly with clients. Reduce the cost and friction of finding relevant jobs without claiming to guarantee work or workmanship.
 
-## 1. Why this project
+**Client promise:** post free, without mandatory account creation; compare all private rough offers; decide whom to contact and when to close.
+**Company promise:** browse suitable tasks free; choose service radius and opt-in alerts; know the proposed €1 response fee before payment; competitors cannot inspect the offer.
 
-Carpentry estimates depend on dimensions, materials, finish, access and timing. A generic short description can leave clients with incomparable quotes and professionals spending acquisition time on unsuitable jobs. These are **problem hypotheses** requiring interviews, not conclusions established by competitor browsing.
+## 2. Confirmed versus proposed
+| Item | Requirement or interpretation |
+|---|---|
+| Fee payer | **Confirmed:** client pays no platform commission; construction company pays the platform. The draft's contrary client-€1 statements are alternatives for analysis, not launch rules |
+| Fee event | **Proposed:** €1 gross once per company/task, earned only when first rough offer becomes visible to the client; free task reading, offer edits and normal contact |
+| Geography | **Confirmed labels:** Groningen, Friesland and Drachten. **Planning assumption:** provinces Groningen and Fryslân, Drachten explicitly included; confirm whether Groningen meant city only |
+| Trades | Carpentry, windows/doors, non-structural alterations, insulation, internal walls, painting and roof maintenance; category-specific safety/information fields, not trade certification |
+| Client identity | No compulsory account/password. **Proposed security minimum:** email confirmation and a scoped management session; phone optional except if chosen for callbacks |
+| Company participation | Registered company profile, declared specialties, approximate base area/radius, rough offer and company contacts; website optional if none exists |
+| Contact | Client-initiated by default; explicit alternative permission for submitted responding companies to contact client |
+| Visibility | Client sees all eligible published offers; company sees only its own response; no competitor list/count or fixed commercial cap |
+| Platform role | Information/connection only; no routine workmanship certification, site monitoring, construction-contract/payment handling |
+| Retention | Three-month automatic task-data deletion; proposed clock is first publication plus three calendar months, with disclosed finance/backup exceptions |
+| Platforms/languages | Desktop Web and Android/iPhone PWA now; Dutch/English; dedicated apps later |
 
-**Vision:** make a small carpentry job as clear to commission as a well-written work order, without turning a homeowner's inbox into an auction.
+Name remains undecided. “Work Platform” is a repository/working label, not a registered brand. Creative naming candidates may be evaluated later for meaning, availability and trademark clearance; do not buy domains or publish a name without approval.
 
-**Client promise:** describe the work once, clarify scope once, compare up to three private proposals, choose freely.
+## 3. Product alternatives
+1. **Recommended:** company-funded first response, free client posting and free company reading. Compatible with the confirmed payer rule and a direct-connection product; €1 is still a viability hypothesis.
+2. Client-funded €1 posting, free company response: simple one-sale-per-task model, but reduces demand conversion and **conflicts with the current payer instruction**. Evaluate on paper only.
+3. Company success percentage or subscription: may improve revenue but needs outcome visibility/collections or recurring value. Not adopted: construction agreements happen off-platform and the platform does not monitor completion.
 
-**Carpenter promise:** see meaningful fit information before paying; explicitly spend €1 for one full thread; never pay again for that same thread; know the eligibility, refund rules and competition limit before confirming.
+Use direct €1 hosted checkout in the initial design to avoid making a compulsory €10 prepayment/wallet part of onboarding. A later optional company bundle can reduce transaction fees but needs its own accounting, refund and product review.
 
-## 2. Proposed approach and alternatives
+## 4. Boundaries
+The rough bid is an indication for client selection, subject to a site visit and final agreement. No platform booking, contract acceptance, construction escrow, contractor payout, success tracking obligation, public price auction, competitor feed, mandatory chat or public verified-completion review system.
 
-| Approach | Benefits | Trade-offs | Recommendation |
-|---|---|---|---|
-| A. Carpentry-only, fixed-price thread access | Clear positioning; measurable acquisition cost; domain-specific briefs | €1 may not cover acquisition/operations; lower liquidity than broad marketplaces | **Pilot this**, with a capped budget and an economics stop gate |
-| B. Broad trades marketplace, variable lead prices | Larger addressable audience; pricing can follow job value | Weak initial focus; harder trust operations; directly competes with established networks | Defer until one carpentry region works |
-| C. Concierge matching or success-fee marketplace | Stronger hands-on help or revenue aligned with awards | Manual costs; attribution disputes; escrow/payment scope if expanded | Use concierge only for research; no success fee in MVP |
+User-declared company details are not a quality guarantee. No routine manual inspection of every job/company is promised. Automated email ownership, media/privacy checks and a complaint queue are platform safety controls, not workmanship verification. Applicable trader-identification duties cannot be removed by a disclaimer; determine them before launch.
 
-The recommendation combines useful carpentry-specific work preparation with a simple price, not a claim that low price alone is defensible. A repeatable library of validated briefs and truthful outcomes may eventually be defensible; this remains unproven.
+## 5. Pilot and success
+Recruit genuine participating companies in the trial area before inviting paid responses. Test a mix of the listed categories without pretending supply exists everywhere. Directional pilot targets: 80% of tested users understand payer/charge event/contact visibility; 70% of eligible jobs receive a relevant rough offer in 48 hours; no duplicate company/task charge or rival-offer exposure; deletion/access deadlines pass tests.
 
-## 3. Assumptions to make the draft concrete
+Track client posting completion, matched alerts, offer conversion, client contact clicks/self-reported site visits, complaints, refund cost and contribution per task. A contact click is not proof of a call, completed job or construction payment. No invented testimonials, leads or competitor-price claims.
 
-| ID | Assumption | Consequence if wrong | Validation owner |
-|---|---|---|---|
-| A01 | Netherlands; adults; independent registered carpentry businesses | Different verification, language and tax design | Product + legal |
-| A02 | Start in Utrecht city and approximately 25 km surroundings | Supply density may be insufficient | Founder; choose final geography after interviews |
-| A03 | €1 means **€1.00 gross**, not €1 plus VAT | Lower net revenue; explicit pricing everywhere | Founder + accountant |
-| A04 | Paid beta uses €10 top-ups for ten €1 unlocks | Upfront commitment may suppress first purchase; prepaid-service classification requires review | Product + legal + PSP |
-| A05 | Three distinct businesses maximum for the lifetime of one job | Less spam but possibly stranded threads if firms do not reply | Product; measure slot-to-response conversion |
-| A06 | Clients prefer private offers over a public bidding contest | Shared knowledge must exclude pricing and private messages | UX interviews |
-| A07 | A small team can operate a modular monolith | More runtime separation only if measurements justify it | Tech lead |
-| A08 | Reviews can be verified as platform interactions, not as payments for construction | Completion claims need accurate labels | Trust lead |
-| A09 | **User-confirmed:** desktop Web and Android/iPhone PWA first; dedicated mobile apps after maturity | MVP needs real mobile-browser and installed-PWA acceptance, not separate native builds | Product + tech lead; native release has a later approval gate |
+## 6. Approval
+Publishing this revision updates design documents only. Before collecting money approve: final region allowlist, legal merchant entity/bank/PSP, the proposed charge event/gross price, guest email minimum, callback audience, three-month clock/exceptions, privacy/trader duties, staffing and beta budget.
 
-Working name, launch geography, provider contracts, pricing duration and the public launch budget require approval. These are not facts inferred from the user request. Platform delivery A09 was explicitly confirmed by the user; detailed support/release policies are in [Cross-platform delivery](14-cross-platform-and-pwa.md).
-
-## 4. Scope and non-goals
-
-Initial categories: made-to-measure cabinets and shelving; internal doors and trim; non-structural carpentry repairs; simple wood installations. Templates allow “I do not know” and a site visit. Load-bearing changes, electrical/plumbing work and emergency repairs route to an out-of-scope message, not an unqualified quote funnel.
-
-The platform connects clients and businesses. It does not employ carpenters, determine their working hours, guarantee workmanship or take the construction contract payment. An accepted platform quote records intent and scope; the parties finalize their construction agreement directly.
-
-## 5. Success definition
-
-Run discovery with 10 clients and 10 carpenters before implementation approval. Conduct at least five moderated mobile purchase tests. Run a bounded paid beta only after payment/privacy gates pass. Targets are proposed learning thresholds:
-
-- At least 80% of tested professionals correctly describe what the €1 buys and when it is not refunded.
-- At least 70% of eligible pilot jobs receive one relevant private response within 48 hours.
-- At least 30% of eligible pilot jobs receive two comparable proposals within seven days.
-- Zero confirmed double-debits, oversold threads or unauthorized private-content exposures.
-- Paid-beta contribution per job is positive **after variable supply and demand acquisition and moderation costs** before scaling. See the explicit model in [Payments](08-payments-and-economics.md).
-
-## 6. Approval and change control
-
-This document proposes new capabilities; implementation is gated on G0. Before coding, the founder approves market, first categories, fee semantics, three-firm limit, refund policy, and budget. Legal/accounting sign off prepaid access, invoice timing and applicable platform obligations. The tech lead approves transaction and privacy boundaries.
-
-After approval, changes to charge timing, gross price, refund eligibility, contact disclosure or participant visibility require a recorded decision, updated acceptance tests and versioned policies. Existing unlocks retain their purchase terms. No prospective pricing change may retroactively debit existing entitlements.
-
-## 7. Impact
-
-Affected domains: identity, client job publishing, matching, paid entitlements, billing, private messaging, shared clarification, quotes, reputation and operations. There is no pre-existing application to migrate in the target repository at research time. This proposal deliberately adds only files under `doc/`.
+The working app direction is already Web/PWA-first. Dedicated apps remain later. See [Decisions](12-decisions-and-risks.md) and [revision summary](16-requirement-revision.md).

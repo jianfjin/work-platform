@@ -1,161 +1,89 @@
-# UX flows and service blueprint
+# UX and service blueprint
+**Version:** 0.3 · **Updated:** 21 October 2026
 
-**Intent:** warm craftsmanship outside; a clear, practical workbench inside. Visual tokens are in [DESIGN.md](DESIGN.md).
+## 1. Navigation and promises
+Visitor: How it works, Regions/trades, For companies, Help, Dutch/English, **Post free**.
+Client guest: job-management link -> My task, Offers, Contact preference, Close/delete.
+Company: Tasks, My offers/payments, Profile/radius, Email alerts, Help.
+Operator: Reports, Fee exceptions, Deletion/alerts health, Accounts and audit.
 
-## 1. Information architecture
+No client payment screen. Company task cards say “Reading is free; first published offer €1.00 incl. VAT.” Never label a company “verified” merely because an email was confirmed.
 
-| Audience | Primary navigation | Primary action |
-|---|---|---|
-| Visitor | How it works; For carpenters; Trust; Pricing; Sign in | Post a job |
-| Client | My jobs; Conversations; Help; Account | New job |
-| Carpenter | Jobs; My conversations; Access balance; Profile; Help | Filter suitable jobs |
-| Operator | Job review; Business verification; Cases; Finance; Audit | Work an assigned queue |
+## 2. Client posting
+1. Choose category and enter a short description. Optional budget/timing/measurements; avoid a long technical questionnaire.
+2. Enter postcode and city; show normalized match and pilot eligibility. Full postcode is private; companies see city/PC4 area and approximate distance.
+3. Add a few photos if helpful. Explain address/face/contact risks; photo selection is optional, with scan/metadata removal and clear unsupported-format errors.
+4. Enter email for a one-use management link, **not compulsory registration**. Phone is requested only if the client wants telephone callbacks.
+5. Select contact preference. Default “I will contact the companies.” Alternative explains that all published responders may see selected fields; consent is separate, unchecked and editable.
+6. Review safe brief, deletion date and intermediary/no-quality-guarantee wording. Confirm email and publish after automated content/media checks. Flagged material goes to exception review; no promise that every post is manually verified.
+7. Generic notice tells the client an offer exists. Reopen management securely, optionally create an account later.
 
-Mobile carpenter navigation: Jobs, Conversations, Balance, Profile. Keep Help reachable in two taps. Separate client/professional workspaces and announce role changes; never infer charge authority from the currently visible page.
+Use a short-lived one-use email link to establish a scoped session. Do not email a permanently privileged management URL. If lost/expired, request a fresh link with a generic response.
 
-## 2. Client journey
+## 3. Company response
+1. Register profile, confirm email ownership, set trades/base postcode and radius, optionally subscribe to matched alerts.
+2. Read safe task/approved photos free. Check actual category, location approximation and current open/deletion status.
+3. Draft introduction, rough bid/range or “site visit required,” availability, own website/contact details.
+4. Show €1 gross, what publication buys, no guaranteed work/contact/reply, no fixed competitor limit and refund conditions. Client contact is not automatically included.
+5. Hosted checkout -> authenticated server status pending/paid. Only verified payment plus an eligible open task publishes the offer.
+6. If task closed/expired/materially changed before publication, do not post; show refund pending, not a wallet credit or a second purchase prompt.
+7. Company sees own offer/status/receipt only. Edits cost nothing, withdrawal stops its callback access. Other company participation/count is never shown.
 
-1. Select a carpentry category; see a realistic example and “not sure” path.
-2. Complete a five-step wizard: work/scope → dimensions/materials → photos/access → area/budget/timing → preview and publish. Preserve progress; no mandatory photo upload.
-3. Mark unknown dimensions explicitly. Show a simple measuring guide and allow a site-measurement requirement; never imply estimates are structural advice.
-4. Verify email and phone and confirm authority to commission the work. Full address is optional and private; city is sufficient for matching.
-5. Review the exact carpenter preview, with contact information excluded. Submit for moderation. Show pending, approved or correction-needed status; no false instant-live confirmation.
-6. Receive private introductions and offers. Answer a scope question once on the shared board. A private clarification can be rewritten and explicitly published by the client, after checking it contains no commercial/personal information.
-7. Compare gross total, material/finish assumptions, exclusions, start range, site visit and validity. A cheaper quote with excluded materials is not visually ranked as the winner.
-8. Select one current quote, confirm intent and share contact/address only if desired. Finish the construction agreement/payment directly with the chosen business.
-9. Mark complete and review. Business may confirm completion. A client can close without a hire and give a neutral reason.
+## 4. Client comparison and direct connection
+All published offers appear in a paginated private list, default received order, with each firm's self-declared name, introduction, own website/email/phone, rough bid assumptions and availability. Do not rank the lowest amount as objectively best or expose the list through public URLs.
 
-**Operational handoff:** review queue checks genuine scope, safe preview and scanned attachments. Proposed staffed target: review within one business day, not a 24/7 promise. If no eligible supply exists, show a waitlist/coverage message before publication rather than charging irrelevant businesses.
+Client may click email/phone/website, arrange a site visit and negotiate final work/payment directly. Such clicks are navigation signals, not work awards or completed sales.
 
-## 3. Carpenter journey and purchase boundary
+CLIENT_INITIATED is default. ALLOW_RESPONDERS reveals only explicitly selected email/phone to eligible published responders while task/consent remain active. Show a warning that there is no three-firm limit and details already copied cannot be recalled. Turning it off or closing stops future platform disclosure.
 
-```mermaid
-flowchart TD
-    A[Create business account] --> B[Business verification]
-    B --> C[Browse free safe previews]
-    C --> D[Read fit and price summary]
-    D --> E{Available balance >= EUR 1?}
-    E -- No --> F[Explicit EUR 10 top-up]
-    F --> G[Hosted PSP checkout]
-    G --> H[Verified funds available]
-    H --> D
-    E -- Yes --> I[Confirm EUR 1 unlock]
-    I --> J{Eligible, open, same terms, slot available?}
-    J -- No --> K[Explain conflict; no charge]
-    K --> C
-    J -- Yes --> L[Full brief + private conversation]
-    L --> M[Private introduction / structured quote]
-    M --> N[Client clarification / decision]
+## 5. Wireframes
+```text
+[Work Platform - working name] [NL | EN]
+Local companies for home maintenance
+[Post your task free] [I run a company]
+Groningen / Friesland-Fryslân / Drachten pilot
+No account required to post; secure email link to manage.
 ```
-
-The top-up screen says: “Adding funds does not reserve this job. Confirm the €1 unlock when you return.” If the job fills while payment is pending, the balance remains available; offer an unused-funds refund route, not an automatic alternate purchase.
-
-## 4. Core wireframes
-
-### A. Client landing, mobile-first
 
 ```text
-[HoutMatch]                          [Sign in]
-Goed timmerwerk begint met een duidelijke klus.
-Describe the work. Compare up to 3 private proposals.
-[Plaats gratis je klus]  [Ik ben timmerman]
-
-Cabinets | Doors & trim | Repairs | Wood installations
-How it works: brief -> clarify -> compare -> choose
-Real consented portfolio examples (no invented testimonials)
-Trust, privacy and professional pricing links
+Company task view
+Replace internal doors · Drachten · PC4 area
+Description + sanitized photos · approximate distance
+Closes when client chooses; data deleted on [date]
+Reading: free       [Prepare an offer]
+First successfully published offer: EUR 1.00 incl. VAT
+No guaranteed work. No competitor list/count.
 ```
-
-### B. Carpenter preview (free)
 
 ```text
-Cabinet installation                            OPEN
-Utrecht · approximate distance 5–15 km
-Budget EUR 800–1,500 · timing 2–4 weeks
-Dimensions supplied: yes · site measurement: requested
-Materials: client unsure · client confirmed 8 hours ago
-2 of 3 lifetime places used
-
-Unlock full brief and respond: EUR 1.00 incl. VAT
-Your balance: EUR 4.00
-[Bekijk voor EUR 1,00]    [What do I get?]
-Not a guaranteed job. No phone/address shared by payment.
+Client-only task page
+[Contact preference] [Close task] [Delete task]
+Offers - received order - page controls
+Firm A: introduction / rough range / own contacts / website
+Firm B: introduction / visit required / own contacts / website
+These offers are private to you, not visible to other firms.
 ```
 
-Preview contains approved structured data only. Never render a blurred full paragraph or actual job image behind a paywall.
-
-### C. Entitled job workspace, desktop
-
-```text
-Jobs / Cabinet installation            [Report] [Status]
-+---------------------------+------------------------------+
-| Versioned brief           | Private conversation         |
-| Measurements + photos     | Client and YOUR business     |
-| Budget + timing           | Messages / quote versions    |
-| Scope Q&A (shared)        | [Send proposal]              |
-| Non-commercial only       | [Request site visit]         |
-+---------------------------+------------------------------+
-Access receipt: EUR 1.00 · terms v1 · [View policy]
-```
-
-Mobile uses labeled tabs: Brief, Shared scope Q&A, Private conversation. Every composer permanently identifies its audience. Do not make “shared/private” a small icon toggle in one composer.
-
-### D. Client quote comparison
-
-Three consistent offer cards, then a comparison table on desktop. Mobile lets users pin two offers and compare rows; do not shrink a three-column table into unreadable text. Show “estimate pending site visit” prominently. Unknown items display “not provided,” never zero.
-
-## 5. Critical interaction states
-
-| State | Required content/action |
+## 6. Required recovery states
+| State | UI and operation |
 |---|---|
-| Verification pending/failed | Reason or expected next step; no paid CTA; appeal link |
-| Empty job feed | Show active filters and coverage; do not invent availability; broaden radius with consent |
-| Slot filled between preview and purchase | Conflict explanation; no debit; preserve filters |
-| Balance insufficient | Explicit top-up amount and terms; return to preview, not automatic spend |
-| Payment pending | Honest pending state; polling status; safe exit; no credited balance yet |
-| Duplicate tap / timeout | Disable during request; retry with same idempotency key; retrieve receipt |
-| Job material edit | Revision notice, difference summary and quote refresh requirement |
-| Job cancelled/expired | Read-only badge; applicable restoration status; no paid CTA |
-| No client response | Deadline and objective eligibility; show pending/restored state without implying no-award compensation |
-| Moderation hold / blocked participant | Stop unsafe actions, provide case link; do not reveal reporter identity |
-| Upload failed or quarantined | Preserve form/message draft; show retry/remove; do not send an unreadable attachment silently |
-| Network lost | Keep an unsent message in current-view memory only while it survives; no false “sent” or automatic resend; explain that reload/OS termination loses unsaved text; wipe on logout; server-saved job drafts resume online |
-| Retention deletion | Tombstone with minimal receipt; no dangling download links |
+| Guest email pending/link expired | Explain no account is required; resend with rate limits, generic success; preserve only safe temporary draft |
+| Wrong postcode/city/outside trial | Ask correction or show waitlist; no silent nationwide publication |
+| Payment pending/browser return | Show server-known status; reauthenticate if needed; no redirect-based success |
+| Paid but task unavailable | No publication; full €1 refund workflow and case/reference |
+| Duplicate click | Reuse operation; recover original offer/receipt; no double fee |
+| Material edit during payment | Explain scope change; refund this attempt; a new offer needs deliberate review |
+| Task closed | No new response/contact grant/alert; client sees prior permitted offers until deadline |
+| Callback disabled | Company contact section no longer returns client fields; direct previously copied contacts cannot be recalled |
+| Deletion deadline | Content unavailable even before physical purge completes; no misleading recover button |
+| Offline | Public fallback only; no private offers/balance cached, queued payment or automatic message |
+| App suspended/update waiting | Hide stale private data until revalidated; save online/discard before reload |
+| Misbehavior report | Case reference, safety action/status and correction/appeal; no implied site investigation |
 
-## 6. Dutch microcopy examples
+## 7. PWA and localization
+Desktop, Android and iPhone share accounts/server records. Installation is optional; no permission gate for ordinary use. Standalone screens need own back/home navigation, safe-area/keyboard handling and file-selection fallback. In-memory unsent drafts may be lost on reload/OS termination; saved server drafts are not offline replicas.
 
-- Client CTA: **Plaats gratis je klus**.
-- Carpenter unlock: **Bekijk voor €1,00 incl. btw**.
-- Confirmation: **Je betaalt één keer voor deze klus. Je kunt daarna de volledige klus bekijken en reageren. Dit is geen garantie op de opdracht.**
-- Shared audience: **Zichtbaar voor de opdrachtgever en alle ontgrendelde timmerbedrijven. Deel hier geen contactgegevens of prijzen.**
-- Private audience: **Alleen zichtbaar voor jou en de opdrachtgever.**
-- Filled thread: **Deze klus heeft al drie bedrijven. Er is niets afgeschreven.**
-- Restoration: **€1,00 teruggezet op je toegangstegoed. Bekijk de reden en je overzicht.**
-- Contact disclosure: **Deel mijn adres alleen met dit bedrijf**; unchecked by default.
+Dutch/English UI/mail follow user's language. Do not auto-translate or modify an offer's meaning silently. Example Dutch labels: “Plaats gratis je klus”, “Offerte indienen: €1,00 incl. btw”, “Ik neem zelf contact op”, “Bedrijven die reageren mogen contact opnemen”, “Sluit mijn klus”, “Gegevens verwijderd op [datum]”. Native-speaker review before release.
 
-Dutch copy needs native-speaker review before launch. Use locale-aware EUR formatting, metric dimensions and Europe/Amsterdam display times; store timestamps in UTC.
-
-## 7. Service blueprint and recovery
-
-| Moment | User-visible service | Backstage responsibility | Recovery |
-|---|---|---|---|
-| Submit brief | Pending review with case reference | Trust checks preview and scope; worker scans media | Request a correction; no sale until ready |
-| Buy access funds | Hosted checkout; pending/paid | Billing verifies PSP state and grants once | Poll/reconcile; never trust redirect alone |
-| Unlock job | Receipt and actual content | Transaction commits debit, entitlement, slot and outbox together | Replay result after timeout; rollback all on failure |
-| Ask/respond | Clear shared/private audience | Server enforces membership; worker delivers generic notification | Persist message before notifying; draft recovery |
-| Invalid/no-response job | Eligibility and restoration reason | Policy worker/operator; audited ledger reversal | Appeal, no direct balance editing |
-| Account closure | Export/delete timeline and funds resolution | Privacy + finance separate content from required records | Resolve cash refund; apply minimal legal hold where justified |
-
-## 8. Prototype validation
-
-Test the free/paid boundary, €10 top-up versus €1 price comprehension, shared versus private audience, slot-race failure and quote comparison with at least five participants on mobile. Include one keyboard-only and one screen-reader session. Record tasks completed, misunderstandings and time, not a visual preference vote. No live payment is required for prototype testing.
-
-## 9. Desktop and installed-mobile experience
-
-Use the same account and server-side jobs/balance across desktop, Android and iPhone; switching devices does not purchase access again. Installation is an optional convenience after the user has seen value, not an onboarding/paywall requirement. Android shows the browser-supported installation action when available, otherwise instructions. iPhone provides Safari Share → Add to Home Screen guidance, following [Apple's installation instructions](https://support.apple.com/guide/iphone/open-as-web-app-iphea86e5236/ios); do not present a non-working universal install prompt.
-
-Standalone mobile views need visible back/home navigation, safe-area padding, a keyboard-safe composer, readable €1/€10 disclosures and ordinary file/photo selection. Camera capture is optional; denied permission still allows file selection. HEIC/HEIF photos need a supported safe conversion path or a clear JPEG/PNG alternative before upload; never silently attach an unsupported file.
-
-On app switch/resume, refresh job status, balance and conversation permissions before enabling actions. Checkout may return from a bank app to a browser rather than the installed window; recover the owned pending payment through authenticated server status, with reauthentication if needed. Never infer payment success from where the window opened.
-
-Offline view explains that private jobs/messages/payments are unavailable without connectivity. Keep only unsent in-memory text when possible; no promise of durable offline drafts or background send. After reconnection show current state and require a fresh intentional action; resolve ambiguous previous operations first. A waiting update prompts a reload after unsaved work is saved online or explicitly discarded, never during checkout. Full support/recovery rules are in [Cross-platform delivery](14-cross-platform-and-pwa.md).
+## 8. Service handoffs
+Automated publication handles confirmed email and safe content/media; exception queue handles suspected abuse/privacy, not trade certification. Payment worker verifies PSP state and atomically publishes or routes refund. Alert worker matches opt-in radius/category and rechecks eligibility at send. Privacy worker denies at deadline and purges live content/objects. Operators reconcile fees and handle notices/reports; they do not negotiate building work.

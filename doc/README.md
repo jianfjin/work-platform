@@ -1,51 +1,43 @@
-# HoutMatch — carpenter marketplace design pack
+# Work Platform — local home-maintenance marketplace
+**Version:** 0.3 · **Updated:** 21 October 2026 · **Status:** documentation proposal, not implemented
 
-**Repository:** work-platform · **Working name:** HoutMatch (not trademark/domain cleared)
-**Version:** 0.2 · **Date:** 20 October 2026 · **Status:** proposal for review, not an implemented product
+## Current direction
+**Clients pay no platform fee. Companies pay the platform.** The recommended pilot charge is **€1.00 including VAT per company per task when its first rough offer is successfully published**, not to read a task and not a percentage of the construction contract. This charge event is a proposed interpretation requiring founder approval; the payer direction is explicit user instruction.
 
-**Confirmed platform direction:** desktop Web plus Android/iPhone progressive web application (PWA) now; dedicated mobile applications after product maturity and a separate release decision. This confirms the delivery approach, not the remaining business/legal launch gates.
+Start in **Groningen and Friesland/Fryslân, explicitly including Drachten**; final province-versus-city boundaries must be confirmed. Support Dutch and English, desktop Web, Android PWA and iPhone PWA. Dedicated mobile apps come after maturity and a separate approval.
 
-## The proposal in one minute
+Clients post a short description, postcode/city and a few optional photos without creating an account. An email-confirmed job-management link provides ownership/security; registration remains optional. Companies register, declare their services/radius and submit private rough offers with website/contact details. The client sees all submitted offers; companies cannot see competitors or competitor counts. There is **no three-company commercial cap**.
 
-A Netherlands-first platform where clients post carpentry jobs and verified carpentry businesses pay **€1 including VAT, once per job thread**, to read the full brief and respond. A free, privacy-safe preview supports the purchase decision. A payment never buys another business's messages, a client's phone number, or a guaranteed job.
+Default: the client initiates contact using company details. A separate explicit choice lets responding companies see selected client contact fields. Site visits, final prices, contracts and construction payments are arranged directly.
 
-The proposed advantage is a **quote-ready carpentry brief + shared scope clarification + private comparable quotes + auditable access/refund history**. Limited competition and verification are important but are not novel on their own; see the competitor evidence.
+The service is an **information intermediary**, not a workmanship certifier, contractor or construction-payment processor. No routine quality/credential checking or construction monitoring is promised. Email ownership, content security, platform-fee accounting, privacy, abuse reports and applicable legal duties still need operating controls.
 
-€1 is a **pilot hypothesis**, not a validated sustainable price. With three paying firms per thread, revenue is tightly capped. Do not launch paid acquisition or promise this price indefinitely before the economics gate passes.
-
-## Read in this order
-
+## Read the documents
 | Document | Purpose |
 |---|---|
-| [Project brief](00-project-brief.md) | Vision, assumptions, alternatives, boundaries |
-| [Research and positioning](01-research-and-positioning.md) | Observed competitors versus hypotheses and experiments |
-| [Product requirements](02-product-requirements.md) | Personas, scope, requirements and acceptance criteria |
-| [UX and service blueprint](03-ux-and-service-blueprint.md) | Journeys, screens, wireframes, operational handoffs |
-| [DESIGN.md](DESIGN.md) | Agent-readable original visual system and interaction rules |
-| [Architecture](04-architecture.md) | Context, containers, modules, deployment and trade-offs |
-| [Technical design](05-technical-design.md) | Transactions, authorization, background processing, failure handling |
-| [Data model](06-data-model.md) | Entities, constraints, indexes, retention boundaries |
-| [API contract](07-api-contract.md) | Endpoints, DTOs, idempotency and error semantics |
-| [Payments and economics](08-payments-and-economics.md) | €1 rules, top-ups, refunds, ledger and viability model |
-| [Security, privacy and trust](09-security-privacy-and-trust.md) | Threats, access matrix, compliance gates and moderation |
-| [Delivery plan and to-do list](10-delivery-plan-and-todo.md) | Prioritized, owned, dependency-aware implementation backlog |
-| [Test and launch plan](11-test-and-launch-plan.md) | Requirement traceability, adversarial cases, release gates |
-| [Decisions and risks](12-decisions-and-risks.md) | ADRs, open decisions, owners and stop conditions |
-| [Source register](13-source-register.md) | Primary references, access date and research limitations |
-| [Cross-platform and PWA delivery](14-cross-platform-and-pwa.md) | Desktop/Android/iPhone support, installation, offline/privacy boundaries and later native-app gate |
+| [Project brief](00-project-brief.md) | Confirmed requirements, assumptions and scope |
+| [Research and positioning](01-research-and-positioning.md) | Competitors and notary-comparison reference |
+| [PRD](02-product-requirements.md) | Authoritative product rules and acceptance requirements |
+| [UX/service blueprint](03-ux-and-service-blueprint.md) | Guest posting, private offer list and contact choices |
+| [DESIGN.md](DESIGN.md) | Original agent-readable visual system |
+| [Architecture](04-architecture.md) | Shared Web/PWA backend and external services |
+| [Technical design](05-technical-design.md) | Guest security, pay-to-publish races, matching, alerts and deletion |
+| [Data model](06-data-model.md) | Entities, constraints and retention boundaries |
+| [API](07-api-contract.md) | Guest/company/operator routes and DTO authorization |
+| [Payments/economics](08-payments-and-economics.md) | Company versus client funding, merchant ownership and viability |
+| [Privacy/security/responsibility](09-security-privacy-and-trust.md) | Contact permission, three-month deletion and abuse handling |
+| [Delivery/to-do](10-delivery-plan-and-todo.md) | Dependency-aware backlog and approval gates |
+| [Tests/launch](11-test-and-launch-plan.md) | Traceable tests and real-device/recovery evidence |
+| [Decisions/risks](12-decisions-and-risks.md) | What is confirmed and what still needs approval |
+| [Sources](13-source-register.md) | First-party evidence and research limits |
+| [Cross-platform](14-cross-platform-and-pwa.md) | PWA now, dedicated apps later |
+| [Operations/growth](15-operations-and-growth.md) | Staff work, opt-in alerts, low-cash-cost launch and Google Ads |
+| [Revision summary](16-requirement-revision.md) | Chinese change summary and migration from version 0.2 |
 
-## Document contract
+## Data lifecycle
+Task content, photos, offers, task contact data and guest grants expire **three calendar months after first publication**. Closing, editing, registration or a later offer does not extend this deadline. Access stops at the deadline; the proposed live-store purge target is within 24 hours and rolling backups age out within 30 days. These implementation timings must be disclosed and tested.
 
-- This delivery is **documentation only**. No application, cloud resources, paid accounts or production configuration have been created.
-- English is the working document language; Dutch is the default proposed UI language, with English supported from the pilot.
-- Requirements using **MUST/SHALL** are proposed implementation contracts, not claims of existing capability.
-- Policies in [Product requirements](02-product-requirements.md) and [Payments](08-payments-and-economics.md) are authoritative. Technical documents implement them; resolve any conflict before development.
-- All dates, costs, volumes and schedules outside cited observations are estimates or explicit assumptions. Weeks start after scope approval and team availability, not on this document's date.
-- The requested reference collection informs the **format and depth** of DESIGN.md. This is an original carpentry identity, not a copy of a competitor or reference brand.
-- Approving or publishing these documents does not approve their unresolved legal, pricing or infrastructure decisions. Gate G0 in the backlog must be signed off first.
+Three months is not a promise to erase every financial record: minimum platform-fee accounting records, narrowly justified legal evidence and active company/account/alert preferences have separate lawful purposes and schedules. See the privacy document before publishing retention wording.
 
-## Proposed first release
-
-One responsive Web/PWA codebase supporting desktop browsers, Android browser/home-screen use and iPhone Safari/home-screen use; one local pilot market; client jobs; verified single-owner carpentry businesses; free previews; paid unlocks; private conversations; shared non-commercial Q&A; structured quotes; client selection; job-linked reviews; operations dashboard; refunds and reconciliation. Installation is optional; core flows work in the browser. Private job data and financial actions require connectivity; an installed icon is not a promise of offline functionality.
-
-No construction payments, escrow, commissions on building work, employment matching, native desktop/mobile binaries, generative-AI dependencies or nationwide rollout in the MVP. Dedicated Android/iPhone apps remain a later phase rather than a rejected platform requirement.
+## What version 0.3 replaces
+The former Utrecht/carpentry-only, verified-business, paid-thread-reading, three-firm cap, compulsory €10 wallet, in-app chat/award and 12-month content-retention design is superseded. History remains in Git, not as competing active requirements. No application, cloud resource, payment account or advertising campaign has been created. All engineering estimates, policy proposals and commercial assumptions remain subject to their stated gates.

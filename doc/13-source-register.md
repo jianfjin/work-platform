@@ -1,63 +1,58 @@
-# Source register and research provenance
+# Source register and provenance
+**Version:** 0.3 · **Research:** 20–21 October 2026; revised requirements supplied 21 October.
+Public pages support only narrow cited observations. Product rules, budgets and cost assumptions are proposed design, not external findings.
 
-**Accessed:** 20 October 2026. Public pages can change. Sources support the narrow observations/technical mechanics cited; original requirements, cost assumptions and recommendations are this proposal's own design.
+## 1. User-authoritative direction
+Latest instruction confirms client pays no platform commission; company pays. Conflicting client-€1 examples remain analysis only. Northern pilot, broader maintenance trades, guest posting, private rough offers, contact choice, opt-in SME notices, three-month deletion and an information-intermediary role replace incompatible 0.2 requirements. Earlier confirmed desktop/Android/iPhone PWA-first direction remains.
 
-## 1. Competitor evidence
+Charge event (first successful offer publication), €1 gross treatment, direct checkout, exact province boundary, guest email security and calendar/purge details are explicit recommendations requiring approval, not secretly “confirmed” facts.
 
-| ID | First-party source | Use / limitation |
-|---|---|---|
-| C1 | [Profiman client page](https://profiman.nl/) | Client flow, free requests, regional/verified matching, up to three quotations; self-description, not measured service delivery |
-| C2 | [Profiman professional page](https://profiman.nl/vakman/) | Credit-funded lead access, displayed starting price, competitor cap and invalidity-support window; no purchase performed |
-| C3 | [Werkspot homepage](https://www.werkspot.nl/) | Public client workflow, reviews and messaging/app positioning; no need to reproduce mutable aggregate counters |
-| C4 | [Werkspot: contact with a client](https://support.werkspot.nl/s/article/How-do-I-get-in-contact-with-a-consumer) | Public description of interest, client selection and contact-sharing charge trigger; help article is dated December 2024 |
-| C5 | [Werkspot: not selected but charged](https://support.werkspot.nl/s/article/I-wasn-t-selected-for-the-job-So-why-do-I-pay-for-the-lead) | Lead access versus guaranteed work; narrow refund explanation, not an exhaustive current refund-policy audit |
+## 2. Public product/design references
+| Source | Use / limitation |
+|---|---|
+| [Profiman professionals](https://profiman.nl/vakman/) | Public lead/credit/competition/check/support statements; no purchase or proof of service outcome |
+| [Werkspot professional help](https://support.werkspot.nl/s/article/How-do-I-get-in-contact-with-a-consumer) | Historical first-party contact-charge flow read previously; 21 October fetch gave a loading/CSS-error page, not a current verified price |
+| [DeGoedkoopsteNotaris](https://www.degoedkoopstenotaris.nl/) | New user reference: service/postcode discovery, comparison and free tailored quote requests; business-side charging not established |
+| [awesome-design-md](https://github.com/VoltAgent/awesome-design-md) | Requested agent-readable DESIGN.md method |
+| [Notion DESIGN example](https://github.com/VoltAgent/awesome-design-md/blob/main/design-md/notion/DESIGN.md) | Token/component/state specification structure, not copied brand identity |
+| [Linear DESIGN example](https://github.com/VoltAgent/awesome-design-md/blob/main/design-md/linear.app/DESIGN.md) | Restrained hierarchy/specification discipline |
 
-Some help results were accessible as indexed first-party text rather than authenticated product UI. Their published dates and public-view limitations are preserved here. No Trustpilot/Reddit anecdotes were used as proof of platform defects or current price ranges.
+The user's €10–15 competitor-cost concern is a market hypothesis; do not assert a universal live tariff or guaranteed savings. No search ad tracking query parameters from the notary reference are needed in the documents.
 
-## 2. Requested design references
+## 3. Technical/provider sources
+| Source | Supports |
+|---|---|
+| [Mollie Dutch pricing](https://www.mollie.com/nl/pricing) | Public indicative local payment rate checked 21 October; merchant agreement/method/refund fees still required |
+| [Mollie payment flow](https://docs.mollie.com/docs/accepting-payments) | Hosted checkout, webhook notification and authenticated status fetch |
+| [PostgreSQL locks](https://www.postgresql.org/docs/current/explicit-locking.html) | Real row-lock mechanism, not proof our future code is correct |
+| [Next.js data security](https://nextjs.org/docs/app/guides/data-security) | Server-only DAL/authorization/minimal DTO pattern |
+| [Next.js PWA guide](https://nextjs.org/docs/app/guides/progressive-web-apps) | Manifest/framework integration, not a complete private-cache policy |
+| [MDN PWA installation](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Making_PWAs_installable) | Platform install differences |
+| [Apple iPhone web apps](https://support.apple.com/guide/iphone/open-as-web-app-iphea86e5236/ios) | Safari home-screen installation |
+| [WebKit Home Screen push](https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/) | Original supported push/permission mechanism, not a current release test |
+| [MDN worker lifecycle](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers) | Install/update/cache concepts |
+| [WCAG 2.2](https://www.w3.org/TR/WCAG22/) | Accessibility target and whole-flow assessment |
 
-| ID | Source | Use |
-|---|---|---|
-| D1 | [VoltAgent awesome-design-md collection](https://github.com/VoltAgent/awesome-design-md) | DESIGN.md as an agent-readable visual contract |
-| D2 | [Notion DESIGN.md example](https://github.com/VoltAgent/awesome-design-md/blob/main/design-md/notion/DESIGN.md) | Token hierarchy, component/state detail and specification structure; no copied branding |
-| D3 | [Linear DESIGN.md example](https://github.com/VoltAgent/awesome-design-md/blob/main/design-md/linear.app/DESIGN.md) | Restrained hierarchy/surfaces and component specification discipline; original palette/fonts chosen for HoutMatch |
+## 4. Location and advertising
+| Source | Supports / limitation |
+|---|---|
+| [PDOK Location API](https://www.pdok.nl/location-api1) | Official open/free Dutch geocoding candidate; inspect current API/dataset licensing/CRS/limits before use; not bulk-export permission or a service SLA |
+| [Google Geocoding policy](https://developers.google.com/maps/documentation/geocoding/policies) | Storage/cache/attribution restrictions and terms |
+| [Google Maps pricing](https://developers.google.com/maps/billing-and-pricing/pricing) | SKU-based cost review; no perpetual free-credit assumption |
+| [Google Geocoding usage/billing](https://developers.google.com/maps/documentation/geocoding/usage-and-billing) | Quota/billing integration review |
+| [Google Ads daily budgets](https://support.google.com/google-ads/answer/6385083?hl=en) | Average daily versus spending-limit behavior, not a guaranteed CPC |
+| [Smallingerland](https://www.smallingerland.nl/) | Municipal context for the Drachten trial label; final region mapping must be validated |
 
-The actual Markdown files were inspected through their raw GitHub versions as well as catalogue descriptions. No brand assets or substantive source text are vendored into this repository. Reference does not imply endorsement or affiliation.
+## 5. Legal/accounting review sources
+| Source | Review topic, not a legal clearance |
+|---|---|
+| [GDPR authoritative text](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32016R0679) | Purpose, lawful basis, security, rights and retention assessment |
+| [Commission DSA](https://digital-strategy.ec.europa.eu/en/policies/digital-services-act) | Intermediary/trader role and size-dependent duties; “information only” not automatic immunity |
+| [Commission P2B](https://digital-strategy.ec.europa.eu/en/policies/platform-business-trading-practices) | Current legislation and proposed-change context; recheck in force at launch |
+| [Commission DAC7](https://taxation-customs.ec.europa.eu/taxation/tax-transparency-cooperation/administrative-co-operation-and-mutual-assistance/dac7_en) | Reporting scope assessment for service facilitation, not automatic exemption from off-platform payment |
+| [Belastingdienst business administration](https://www.belastingdienst.nl/wps/wcm/connect/bldcontentnl/belastingdienst/zakelijk/ondernemen/administratie/) | Financial retention differs from task content; accountant classifies records/start dates |
+| [Belastingdienst VAT explanation](https://stichtingenvereniging.belastingdienst.nl/belastingplicht/omzetbelasting-btw/btw-ondernemer-wat-nu/) | General VAT background; 21% is illustrative until specific service classified |
+| [ACM ConsuWijzer spam information](https://consument.acm.nl/veilig-online/hoe-voorkom-ik-spam) | Consent/unsolicited-email background available as indexed first-party text; direct fetch timed out, and an older ACM path returned 404; recheck current guidance at launch |
 
-## 3. Technical and pricing references
-
-| ID | Primary source | Supports |
-|---|---|---|
-| T1 | [Mollie Netherlands pricing](https://www.mollie.com/nl/pricing) | Indicative local transaction fee used for arithmetic; not a contractual rate |
-| T2 | [Mollie accepting payments](https://docs.mollie.com/docs/accepting-payments) | Hosted checkout, callback, API status retrieval and delayed callback/return handling |
-| T3 | [Mollie create-payment API](https://docs.mollie.com/reference/create-payment) | Payment intent/checkout URL/metadata/amount contract |
-| T4 | [Mollie payment statuses](https://docs.mollie.com/docs/handling-payment-status) | Paid/pending/failed/etc. distinction; don't infer success from browser redirect |
-| T5 | [PostgreSQL explicit locking](https://www.postgresql.org/docs/current/explicit-locking.html) | Row-lock/concurrency mechanism, not proof that our future code is correct |
-| T6 | [Next.js data-security guidance](https://nextjs.org/docs/app/guides/data-security) | Server-only DAL, authorization and minimal DTO boundary |
-| T7 | [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/) | Accessibility target, contrast/focus and full-flow evaluation reference |
-| T8 | [MDN installable PWA guidance](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Making_PWAs_installable) | Browser-specific installation/standalone behavior; do not assume one automatic install prompt works everywhere |
-| T9 | [Apple: website as an iPhone web app](https://support.apple.com/guide/iphone/open-as-web-app-iphea86e5236/ios) | Current Safari home-screen installation instructions; recheck UI wording per supported release |
-| T10 | [WebKit: iOS/iPadOS Web Push](https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/) | Home-screen/permission requirements and original iOS 16.4 introduction; not a current-device support guarantee |
-| T11 | [Next.js PWA guide](https://nextjs.org/docs/app/guides/progressive-web-apps) | Manifest and PWA framework integration; not a substitute for our restrictive cache/transaction policy |
-| T12 | [MDN service-worker lifecycle](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers) | Browser worker install/activate/update/cache concepts, distinct from server job workers |
-
-Stack choices are recommendations, not independent feature/version audits. Pin maintained supported releases and test actual provider APIs at implementation kickoff. The design does not depend on guessed webhook signatures or unverified provider idempotency support; verify the chosen product contract.
-
-## 4. Legal/accounting scope-assessment references
-
-| ID | Authority/source | Review topic, not a compliance conclusion |
-|---|---|---|
-| L1 | [Belastingdienst VAT explanation](https://stichtingenvereniging.belastingdienst.nl/belastingplicht/omzetbelasting-btw/btw-ondernemer-wat-nu/) | General tariff reference only; accountant determines access/voucher treatment and invoices |
-| L2 | [GDPR authoritative text](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32016R0679) | Purposes, lawful bases, rights, security and privacy-by-design assessment |
-| L3 | [European Commission DSA](https://digital-strategy.ec.europa.eu/en/policies/digital-services-act) | Role/size-dependent intermediary/marketplace scope and transparency duties |
-| L4 | [European Commission P2B](https://digital-strategy.ec.europa.eu/en/policies/platform-business-trading-practices) | Current rules and proposed repeal context; recheck enacted law before launch |
-| L5 | [European Commission DAC7](https://taxation-customs.ec.europa.eu/taxation/tax-transparency-cooperation/administrative-co-operation-and-mutual-assistance/dac7_en) | Personal-services platform reporting scope assessment |
-| L6 | [DNB electronic-money authorization exceptions](https://www.dnb.nl/en/sector-information/open-book-supervision/open-book-supervision-sectors/electronic-money-institutions/authorisation-as-an-electronic-money-institution-overview/services-not-requiring-authorisation/) | Prepaid access-balance classification, conditional exclusions/exemptions |
-
-## 5. What was not established
-
-No customer interviews or transaction experiments; no market-size/revenue forecast validation; no authenticated competitor audit; no actual Werkspot fee quote; no provider commercial agreements; no legal/tax opinion; no live implementation/performance/accessibility results. Target repository inspection found an empty repository with `main` as its configured default branch at the start of this work.
-
-All financial examples, capacity policy, geographic pilot, implementation effort, retention defaults and SLOs are explicitly proposed assumptions. Revalidate claims and mutable sources before external marketing or a paid launch.
-
-**User requirement provenance:** the user explicitly selected mobile option 2 (PWA) for the current stage and option 1 (dedicated Android/iPhone applications) after maturity. This is a confirmed delivery direction, not a conclusion inferred from any external source. Desktop means browser delivery in the current phase, with optional supported-browser installation; no desktop binaries were requested or created.
+## 6. Not established
+No customer interviews, provider/merchant contracts, legal/tax opinion, current authenticated competitor pricing, domain/trademark clearance, paid Ads experiment, real geocoder dataset audit, implementation, browser/device tests or production deployment. All numerical operating estimates and conversion/CPC/refund examples are hypotheses, not promised performance.

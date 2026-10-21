@@ -1,7 +1,7 @@
 ---
-version: "0.2-proposal"
-name: HoutMatch-workshop-daylight
-description: "An approachable carpentry marketplace: warm workshop neutrals, deep forest actions, clear work-order hierarchy, and explicit shared/private conversation boundaries."
+version: "0.3-proposal"
+name: work-platform-local-workbench
+description: "A practical local maintenance marketplace: free guest posting, private rough offers, explicit company response fees and client-controlled contact."
 colors:
   canvas: "#F7F5F0"
   surface: "#FFFFFF"
@@ -48,145 +48,60 @@ motion:
   reduced-motion: "remove nonessential transitions"
 ---
 
-# HoutMatch — Workshop Daylight
+# Work Platform — Local Workbench
+**Version:** 0.3 · **Updated:** 21 October 2026 · **Status:** original proposed visual system, not implemented or certified
 
-**Status:** original proposed design system; implementation has not been built or accessibility certified.
+## 1. Reference method and brand
+Follow [awesome-design-md](https://github.com/VoltAgent/awesome-design-md): semantic tokens, typography, spacing, component anatomy and all important states in one agent-readable contract. The inspected Notion/Linear examples informed specification discipline, not copied logos, fonts, copy or brand palettes.
 
-## 1. Reference method, not a brand clone
+“Work Platform” is a placeholder until founder selects/clears a name. Replace previous HoutMatch public branding because the revised scope includes painting, roof and other maintenance, not carpentry alone. Use daylight neutrals, forest actions and restrained wood accent; make a practical local service, not a price-auction dashboard.
 
-Follow the [awesome-design-md](https://github.com/VoltAgent/awesome-design-md) practice of a single agent-readable visual contract: semantic tokens, typography, component anatomy, states and explicit do/don't rules. The inspected [Notion example](https://github.com/VoltAgent/awesome-design-md/blob/main/design-md/notion/DESIGN.md) provides a detailed token/component specification; the [Linear example](https://github.com/VoltAgent/awesome-design-md/blob/main/design-md/linear.app/DESIGN.md) shows disciplined hierarchy, surfaces and restrained accents.
+## 2. Content hierarchy
+Public hero leads with **Post your task free**, region/trade fit and optional account, not a client €1 price. Company page clearly says task reading is free and the proposed first successfully published offer costs €1.00 incl. VAT. Never hide the charge event in small print or display a compulsory €10 top-up.
 
-Borrow that specification discipline, not their logos, copy, proprietary fonts or brand palettes. HoutMatch uses its own forest/wood/daylight identity. The catalogue's brief summaries can differ from the actual files; the linked files, not inferred brand stereotypes, informed this document's structure.
+Native/system body fonts, at least 16px inputs/body; public editorial heading may use Georgia. App sections use system sans. Target 4.5:1 normal text, 3:1 essential control boundaries, visible focus and complete-flow WCAG 2.2 AA evaluation. Decorative borders cannot be the sole input boundary. Token contrast still needs actual component/state verification.
 
-## 2. Emotional and visual character
+Use the frontmatter's semantic colors, 4px spacing scale, 8px control/12px card radius, 1200px max content and 680px form width. Mobile 16px gutters, 44–48px touch controls, keyboard-safe placement. Check 320/375/768/1024/1440px, zoom, Dutch/English expansion and portrait/landscape. No untested dark mode.
 
-**Crafted, calm, candid, practical.** A client should feel comfortable admitting they do not know a measurement. A carpenter should scan fit, budget and cost without marketing noise.
-
-- Public pages feel like a well-organized workshop notebook: warm background, honest photography, generous margins, editorial headings.
-- Authenticated pages feel like a work order: compact hierarchy, strong labels, stable columns, clear status and timestamps.
-- Forest green means a primary action or positive progress. Wood brown is a limited accent for category details and craftsmanship, not another competing CTA.
-- Trust is demonstrated through verifiable facts and visible policy, not shield graphics everywhere.
-- Light mode only in MVP. Do not add an untested dark theme that doubles the state/contrast matrix.
-
-## 3. Typography and content hierarchy
-
-Use native fonts initially to avoid external font requests and loading shifts. Georgia is reserved for public marketing headlines; all application, pricing and conversation UI uses the system sans stack. Fallback weights must remain legible if a platform does not support weight 650.
-
-| Use | Desktop | Mobile | Rules |
-|---|---|---|---|
-| Public hero | 48px / 52px | 34px / 39px | Max 18 words; no all-caps paragraph |
-| Page title | 30px / 38px | 26px / 34px | One H1 per page |
-| Section title | 22px / 30px | 22px / 30px | Describes task, not marketing slogan |
-| Body / input | 16px / 25px | 16px / 25px | Inputs never shrink below 16px |
-| Control label | 14px / 20px | 14px / 20px | Visible, never placeholder-only |
-| Metadata | 13px / 19px | 13px / 19px | Never the only place to disclose price or consent |
-
-Use tabular numerals for balances, totals and dimensions. Keep reading lines approximately 60–75 characters. Dutch text expansion is expected; controls wrap without cutting off the euro/VAT label.
-
-## 4. Color roles and contrast
-
-Use tokens by meaning, not an arbitrary color per page. Normal text targets at least 4.5:1 contrast and essential control/focus boundaries at least 3:1 against adjacent surfaces; test actual pairings and states. These targets are based on [WCAG 2.2](https://www.w3.org/TR/WCAG22/); the complete AA evaluation is broader than color.
-
-- `ink` for body text on canvas/surface; `ink-muted` for secondary readable text.
-- `on-primary` only on `primary`/`primary-hover` actions.
-- `border` is a decorative divider, **not** the sole boundary of an input. Inputs use `control-border`.
-- Status chips use semantic ink on corresponding tinted surface, always with an icon or text label.
-- Focus ring: 3px `focus`, 2px white offset, visible outside the component. Check it against every surrounding surface.
-- Never use color alone for paid/locked/shared/private status. “Private conversation” must be text, not just a green dot.
-
-## 5. Layout and spacing
-
-12-column desktop grid inside 1,200px maximum width; 24px gaps. At 768–1,023px use a simpler two-column layout. Below 768px use one column and 16px gutters. At 320px, 200% text zoom and 400% browser zoom, core flows must reflow without page-wide horizontal scrolling.
-
-Public vertical sections use 64–96px spacing on desktop and 40–48px on mobile. App sections use 24–32px. A job card has 24px desktop padding and 16px mobile padding. A primary control is at least 48px high; other touch controls at least 44px square. No primary action relies on hover.
-
-Forms max out at 680px. Conversation and brief columns are approximately 7/5 on wide screens; use labeled tabs on mobile. Keep price confirmation close to the action, not in a floating footnote.
-
-## 6. Component contracts
-
-### Primary and secondary actions
-
-Primary: forest fill, white text, 8px radius, 16px horizontal padding, 48px minimum height. Hover uses darker forest; pressed state has immediate visual feedback. Pending state shows a spinner and “Processing,” preserves width, and prevents duplicate submissions while still supporting server-side idempotency.
-
-Secondary: white surface, `control-border`, `ink`; destructive actions use danger text with an explicit confirmation when irreversible. A disabled button has an adjacent explanation; do not make the explanation itself inaccessible.
-
-### Job preview card
-
-Order: category/status → approved title → city/coarse distance → budget/timing → measurement/material readiness → client-confirmation age → lifetime slots → €1 gross unlock action. Price and slot facts are not visually de-emphasized. Whole-card navigation must not accidentally purchase access.
-
-No actual job photos in unpaid previews. A generic category illustration is acceptable and must not be presented as the client's work. All monetary examples use locale formatting.
-
-### Access confirmation dialog
-
-Dialog title names the action and job. Show price, existing balance, remaining balance, terms version, one-time/no-guarantee statement, access scope and restoration link. Buttons: Cancel / Confirm €1 unlock. If terms or price changed, return a conflict and require a fresh review; no silent consent upgrade. Trap focus while open and return focus to the trigger on close.
-
-### Brief and measurement block
-
-Separate desired dimensions from professionally verified measurements. Show units on each field; numeric input accepts Dutch decimal comma and converts to canonical units. “Unknown / site measurement needed” is a first-class value, not a validation failure. Photos have captions and a privacy reminder.
-
-### Conversation composer
-
-Private composer: explicit audience line names the client and business. Shared composer: separate location, amber information strip and “Shared scope question” heading. They must not share a mode-switching input. Message actions include report; private-message controls never offer “share all.” Client can create a new shared summary through a separate confirmation flow.
-
-### Quote card
-
-Show gross amount, VAT basis, line items, materials included/excluded, assumptions, start range, site-visit requirement, validity and scope revision. Quotes are ordered by received time by default, not cheapest price. Highlight incomplete comparisons without manipulating the winner choice.
-
-### Balance and billing history
-
-Call this “Access balance / Toegangstegoed,” not a banking wallet. Show available funds, pending payments, held refunds and an itemized history. Top-up has one clear €10 option in MVP, no “best value” decoy bundle. Never hide the €10 commitment behind a €1 headline.
-
-### Trust badges
-
-State exactly what was checked: “KVK registration checked · date,” not “quality guaranteed.” Completion labels distinguish both-party confirmation from client-reported completion. New businesses display “New on HoutMatch,” not fabricated ratings or a punitive zero-star graphic.
-
-## 7. Screen composition
-
-- **Landing:** client-first hero; category choices; how it works; consented real portfolio work; privacy explanation; separate professional pricing CTA. No unverified counters or testimonials.
-- **Job wizard:** one main question group per step; progress label; persistent draft status; contextual measuring guidance; review preview before submission.
-- **Carpenter feed:** filter bar and vertical cards; default list, not a precise-address map. Explain distance is city-based. Cap filters to category, radius, timing and budget initially.
-- **Thread:** lifecycle header; brief revisions; attachments; shared board; clearly distinct private workspace; receipt/policy reference.
-- **Client comparison:** consistent dimensions and price inclusions; decision summary; explicit contact sharing; confirmation before award.
-- **Operations:** table-first queues with case ownership, reason codes and audit timeline. Sensitive fields remain masked until justified access.
-
-## 8. Feedback, motion and resilience
-
-120ms control feedback, 180ms panel transitions, opacity/transform only. No parallax, scroll-jacking, animated wood textures or payment celebration that obscures the receipt. Honor reduced motion.
-
-Skeletons match final geometry; announce asynchronous success/error via appropriate live regions without reading the entire chat. Payment pending is not success. Display a stable receipt after unlock; on timeout, query operation status instead of asking users to pay again.
-
-Sticky mobile action bars respect safe-area insets and cannot cover form errors, keyboard focus or message composers. Avoid shifting buttons when notification badges load.
-
-## 9. Photography, iconography and voice
-
-Use authentic consented work photos, natural light and detail shots that explain craft. Strip metadata and screen for identifiable people/addresses before publishing. Do not imply stock photos are completed platform projects.
-
-Use consistent 20–24px outlined SVG icons with visible text for critical actions. No emoji as UI icons. Decorative woodgrain is limited to a subtle marketing illustration; never behind text or inputs.
-
-Voice: direct and respectful, no “exclusive lead jackpot,” countdown pressure or guaranteed-income copy. Explain unknowns instead of pressuring users to guess. A professional payment buys access, not ownership of a person or their data.
-
-## 10. Do / don't
-
-| Do | Don't |
+## 3. Essential components
+| Component | Contract |
 |---|---|
-| Keep €1 incl. VAT and €10 funding commitment visible | Advertise €1 while hiding minimum top-up |
-| Show actual lifetime slot usage | Use fake scarcity or replenishing sales slots |
-| Use a server-returned safe preview | Blur sensitive DOM/JSON as a paywall |
-| Keep shared scope and private offers separate | Expose competing quotes to create a bidding contest |
-| Show honest verification/feedback labels | Suggest KVK checks guarantee workmanship |
-| Explain expired, paused and restored states | Let an unavailable job remain purchasable |
-| Preserve drafts and show send failures | Pretend an offline message was delivered |
+| Free-posting entry | “No account required; email link to manage securely.” No payment/registration wall |
+| Lightweight task form | Description, postcode/city, optional few photos; email management step; budget/timing optional; truthful unknowns |
+| Company task card | Category, city/PC4, safe description/photos, approximate radius fit, status/deletion date; free reading; no competitor identities/count or remaining slots |
+| Rough-offer composer | Own introduction, indicative range or visit-needed, availability, own website/contact details; private to client |
+| Fee confirmation | €1 gross, publication event, no work/reply guarantee, all eligible companies can respond, refund policy; deliberate confirm/cancel |
+| Client private offer list | Every eligible submitted offer via pagination; own company contacts/website and assumptions; default received order, not lowest-price-wins |
+| Contact preference | Two distinct choices; CLIENT_INITIATED default; ALLOW_RESPONDERS explicit fields/audience and copied-data limitation |
+| Close task | Client control at any time; explain no further offers/alerts/callback disclosure; existing history only until delete_at |
+| Retention notice | Actual resolved deletion date; linked live-purge/backup/finance exceptions; edits/reopen never reset |
+| Report/case view | Reason/status and correction/appeal, factual safety action; no automatic public accusation or “quality verified” shield |
+| Payment status | Pending/published/refund-pending/refunded; no inferred success, wallet-credit substitution or double-pay prompt |
 
-## 11. Implementation handoff and review
+A company sees only its own response/status. Do not reuse the client list component with hidden competitor CSS/data: server must return no rival records. There is no shared commercial board, in-app chat/award screen, verified-completion review widget or commercial three-firm cap in current scope.
 
-Use these tokens as the source for eventual CSS variables and a component catalogue; no styling framework is mandated by this document. Implement empty/loading/error/disabled/focus/pending/restored states before visual sign-off. Test 320, 375, 768, 1,024 and 1,440px widths, Dutch and English copy, zoom, touch and keyboard.
+## 4. Contact audience design
+Default label: **I will contact the companies**. Show company contacts to client, not client contacts to all companies.
+Alternative: **Companies whose offers are published may contact me**. Explain audience can exceed three, select email and/or phone separately, and require clear confirmation before enabling. Do not precheck because a phone field is populated.
 
-Reject a handoff with unreadable price disclosure, ambiguous audiences, tiny controls, fabricated proof, unauthorized preview data or untested monetary flows even if it looks polished. Wireframes and user tasks are in [UX](03-ux-and-service-blueprint.md); objective release checks are in [Test plan](11-test-and-launch-plan.md).
+Revoking/closing blocks future disclosure, not contacts already copied. Full postcode/address is not an ordinary company card field. Keep mode and audience readable in both languages; critical information never tooltip-only.
 
-## 12. Desktop, Android and iPhone PWA
+## 5. Interaction states and copy
+All actions have idle/hover/focus/disabled/pending/error/success states. Pending button prevents repeat taps without replacing server idempotency. Preserve width and meaningful error labels. An expired guest token offers fresh-link recovery, not mandatory account creation.
 
-The confirmed current delivery is a responsive desktop website and installable Android/iPhone PWA; native app binaries come later. Browser and installed modes use the same visual tokens and core flows. Install help is contextual and dismissible; an unsupported automatic prompt becomes honest instructions, not a dead button. Never gate posting, paid access or messaging on installation or push permission.
+Dutch examples: “Plaats gratis je klus”, “Lezen is gratis”, “Offerte indienen: €1,00 incl. btw”, “Ik neem zelf contact op”, “Reagerende bedrijven mogen contact opnemen”, “Sluit mijn klus”. Native-speaker review before release.
 
-Provide a recognizable square icon, maskable variant and Apple touch icon with safe artwork margins; actual assets are an implementation task. Match standalone theme/background to the daylight canvas. Show visible back/home actions without relying on browser chrome. Use safe-area insets and dynamic viewport handling; keep private/shared audience labels, quote fields and composers visible above phone keyboards. Test actual Android/iPhone installation and portrait/landscape modes, not only a narrow desktop viewport.
+Closed/expired/scope-changed tasks explain why no offer can publish; a captured failed attempt shows a cash-refund status, not a success confetti animation. No fake scarcity, invented testimonial/counter, guaranteed work or “all companies verified” claim.
 
-Offline screen: explain connectivity is needed and offer retry/help; do not display cached private jobs, offers or balance. Unsent text is only in-memory while the current view survives; no “saved offline” promise. Update banners defer reload until unsaved work is saved online or discarded. Checkout returning to another window shows authenticated pending/success state from the server, never a visual guess based on a redirect. All supported-mode details are in [Cross-platform delivery](14-cross-platform-and-pwa.md).
+## 6. Photos, icons and geography
+Use actual consented images with clear captions; never imply stock work is a platform result. Private task photos do not become marketing assets. Strip metadata, scan and provide report/remove; a visible address in a photo needs privacy handling, not a false assurance that EXIF removal solves all leaks.
+
+Consistent SVG icons, not emoji controls. Area/distance labels say approximate straight-line, not driving time. No exact-home map pin or mandatory GPS. Generic regional illustrations must not identify a client.
+
+## 7. PWA and resilience
+Optional install help is contextual; browser usage works fully. Standalone mode has own back/home navigation, safe-area insets and software-keyboard-safe offer fields. File picker works if camera declined; unsupported image types have an honest alternative.
+
+Offline page is public and non-personal. No cached job/photos/offers/contact/payment data or offline transaction queue. In-memory unsent text may be lost on reload/OS termination; do not claim “saved offline.” Resume/login/account switch hides stale private content pending authorization. Updates defer reload until saved online/discarded; bank-app return uses verified server state, not window appearance.
+
+## 8. Handoff checks
+Implement fee/contact/deletion/guest/close/refund states before visual sign-off. Test raw data and all audiences, not just screenshots. Reject a polished handoff with client charging, rival data, ambiguous callback permission, misleading quality claims or private offline storage. See [UX](03-ux-and-service-blueprint.md), [PRD](02-product-requirements.md) and [tests](11-test-and-launch-plan.md).

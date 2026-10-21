@@ -1,73 +1,62 @@
-# Decisions, assumptions and risk register
+# Decisions and risk register
+**Version:** 0.3 · **Updated:** 21 October 2026
 
-**Status:** proposed defaults except user-confirmed Web/PWA-first platform delivery (ADR-12); other gates are not approved · **Review date:** 20 October 2026
+## 1. Confirmed direction
+| Decision | Source / effect |
+|---|---|
+| Client platform fee zero; companies pay | User's explicit latest instruction overrides contradictory client-€1 examples |
+| Northern pilot, Dutch/English | Groningen, Friesland/Fryslân and Drachten labels; exact boundary still open |
+| Lightweight guest posting | Optional registration; proposed email ownership for safe management |
+| Private rough offers and direct contact | Client sees all eligible responders; companies see only themselves; no commercial three-firm cap |
+| Information intermediary | No routine workmanship certification/site monitoring/construction payment handling |
+| Three-month task data deletion | Clock/technical purge/finance exceptions need precise approved wording |
+| Web/PWA now, dedicated apps later | Earlier user-confirmed cross-platform direction retained |
 
-## 1. Architecture/product decision records
+## 2. Proposed decisions needing approval
+| Topic | Current recommendation | Owner / gate |
+|---|---|---|
+| Name | Work Platform working label; no final brand selected | Founder, before public branding |
+| Charge event | €1 gross first successfully published company/task offer; free reading; no construction-success percentage | Founder/product/accountant, G0 |
+| Direct payment vs prepaid | Direct hosted €1 checkout; optional bundles only later | Founder/finance/PSP, G0 |
+| Geographic interpretation | Groningen and Fryslân provinces; Drachten priority inside Fryslân; confirm city-only alternative | Founder, G0 |
+| Client security minimum | Email confirmation/scoped one-use management session; no compulsory account or phone | Product/security, G0 |
+| Callback audience | Every eligible published responder, selected email/phone fields; default client-initiated | Product/privacy/legal, G0 |
+| Deletion clock | Three calendar months from first publication, no reset by edit/closure | Product/privacy/legal, G0 |
+| Purge/backup exception | Access cutoff at deadline, proposed live purge <=24h, backups <=30 days; minimal finance separate | Tech/legal/finance, G0/G2 |
+| Merchant/bank | Actual platform legal operator, approved business settlement account; no assistant/personal shared merchant | Founder/accountant/PSP, before money |
+| Geocoder | PDOK Location API first candidate; Google optional after cost/terms review | Tech/privacy, G0 |
+| Alerts | Confirmed opt-in, daily digest default, optional instant, easy unsubscribe | Product/mail operations, G0 |
+| Native maturity | Stable economics/usage plus demonstrated needs; separate G4 design/budget | Founder/product, later |
 
-| ADR | Proposed decision | Alternatives rejected for MVP | Trade-off / revisit trigger |
-|---|---|---|---|
-| ADR-01 | Carpentry only; one local pilot region | All trades nationwide | Lower initial liquidity; widen only after category-level coverage/repeat demand |
-| ADR-02 | €1 gross explicit one-time thread access | Variable lead cost; success fee; subscription | Charges before contact/winning; validate willingness and contribution; do not assume lower price equals fairer |
-| ADR-03 | €10 prepaid own-service funding | €1 direct checkout; monthly invoicing | Better fee amortization, worse upfront friction/regulatory complexity; G0 approval required |
-| ADR-04 | Three **lifetime** distinct firms/job | Unlimited entrants; rotating slots | Strong resale limit but may strand threads; reconsider only with disclosed policy change and evidence, never retroactively |
-| ADR-05 | Shared non-commercial scope, private commercial channels | Public price bidding; fully private duplicate clarifications | More UI/moderation states; measure audience comprehension and scope reuse |
-| ADR-06 | No automatic contact disclosure on payment | Sell contact as the paid artifact | Client control; may require more in-app interaction; monitor conversion without weakening privacy silently |
-| ADR-07 | Modular monolith + PostgreSQL locks/outbox | Microservices, broker-first design | Shared transactional DB is intentional; split only with measured independent scale needs |
-| ADR-08 | Coarse city/radius discovery and explainable rules | Precise address maps; opaque ML matching | Less exact distance but less location exposure; PostGIS later only if needed |
-| ADR-09 | Hosted PSP only for platform access | Construction escrow, split payouts | Cannot verify construction payment; label reviews honestly; revisit via separate scoped project |
-| ADR-10 | Automatic earned no-response restoration with lot provenance | Manual-only support; no response safeguard | Risk of gaming and more liabilities; tune prospectively after fraud/economics review |
-| ADR-11 | Original Workshop Daylight system; DESIGN.md contract | Clone an existing brand; generic dashboard theme | Requires prototype testing; visual references inform specification discipline only |
-| ADR-12 | **User-confirmed:** desktop Web + Android/iPhone PWA now; dedicated mobile apps after maturity | Separate native clients or store wrappers in MVP | Real-device installation/checkout/lifecycle acceptance required now; native technology/store policy/budget revisited only at G4 |
+## 3. Architecture decisions
+- One responsive Web/PWA and modular backend; SQL transaction for payment-to-publication; server-only authorization/DTOs.
+- One response per company/task, no published rival list/count and no participant slots/counter.
+- Direct platform-fee payments/refunds, no mandatory wallet and no construction payout/escrow.
+- Guest job sessions, not compulsory client-account onboarding.
+- Coarse postcode-based radius, not mandatory GPS or exact-address map.
+- Opt-in safe metadata emails, not forwarding full task/client data to arbitrary businesses.
+- Task content expires after three calendar months, minimal finance and strictly justified evidence purpose-separated.
+- No chat/award/verified-completion/review machinery in current minimum information-platform scope.
 
-## 2. Open decisions and accountable roles
+## 4. Risks and stop conditions
+| Risk | Mitigation / evidence | Accountable owner |
+|---|---|---|
+| €1 cannot cover PSP, operations and acquisition | Actual cohort margin, founder-funded bounded experiment; no silent client charges | Founder/finance; stop growth at negative contribution |
+| Too few relevant northern firms/jobs | Recruit genuine supply, monitor category/area coverage, no fake inventory | Product |
+| Unlimited responders overwhelm client | Opt-in callback warning, relevance/rate controls, private paginated list and voluntary close; never hide a commercial cap | Product/trust |
+| No routine quality checks attracts abuse | Honest labels, secure accounts, reports/holds/notices, legal required checks separately scoped | Trust/legal |
+| Callback consent exposes more than intended | Default private, named audience/fields, revoke/close and disclosure tests | Privacy/tech; block release on bypass |
+| Guest link takeover/enumeration | One-use hashed credential, scoped secure session, generic recovery and abuse limits | Tech |
+| Paid-after-close/material-change orphan payment | Locking, unique fulfillment, refund obligation, reconciliation and mobile recovery | Tech/finance; no unresolved captured-unfulfilled funds |
+| Rival offers/count leak | Distinct DTO/query/API tests including search/cursors/exports | Tech; block release on leak |
+| “Three months” incorrectly interpreted as all data vanish | Explicit calendar clock, cutoff/purge/backup tests, finance/evidence separation and plain-language notice | Privacy/finance |
+| Regional/Google geocoding cost or license misuse | Source metadata, provider terms, quota/budget controls, lawful coarse fallback | Tech/privacy |
+| Alert promotion becomes spam | Affirmative subscription, purpose/frequency controls, unsubscribe/bounce/dispatch checks | Mail operations/legal |
+| “Only intermediary” treated as legal immunity | Role-specific legal assessment and reviewed terms | Founder/legal |
+| PWA bank return/update retries payment | Owned attempt recovery, no auto replay, real-device tests | Tech/QA |
+| Google Ads spends beyond simple daily multiplication | Understand average-vs-cap, approval/monitoring/pause and actual margin-based CAC | Founder/growth |
 
-| Decision | Proposed default | Owner | Deadline/gate |
-|---|---|---|---|
-| Name/domain/trademark | HoutMatch working name | Founder/legal | Before public identity |
-| Pilot geography/categories | Utrecht + ~25 km; four non-structural categories | Product/trust | G0 |
-| Permanent versus promotional €1 | Pilot-only P1 | Founder/finance | G0; publish end/change notice policy before sale |
-| Prepaid classification and refund rights | Non-transferable own-service access, no expiry | Legal + PSP | G0, hard block on collection |
-| VAT, invoice event and rounding | Illustrative 21%; accountant-approved actual treatment | Accountant | G0, before billing implementation finalization |
-| Exact restoration language | access-v1 table; <=24h first response, +72h reply deadline | Product/trust/legal | G0 |
-| Applicable DSA/P2B/DAC7 duties | Scope assessment; no blanket exemption assumed | Legal | G0/G2; recheck current legislation |
-| Providers/regions/subprocessors | EU primary region, private storage; named vendors TBD | Tech/privacy | G0 before contracts |
-| Auth and phone verification method | Maintained auth + OTP method TBD | Tech/privacy | T01/T03 |
-| Content/finance retention and legal holds | Purpose-separated proposed schedule | Legal/privacy/finance | G0/G2 |
-| Support staffing and business-hour promises | Named trust/finance owner, two-day decision target | Founder/trust | G2 |
-| Paid-beta budget and refund reserve | Bounded experiment; no scaling at negative contribution | Founder/finance | G0/G2 |
-| Exact Web/PWA support versions and test devices | Desktop major browsers; Android Chrome; iPhone Safari; normal and installed modes | Tech lead + QA | T16 before G2; refresh every release |
-| Dedicated-app maturity gate | Validated native-only benefit and stable marketplace economics, not a promised date | Founder/product | G4; separate design and budget |
+## 5. Change control and current status
+This revision replaces incompatible 0.2 assumptions; Git preserves historical documents. The repository is documentation only: no user/job/PSP data exists to migrate here. Any separately started implementation needs an inventory and an explicit migration plan, not blind deletion or repurposing of its payment records.
 
-If a blocking decision cannot be approved, keep the product in prototype/test mode. Do not create production accounts or change the business model as a silent fallback.
-
-## 3. Risk register
-
-Likelihood/impact are qualitative planning judgments, not measured probabilities.
-
-| Risk | Likelihood / impact | Mitigation / evidence | Owner / stop condition |
-|---|---|---|---|
-| €1 economics unviable | High / critical | Actual per-job contribution; cheap acquisition assumptions tested; no hidden breakage revenue | Founder; stop growth if contribution negative |
-| Too few local suitable jobs/firms | High / high | Seed real supply first; category/area coverage; response cohorts | Product; pause paid sales into unsupported market |
-| Prepay friction hides the advertised price | Medium / high | Explicit €10 amount; prototype and actual conversion; unused-funds refund | Product; no launch if users confuse €1 with total commitment |
-| Three lifetime firms all inactive | Medium / high | Track slot-to-response conversion, notifications and fit; do not recycle undisclosed slots | Product; reconsider policy prospectively if liquidity target fails |
-| Duplicate debit or cash refund | Low / critical | Row locks, unique references, source lots/reservations, fault-injection tests | Tech/finance; freeze affected purchase flow on first confirmed incident |
-| Private content/address leak | Medium / critical | Separate DTOs, scoped channels/media, explicit contact grants, cache tests | Tech/privacy; block release on any confirmed cross-user exposure |
-| Phantom jobs / restore gaming | Medium / high | Contact checks, publication review, evidence-coded policy, rate controls | Trust; suspend affected accounts, audit restorations |
-| Regulatory/accounting assumptions wrong | Medium / critical | Signed legal/PSP/accounting decisions, current-source recheck | Founder/legal; no paid launch before clearance |
-| Quote ambiguity creates disputes | High / medium | Versioned scope, exclusions, gross price/VAT basis and site-visit labels | Product/trust; track disputed assumptions |
-| Verification mistaken for workmanship guarantee | Medium / high | Exact check labels and evidence date, no shield/guarantee marketing | Trust; correct misleading copy before launch |
-| Processor/region or support access exposes data | Medium / high | Contracts/subprocessor assessment; restricted telemetry/support | Privacy; no unreviewed processor access |
-| Payment/email outage or lost worker | Medium / medium | Pending states, durable inbox/outbox, retries, reconciliation | Tech; fail closed for unverified funds |
-| Backup restore loses paid events | Low / critical | Post-restore PSP reconciliation, idempotent replay, controlled reopening | Tech/finance; no purchase writes until reconciled |
-| Unsupported all-platform superiority claims | Medium / medium | Evidence-based comparisons and interview validation | Product; remove claims beyond research scope |
-| PWA private-data persistence or stale account display | Medium / critical | Static-only allowlist, no private offline store, resume/logout checks and real-device storage inspection | Tech/privacy; block G2 on any leak |
-| Phone bank-app return or update causes repeated purchase | Medium / critical | Recover owned server intent/entitlement, stable idempotency, no auto-replay or forced mid-checkout reload | Tech/finance; block G2 on duplicate/incorrect outcome |
-| Treating PWA as full native capability parity | Medium / medium | Optional install/push, browser fallback, documented offline limits, tested support matrix | Product/QA; correct unsupported claims before release |
-
-## 4. Change management
-
-Before changing fee semantics, top-up minimum, lifetime cap, shared/private visibility or restoration rules: record why and supporting cohort evidence; get product/legal/finance/tech review as relevant; version the policy; update PRD/API/tests/copy; communicate prospective changes. Preserve existing purchase terms and lawful privacy controls. A change that needs construction payments, multiple countries, business seats or algorithmic ranking deserves a separate scoped design.
-
-## 5. Current completion status
-
-This pack proposes the product, design system, architecture, technical rules and delivery backlog. The user confirmed desktop Web and Android/iPhone PWA first, then dedicated mobile apps after maturity. It does not claim interviews, business validation, regulatory approval, independent security review, implemented features, test execution or production readiness. The remaining human decision is G0 scope/discovery approval, not a production deploy. See [Cross-platform delivery](14-cross-platform-and-pwa.md).
+Fee payer and PWA direction are user-confirmed. The proposed charge event, exact geography, guest security/retention/merchant details and budgets are not silently approved. No interviews, profitability, legal clearance, application tests or deployment completion is claimed.

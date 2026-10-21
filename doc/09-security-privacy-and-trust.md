@@ -1,92 +1,68 @@
-# Security, privacy and marketplace trust
+# Security, privacy and intermediary responsibilities
+**Version:** 0.3 · **Updated:** 21 October 2026
 
-**Status:** proposed controls and launch gates · **Accountable roles:** tech lead, trust lead, privacy/legal and finance
+## 1. Information platform does not mean no platform duties
+The platform connects parties and processes only its own company response fee. It does not certify workmanship, inspect sites, supervise work, negotiate final prices, hold construction money or guarantee identity/performance/payment between parties.
 
-## 1. Sensitive assets and trust boundaries
+Terms must describe that actual role, not say every legal responsibility disappears. Protect our own data/payment systems, handle illegal-content/privacy reports, administer platform-fee refunds and determine applicable trader/platform duties before paid launch. Required legal identity checks, if applicable, are distinct from optional quality certification. [Commission DSA guidance](https://digital-strategy.ec.europa.eu/en/policies/digital-services-act) describes role/size-dependent rules; legal must classify this concrete service.
 
-Protect client address/contact details, home-interior photos, private messages/offers, business verification evidence, account/session credentials and access-fund records. A paid entitlement is not blanket authority to see every field or participant.
+## 2. Data minimization and access
+| Data/action | Public | Active company | Job client/guest owner | Scoped staff |
+|---|---|---|---|---|
+| Generic region/trade information | Read | Read | Read | Read |
+| Live safe task/approved photos | No index/feed | Free authenticated read before deadline | Own | Case/operation scope |
+| Full postcode/client email/phone | No | Only selected callback fields under current permission; no full postcode | Own | Necessary case only |
+| All job responses/companies' offers/contacts | No | No; own response only | Own task private list | Case-scoped, audited |
+| Competitor participation/count | No | No | Own job list as needed | Necessary case only |
+| Company fee/receipt | No | Own | No client billing flow | Finance scope |
+| Guest management token | No | No | One-use exchange only | Never raw token lookup |
+| Task past delete_at | No | No | No content | Minimal authorized legal/finance exception only |
 
-Threat actors include an unpaid scraper, a paid competing business, a fraudulent job poster, an account thief, an abusive participant, a malicious upload author and an overprivileged staff account. Model these actors in authorization tests, not just anonymous versus logged-in users.
+Company websites/contact details are self-submitted with the offer and shown to that client. They are not a guarantee that the company is qualified or trustworthy. A checked email means email control only. No quality badges, invented reviews or completed-work claims.
 
-## 2. Access matrix
+## 3. Client contact choice
+Default CLIENT_INITIATED discloses no client contacts to companies. ALLOW_RESPONDERS requires a clear separate action naming fields and audience: every eligible currently published responder, with no fixed three-firm cap. Phone optional if email-only callbacks selected. Do not hide consent in platform terms or preselect it because a user entered a phone.
 
-| Data/action | Anonymous | Approved carpenter, unpaid | Entitled firm | Owning client | Support | Finance |
-|---|---|---|---|---|---|---|
-| Marketing / opted-in public portfolio | Read | Read | Read | Read | Read | Read |
-| Safe live-job preview | No | Read | Read | Own | Assigned review | No default |
-| Full brief / job media | No | No | Permitted active/read-only history | Own | Case-scoped break-glass only | No |
-| Shared scope Q&A | No | No | Own entitled jobs; writes per state | Own | Case-scoped | No |
-| Private channel / offer | No | No | Own channel only | All their own job channels | Case-scoped break-glass only | No |
-| Client contact/address | No | No | Only individually granted fields | Own | Case-scoped exceptional access | Billing data only where necessary |
-| Balance / receipt | No | Own business | Own business | Not other users' finances | Masked case summary | Scoped financial records |
-| Financial restoration/cash refund | No | Request own only | Request own only | No | Recommend/case decision as granted | Execute controlled workflow |
-| Modify posted ledger history | No | No | No | No | No | No; append compensating entry only |
+Every disclosure checks current task state/deadline, own valid response, account status and allowed fields. Close, withdrawal, suspension or revocation blocks future display; previously copied contact details cannot be recalled. Full postcode/street address never enters the standard company task view. Client can share an address directly for a site visit.
 
-Suspension, job safety holds, deleted content and revoked grants further restrict access. Staff MFA does not itself grant permission to read private messages.
+No raw contacts in notifications, analytics, search indexes, PSP metadata, service-worker caches or export to other companies. Image metadata removal is necessary but cannot detect every visible house number/face; warn before posting and support rapid removal.
 
-## 3. Threat/control/test matrix
+## 4. Three-month deletion and exceptions
+Published job content, photos/versions, rough offers and their contact snapshots, full postcode/client contacts, derived task coordinates, consent grants and guest credentials have an immutable deadline: first publication + three calendar months. Closing/editing/registering later does not extend it.
 
-| Threat | Control | Proof obligation |
-|---|---|---|
-| Unpaid preview leaks | Separate safe projection/DTO, server-only DAL, no full text/photos in HTML/JSON/RSC | Inspect raw network payloads and caches with unauthenticated/unpaid principals |
-| Installed-PWA cache/account-switch leakage | Public-static-only worker allowlist; network-only private data; no durable sensitive drafts; resume/logout revalidation | Inspect Cache Storage, IndexedDB, local/session storage and back-forward history on real phones; account B must not see account A's job/balance after logout or restore |
-| Paid competitor reads another firm's offer | Channel/offer row ownership checked for every request and cursor | Cross-business IDOR test matrix including attachments and exports |
-| Double spend / fourth participant | One database transaction, consistent job/wallet locks and unique constraints | Real PostgreSQL concurrent test with 50 contenders |
-| Fake/replayed payment callback | Stored intent lookup + authenticated PSP fetch + unique grant effect | Replayed/unknown/changed amount/wrong environment callbacks never credit |
-| Refund double payout | Source-lot cap and reservation, stable PSP attempt and verified outcome | Race spend versus refund; lost refund response; reconciliation test |
-| Account takeover / staff misuse | Maintained auth, rate limits, secure cookies, CSRF checks, staff MFA, scoped roles and break-glass audit | Session/role expiry and support privilege escalation tests |
-| Malicious upload / hidden contact in photo | Real MIME checks, quarantine/scan, safe transforms, EXIF removal, moderation | Executable/SVG/polyglot/oversized-pixel/PDF fixtures rejected or quarantined |
-| Script injection / hostile links | Plain text or sanitized subset, output escaping, safe link handling and CSP | XSS fixtures in every text field and message/quote preview |
-| Bulk scraping / phantom paid jobs | Verified contacts, publication review, business checks, rate/spend limits and duplicate detection | Abuse simulation; no fabricated jobs sold during seed recruitment |
-| Unsafe notification / telemetry | Generic authenticated links, redacted metadata, no message replay analytics | Email/log/analytics payload inspection |
-| Shared-board pricing leakage | Distinct composers, explicit audience, no automatic private-to-shared copy, report/moderation | UX audience test and shared endpoint contract tests |
+At the deadline all reads/downloads/callback/alert actions deny access. Proposed live primary/object purge completes within 24 hours with retries/alerts; backups roll off within 30 days and cannot be restored into service without applying tombstones. State these technical timings honestly rather than promising instantaneous physical erasure everywhere.
 
-## 4. Privacy by design
+Exceptions require separate purpose, access and deletion schedule:
+- Minimal platform-fee accounting/billing/payment evidence, classified by accountant. [Belastingdienst](https://www.belastingdienst.nl/wps/wcm/connect/bldcontentnl/belastingdienst/zakelijk/ondernemen/administratie/) describes basic-record retention generally lasting years.
+- Active company account/profile/opt-in alert preferences while needed for service; no automatic preservation of old task details through that account.
+- Specific legal/complaint evidence only when necessary, minimal, restricted, approved and review-dated.
 
-The proposed privacy baseline uses data minimization, purpose limitation, access controls, rights workflows and security appropriate to sensitive home/job data. The governing source is the [GDPR text](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32016R0679), particularly Articles 5, 6, 12–22, 25 and 32–35. Specific lawful bases, notices, retention and incident decisions must be recorded for this service before launch, not inferred from a generic checkbox.
+No blanket “keep all data for disputes” or analytics exception. On early erasure request deny access promptly, resolve financial obligations separately and delete eligible content. We cannot delete recipients' screenshots/external email copies or promises in contractors' own systems; minimize what gets forwarded.
 
-Proposed processing register:
+## 5. Guest and payment security
+Guest links are short-lived one-use credentials stored hashed, purpose/job-scoped, rate-limited and excluded from logs/referrers. Optional account association proves ownership. Never expose all jobs from an unverified email lookup. Staff MFA and scoped permissions do not authorize unrestricted browsing of offers/contact.
 
-| Purpose/data | Proposed basis to review | Minimization/control |
-|---|---|---|
-| Account, job and access fulfillment | Contract/steps toward contract as applicable | Required fields only; coarse city for discovery |
-| Financial records and billing | Contract and applicable legal obligations | Separate finance access/retention; no full chat copy |
-| Abuse/fraud prevention and moderation | Legitimate-interest assessment or applicable obligation | Scoped risk signals, reviewed decisions, appeals |
-| Public portfolio and optional contact disclosure | Documented user choice/appropriate basis | Default private, per-field/per-business grant, revocable future access |
-| Marketing mail/optional analytics | Separate consent where required | Off by default; core service works without it |
+Company €1 publication requires authenticated PSP retrieval, amount/currency/merchant/environment validation, one fulfillment and refund-safe races. Fake callbacks, duplicate captures and delayed paid-after-close outcomes cannot expose an unpaid/invalid response. Hosted checkout avoids handling payment credentials ourselves.
 
-Do not request government identity documents by default for a KVK check. If business ownership needs evidence, collect only the approved minimum through a restricted workflow. Disable session-replay tooling on jobs, messages, billing and authentication pages. Do not use client photos/messages to train an AI model.
+## 6. Content/report operations, not construction monitoring
+Automated type/scan/privacy/rate checks and exception handling are required even without routine manual approval. Reports may concern misleading offers, harassment, privacy, duplicate/fake jobs or unlawful content. Record case, evidence minimum, decision/reason, notice and correction/appeal. Urgent data exposure can trigger a temporary hold; a complaint is not proof of guilt.
 
-Rights operations verify requester identity, provide an export with third-party redactions where needed, resolve unused paid funds and delete content independently from lawful financial retention. Target completion within 30 days as an internal workflow budget, while legal verifies applicable statutory calendar deadlines/extensions. Reapply deletion tombstones after any backup restore. Proposed operational retention periods are in [Data model](06-data-model.md).
+After reasoned review, issue proportionate factual warnings/removal/suspension where justified and lawful. Do not automatically publish unsubstantiated accusations or a “bad company” list. Clients remain responsible for evaluating providers and agreeing scope/prices directly; the platform handles its own fee/service complaints and reports, not the building contract as arbitrator.
 
-## 5. Business trust and moderation
+## 7. Alerts and promotion
+Company job-alert subscriptions are affirmative, recipient-confirmed, category/radius/frequency controlled and easy to stop. Do not scrape business websites and automatically email every posted job to those addresses. [ACM ConsuWijzer spam information](https://consument.acm.nl/veilig-online/hoe-voorkom-ik-spam) provides first-party background; legal reviews the precise categories/permissions, while our product defaults to opt-in. Research access limitations are recorded in the source register.
 
-Verify business registration and account control before selling access. Clearly label what was checked, when and any verification expiry; do not market a registration check as a workmanship guarantee. Profiles list declared specialties and service radius. Recheck significant legal identity changes and define periodic review during G0.
+Unsubscribe/close/deletion is checked before dispatch; an already accepted external email cannot be recalled. Use authenticated sending, bounce suppression and no sensitive body/media. Promotional newsletters/ads are separate from security/account service emails. Non-essential tracking/cookies need appropriate consent and disclosure; no session replay on guest links, offers or billing.
 
-Review all pilot jobs before publication. Confirm genuine scope/contact verification, detect duplicate listings, approve a safe preview and check consent for media. Detect exposed addresses/contact in free text/images and request correction. A rules-based duplicate suggestion can assist operators; no opaque fully automated bans.
+## 8. Compliance launch checklist
+- Determine controller/legal operator, privacy notice, processing purposes/lawful bases, processor/transfer contracts and rights handling under [GDPR](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32016R0679).
+- Classify DSA/trader disclosure duties and any P2B/DAC7 scope under current law; no automatic exemption merely because construction payments are external.
+- Accountant approves platform fee VAT, invoice/correction, refund and retention schedules. Merchant PSP onboarding is required; not a contractor-quality service.
+- Geocoding provider terms/privacy/billing/attribution approved. Google result storage restrictions apply separately from user privacy deletion.
+- Exact three-month interpretation/backup limits, callback audience wording and guest email requirement approved and translated.
+- Disclaimers reviewed for actual role and non-waivable duties; no claim of zero responsibility for our own misconduct/data/payment operations.
 
-Provide report routes for illegal content, fraud, harassment, privacy exposure, unsafe scope and review manipulation. Support assigns a case, applies a reversible hold, records a reasoned decision, notifies affected users appropriately and offers appeal. Urgent privacy exposure triggers immediate access restriction; ordinary commercial dissatisfaction is not automatically fraud.
+## 9. Operational security
+Encrypt transport/storage, use managed secrets and isolated environments, restrict DB/media access and keep logs redacted/purpose-limited. PWA only caches public allowlisted static assets; logout/resume/account switch revalidate, no private durable draft or offline write queue.
 
-Reviews require a platform-linked awarded job. Labels distinguish client-reported completion from bilateral confirmation; no proof of payment for construction exists in MVP. Do not delete negative reviews for paying businesses; apply the same published content rules. New entrants must not be demoted solely for lacking reviews; no paid ranking.
-
-## 6. Compliance decisions that block paid launch
-
-| Topic | Evidence / question | Required decision |
-|---|---|---|
-| Prepaid service / payment regulation | [DNB guidance](https://www.dnb.nl/en/sector-information/open-book-supervision/open-book-supervision-sectors/electronic-money-institutions/authorisation-as-an-electronic-money-institution-overview/services-not-requiring-authorisation/) explains that exclusions/exemptions are conditional | Legal classify the access balance, refundability and any notification/authorization duties; PSP approve actual model. Non-transferability alone is not legal clearance |
-| VAT / invoicing | Access prepayment, possible voucher classification, restorations and cash refunds | Accountant approve rate, tax point, invoice/credit notes, rounding and retention; implement before accepting funds |
-| DSA / trader transparency | [Commission DSA guidance](https://digital-strategy.ec.europa.eu/en/policies/digital-services-act) describes role/size-dependent duties | Determine platform category, applicable small-business rules, notices, contact point, trader verification and any required disclosures |
-| P2B / ranking transparency | [Commission P2B page](https://digital-strategy.ec.europa.eu/en/policies/platform-business-trading-practices) reports a proposed repeal, not proof of enacted repeal | Check legislation in force at launch; retain transparent ranking, terms and moderation appeal design regardless |
-| DAC7 | [Commission DAC7 guidance](https://taxation-customs.ec.europa.eu/taxation/tax-transparency-cooperation/administrative-co-operation-and-mutual-assistance/dac7_en) includes personal services in covered activities | Obtain a determination for this facilitation model; not handling construction payments does not by itself establish exemption. Scope any required data/reporting only after determination |
-| Privacy / cookies / transfers | Home photos, contact grants, processors and telemetry | Approve notices, purposes, DPIA screening, processor contracts, region/subprocessors and consent controls |
-| Consumer and business terms | Client posting free; professional access B2B; construction agreement direct | Verify contractual wording and applicable rights; Dutch/English policy review; transparent fees and no guaranteed-award wording |
-
-These are **scope-assessment tasks**, not claims that all listed duties apply or that this draft establishes compliance. Future construction escrow, payouts or cross-border expansion requires a new architecture and legal review.
-
-## 7. Operational response
-
-Incident priorities: P0 private-data exposure, ledger corruption, forged paid fulfillment, or systematic duplicate charging; P1 broad messaging/payment outage; P2 isolated support defect. Name an on-call owner and backup before beta. Suspend affected purchases immediately for P0, preserve minimal evidence, revoke exposed capabilities, assess affected users and legal notification obligations, then reconcile before reopening.
-
-Secrets live in a managed secret store, separated by environment; rotate PSP and storage credentials, restrict database network access, and audit staff changes. Dependencies receive vulnerability scanning and supported-version updates. Restore drills prove backup availability; they do not replace authorization tests. No production personal data in test fixtures or developer laptops by default.
-
-PWA rollout must include a service-worker/cache kill-switch procedure for a faulty deployment, compatible assets for old installed versions and evidence that private data was never precached. Do not treat uninstall as server account deletion or entitlement revocation. No notification/camera permission or durable offline private storage is required for core service; optional future Web Push must contain only generic authenticated links, support unsubscribe and have its own processor/privacy review. See [Cross-platform delivery](14-cross-platform-and-pwa.md).
+Critical incidents: rival/client data leakage, consent bypass, duplicate retained fee, unpaid visible offer or missed deletion access deadline. Stop affected exposure/purchases, preserve minimal evidence, assess notification obligations, reconcile/fix/test and record reopening approval. Test backups with tombstone/PSP replay before paid beta.
