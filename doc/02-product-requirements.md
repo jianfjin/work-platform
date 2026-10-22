@@ -1,77 +1,55 @@
-# Product requirements document
-**Version:** 0.3 · **Date:** 21 October 2026 · **Status:** revised design; not implemented
+# Product requirements
+**Version:** 0.4 · **Updated:** 22 October 2026
 
-## 1. Authoritative interpretation
-Client posting and comparison are **free**. Companies fund the platform. Recommended pilot: **€1.00 including VAT once per company/task when its first rough offer is successfully published to the client**. Reading tasks is free. This flat platform-response fee is not a percentage commission on a construction contract, and is not conditional on winning or completing the work. Founder must confirm the charge event before development.
+## 1. Confirmed direction
+The platform is semi-public-benefit and low-fee, serving ZZP and SMEs. It includes client maintenance tasks, company cooperation/work packages and tool/material trade. Free companies may view at most five information items per month; active subscribers receive information without a numerical monthly limit. Client posting remains free.
 
-The draft's client-€1 alternative is analyzed in [Payments](08-payments-and-economics.md), not enabled. No compulsory €10 wallet, three-company cap, KVK/workmanship certification, in-app contract/award system or construction-payment processing.
+Trades include roof repair, new roofing, renovation, insulation, windows/frames, plumbing/electrical maintenance and installation, plus the existing maintenance trades; see [category design](22-platform-redesign.md#2-工种目录). The selected stack, GDPR, €100/month ex-VAT infrastructure target and client-task Groningen/Fryslân pilot are retained.
 
-## 2. Users, region and scope
-- Clients: adults authorized to request work, as secure guests or optional registered accounts.
-- Companies: registered platform accounts with confirmed email ownership and self-declared business/service/contact details; one owner per company in MVP. This is not a workmanship or credential check.
-- Operators: platform administration, content/report handling, platform-fee support, security and deletion; not building-site supervision.
+## 2. Commercial policy status
+The founder confirmed cancellation of the former €1 offer-publication fee: only free and low-price subscription services remain. Authorized offer submission, publication and editing have no separate per-offer charge or checkout. Subscription price, period, renewal consent, cancellation/refunds and exact quota semantics remain open; archived per-offer payment/refund rules do not supply these terms.
 
-Pilot labels are Groningen, Friesland/Fryslân and Drachten. Planning assumption: the two provinces, with Drachten explicitly prioritized; final municipality/postcode allowlist requires approval. Categories include carpentry, windows/doors, non-structural alterations, insulation, internal walls, painting and roof maintenance. No platform-issued engineering/safety advice or certification.
+Proposed quota defaults: one company-wide pool of five unique detail accesses per calendar month across all boards; repeat reads within the month do not re-count; own-content management and rights/billing functions never consume the allowance. Preview versus detail, cross-month rereading, timezone, notification counting and mid-period plan changes must be settled before enforcing a live commercial entitlement. Technical work may use an explicit test policy without presenting it as approved terms.
 
-Dutch and English; desktop Web plus Android/iPhone browser and installed PWA. Native apps later.
-
-## 3. Workflow and commercial rules
-1. Client supplies short description, postcode/city, email and optional few photos; budget, timing and measurements are optional. Email confirmation enables publishing without an account/password.
-2. Client reviews exactly what companies can see: city/PC4 area, description and sanitized photos. Full postcode, email, phone and street address are not part of that shared brief.
-3. Company signs in, reads suitable open tasks free and drafts an introduction, rough bid/range or “site visit needed,” own website if available, email/phone and availability.
-4. The first visible response requires explicit €1 checkout. One response per company/task, versioned edits without a second fee. Duplicate requests/callbacks must not double-charge. Payment failure publishes nothing; payment succeeds after close/delete/material scope change -> no publication and full platform-fee refund.
-5. All eligible paid responses appear in the client's private paginated list. No fixed participant limit. Companies see only their own response and cannot retrieve competitor identities, prices, response counts or ordering information.
-6. Default CLIENT_INITIATED: client contacts a company directly. Company contact fields are in its offer; client contact fields are not revealed.
-7. Optional ALLOW_RESPONDERS: an explicit client choice permits currently published responding companies to view the selected client email/phone fields. Explain that the audience is every eligible responder, not only a winner and not a limited three firms. Client can switch back/revoke future disclosure; previously copied details cannot be recalled.
-8. Street address/full postcode stays private; sharing it for a site visit is a direct client action outside the brief. No contact details in free description/photos.
-9. Client may close at any time. Closing stops new responses, alert sends and future callback disclosure. Existing submitted offers remain client-readable until the deletion deadline unless withdrawn/removed; closure does not prove award/completion or automatically refund a valid earlier response.
-10. The task's immutable deletion deadline is first publication plus **three calendar months**, using Europe/Amsterdam calendar arithmetic and UTC storage. Edit, close, new offer or account registration never resets it. Access is denied at deadline even if purge is delayed.
-11. Companies edit/withdraw their own offer without a new fee. Withdrawal is visible as withdrawn to the client and ends callback access; it does not erase finance history or create another purchase opportunity.
-12. No mandatory on-platform negotiation, site visit booking, final agreement, construction invoice/payment, performance monitoring or work-success verification.
-
-## 4. Functional requirements
-| ID | Requirement | Acceptance criteria |
+## 3. Functional requirements
+| ID | Requirement | Current acceptance boundary |
 |---|---|---|
-| FR-01 | Guest ownership and optional account | No required client account/password; email-confirmed scoped job-management session; resend/recovery generic and rate limited; optional account linking proves ownership |
-| FR-02 | Lightweight job and photos | Description/postcode/city/email; optional photos and timing/budget; sanitized company preview; postcode-city validation; no publication outside approved region |
-| FR-03 | Company self-registration | Confirmed login email, declared name/services/base area/radius/contact details and optional website; no “quality verified” claims; suspend abusive accounts |
-| FR-04 | Free task reading and geographic fit | Registered active companies see safe open task brief/media free; category/radius filtering; approximate distance explained; full postcode/contact never leaked |
-| FR-05 | Private rough offers | Introduction, own contacts, website, indicative amount/range or site-visit-needed; client sees all live eligible responses with pagination; company sees only its own, not rivals/count |
-| FR-06 | Company-paid first publication | Explicit €1 gross confirmation; one successful fee per company/task; first visibility only after server-verified paid state; edits/read/retries are not charged |
-| FR-07 | Client contact preference | Default client-initiated; explicit selected-field responder callback consent; disclosure checks response/job/consent every time; revocation/close stops future access |
-| FR-08 | Client close and task lifecycle | Close whenever desired; no new response or alert after close; paid-after-close compensates; no inferred award, completion or construction payment |
-| FR-09 | Opt-in matched email alerts | Company category/radius/frequency settings, confirmed recipient and unsubscribe; notifications contain only safe metadata and an authenticated link; stale/closed/deleted tasks suppressed |
-| FR-10 | Three-month task deletion | Immutable calendar deadline; job text/media/offers/contact grants/guest tokens and derived task location deleted; live access stops at deadline; auditable purge/retry |
-| FR-11 | Feedback and misbehavior handling | Report intake, evidence/reason/status, safety hold and appeal/correction; no automatic defamatory public badge or claimed construction investigation |
-| FR-12 | Minimal operations | Staff role separation, fee refund/reconciliation, moderation/report queue, mail deliverability, deletion health and platform support; no routine workmanship checks |
-| FR-13 | Security and scoped data access | Hash one-use guest tokens; server-side ownership and company/response ACL; clean media; safe logs; finance effects deduplicated; no private offline cache |
-| FR-14 | Web/PWA parity | Both client/company flows usable on desktop, Android and iPhone browser/home-screen modes; optional installation and safe checkout return; native apps deferred |
-| FR-15 | Dutch/English | Core forms, legal/fee/contact/deletion copy and transactional mail localized; user task text not silently auto-translated |
-| FR-16 | Responsible low-cost acquisition | Generic region/category landing pages; no private job SEO index or scraped email blast; separately controlled advertising budget and honest attribution |
-| FR-17 | Platform-fee accounting and refunds | Operator-owned merchant/settlement configuration; paid/publication/refund audit; refund failed fulfillment once; statutory minimal finance separated from task deletion |
-| FR-18 | Scope/version safety | Material job edits version and notify; pending paid offer on old material scope refunds instead of silently publishing; paid visible offers get a scope-change label, not an automatic re-charge |
+| FR-01 | Guest client tasks | Confirm email before publication; short-lived task-scoped access/recovery; no mandatory client account; company identity grants no automatic guest ownership |
+| FR-02 | Briefs, categories and photos | Expanded categories; postcode/city validation; optional six photos/task, 10 MB each; JPEG/PNG/WebP/HEIC to sanitized JPEG/WebP; no full postcode/contact in company projection |
+| FR-03 | Company identity | Serve ZZP/SMEs with verified-email/password accounts, self-declared services/base/radius and company-scoped plan rights; no quality certification claim |
+| FR-04 | Information discovery | Separate board filters and safe previews; current authorization and plan entitlement for details; approximate radius, not mandatory GPS |
+| FR-05 | Private task offers | Client sees own task offers; company sees own only; no rival identities/counts/ordering; no commercial responder cap; active edits free |
+| FR-06 | Free and subscription access | Only free and low-price subscription tiers; free maximum five items/month and active subscription no numerical monthly information cap; no separate offer-publication charge; publish exact approved counting/period/plan terms before live use |
+| FR-07 | Client contact choice | Default private; explicit selected email/phone access only for eligible published responders while task is open; subscription alone never grants contacts; revocation/closure stops future display |
+| FR-08 | Task lifecycle | Version material edits; scope labels on old offers; close/reopen before original expiry resets contacts; final offer withdrawal is marker-only and cannot silently republish; no inference of work award |
+| FR-09 | Opt-in matching alerts | Separate marketing/task-alert opt-in from paid subscription; daily digest default, optional instant, easy unsubscribe; no full-detail email bypass of plan/privacy rules |
+| FR-10 | Retention and erasure | Client task first publication + three calendar months, immediate denial, <=24h live purge, <=30-day isolated backups and deletion-safe restore; explicit separate new-board policy before live publication |
+| FR-11 | Reports and trust | Case-scoped reports, reasons, holds/removal and correction/appeal for all boards; address client confidentiality and misleading/unsafe/stolen goods reports |
+| FR-12 | Staff operations | Invite-only staff password/TOTP or one-use recovery code; scoped roles; member/quota support, moderation, finance exceptions and erasure monitoring |
+| FR-13 | Security | Server-owned authorization, real-type media validation, redacted logs, bounded abuse controls, hashed guest tokens, no private offline cache |
+| FR-14 | Web/PWA | Desktop/Android/iPhone browser and installed flows; quota-safe navigation and payment recovery; native apps later |
+| FR-15 | Dutch/English and accessibility | Critical board, quota, plan, fee, consent and retention copy localized; user content not silently translated |
+| FR-16 | Low-cost community growth | Genuine ZZP/SME participants, generic regional/trade content and opted-in outreach; no fabricated reviews or scraped job emails |
+| FR-17 | Platform billing | Mollie only; price/terms/method policy must be approved before activation; verified charges and period-level membership effects, bounded refunds/reversals and reconciliation; no task-detail retention in finance records |
+| FR-18 | Scope and visibility versions | Task/work-package edits preserve historical context without renewing expiry or automatically disclosing a parent project; stale entitlement/consent decisions rejected |
+| FR-19 | Cooperation board | Company creates work packages, publishes partner needs and receives scoped private expressions of interest; no automatic original-task access or subcontract award |
+| FR-20 | Tools/materials board | Company publishes typed trading information, condition/specification/quantity/price/area and availability; initial contact/settlement boundary remains an explicit design proposal |
+| FR-21 | Shared access accounting | Enforce the approved allowance atomically and idempotently across all full-detail paths; previews/prefetch/unauthorized/expired reads cannot consume or bypass it; live policy must define plan transitions |
 
-## 5. States
-Task: DRAFT -> EMAIL_PENDING -> OPEN -> CLOSED; safety hold SUSPENDED can restrict it; at delete_at it becomes EXPIRED_FOR_ACCESS -> PURGED. Client may resume a voluntary CLOSED task before delete_at without extending the clock; no additional per-company fee. Suspended tasks need an operator decision. No old 14-day commercial expiry or recurring three-day reconfirmation rule.
+FR-06/17 replace the v0.3 publication-fee implementation contract. Version 0.3 requirements/acceptance cases are [archived](archive/v0.3/README.md); no implemented code or live billing is being migrated.
 
-Response: DRAFT -> PAYMENT_PENDING -> PUBLISHED -> WITHDRAWN/REMOVED; purge deletes content. Keep an opaque finance-effect key, not the proposal text, where lawfully required. A refunded failed response cannot be re-published on that same payment; a deliberate new attempt needs an explicitly confirmed new intent and must not yield two retained successful fees.
-
-## 6. Retention contract
-At delete_at, all reads, downloads, consent grants and new sends stop. Proposed physical live-store/object-version purge completes within 24 hours; retry/alert on failure. Backups are isolated, inaccessible to ordinary users and age out within 30 days; restore reapplies deletion tombstones before serving.
-
-Minimum platform-fee tax/accounting records, active company profiles/alert settings and strictly justified legal evidence have separate schedules. Disclose these exceptions; do not promise all records disappear at three months. No retained task photos/text under a blanket “analytics” excuse. External emails/screenshots/contact copies are outside remote recall.
-
-## 7. Non-functional requirements
-| ID | Target / verification |
+## 4. Non-functional requirements
+| ID | Target / evidence |
 |---|---|
-| NFR-01 | Zero tolerated duplicate retained successful company/task fee, payment without fulfillment/refund resolution, cross-client/rival-offer exposure or consent bypass |
-| NFR-02 | Deadline access denial independent of worker; purge target <=24h; backup roll-off <=30 days; month-end/DST/restore tests |
-| NFR-03 | Initial p95 safe reads <500ms, local publish transaction <1s excluding PSP/network, at 100 concurrent active users and 10,000 tasks; test, not SLA |
-| NFR-04 | WCAG 2.2 AA target, 320px reflow, keyboard/screen reader; Dutch/English fee/contact/deletion comprehension |
-| NFR-05 | Recorded real Android/iPhone browser+installed checkout/lifecycle tests; no private PWA persistence or offline write replay |
-| NFR-06 | Durable alert delivery/deduplication; close/unsubscribe rechecked before sending; no reply-time or mail-delivery guarantee |
-| NFR-07 | EU primary storage with processor/transfer review, secure sessions/secrets, minimal telemetry; RPO <=1h/RTO <=4h tested with PSP reconciliation |
-| NFR-08 | Monthly 99.5% pilot availability target; price/payment/consent/retention changes versioned; alerts for financial/deletion/privacy failures |
+| NFR-01 | No cross-client/company disclosure, consent bypass, duplicate retained billing effect or quota overrun |
+| NFR-02 | Client-task calendar deadline and <=24h live/<=30-day backup deletion; new-board retention explicit; restores cannot resurrect erased data |
+| NFR-03 | Retain initial p95 safe reads <500ms and local entitlement/business transaction <1s excluding external PSP/network at 100 active users/10,000 information items; revised workload must be qualified |
+| NFR-04 | WCAG 2.2 AA target, 320px reflow, keyboard/screen reader, clear free/subscription and three-board comprehension |
+| NFR-05 | Real Android/iPhone browser/installed media, session, subscription return and update tests; no private persistence/offline mutation replay |
+| NFR-06 | Durable notification dedup and dispatch eligibility, opt-out and allowance rules; no inbox-arrival guarantee |
+| NFR-07 | EU primary storage, processor/transfer review, secure sessions/secrets; RPO <=1h/RTO <=4h proven with billing/deletion reconciliation |
+| NFR-08 | 99.5% monthly pilot availability target; versioned prices/terms/allowance policies; alerts for privacy, finance, quota and purge failures |
+| NFR-09 | GDPR/AVG evidence before real personal data: purposes/roles/notices, rights, contracts/transfers, DPIA/DPO screening, retention and breach readiness |
+| NFR-10 | Concurrent free accesses cannot exceed the approved five-item monthly rule; all APIs/mail/media/export paths honor the same entitlement policy without stale cached grants |
 
-## 8. Metrics and non-goals
-Measure posting success, relevant response rate, fee conversion, client contact clicks, opt-out/complaint rates, refund incidents, deletion lag and cost per eligible job. Label site visits/awards/completion as self-reported if voluntarily supplied. Not required: public reviews, chat, shared Q&A, escrow, subscriptions, full offline use, automatic contractor verification or paid ranking.
+No performance, recovery, legal, pricing or capacity result is claimed by the design. No unconditional access follows from the word unlimited.

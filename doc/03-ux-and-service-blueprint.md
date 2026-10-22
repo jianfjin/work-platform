@@ -1,89 +1,51 @@
 # UX and service blueprint
-**Version:** 0.3 · **Updated:** 21 October 2026
+**Version:** 0.4 · **Updated:** 22 October 2026
 
-## 1. Navigation and promises
-Visitor: How it works, Regions/trades, For companies, Help, Dutch/English, **Post free**.
-Client guest: job-management link -> My task, Offers, Contact preference, Close/delete.
-Company: Tasks, My offers/payments, Profile/radius, Email alerts, Help.
-Operator: Reports, Fee exceptions, Deletion/alerts health, Accounts and audit.
+## Navigation and mission
+Lead with an affordable community platform for ZZP/SMEs. Show three distinct destinations: **Opdrachten / Client tasks**, **Samenwerken / Cooperation**, and **Gereedschap & materialen / Tools and materials**. Include **Gratis / Free** and **Abonnement / Subscription** services and a visible monthly allowance for free companies.
 
-No client payment screen. Company task cards say “Reading is free; first published offer €1.00 incl. VAT.” Never label a company “verified” merely because an email was confirmed.
+A paid subscription is separate from email-alert opt-in. Do not invent a monthly price, select automatic renewal by default or present an unofficial charity/quality badge.
 
-## 2. Client posting
-1. Choose category and enter a short description. Optional budget/timing/measurements; avoid a long technical questionnaire.
-2. Enter postcode and city; show normalized match and pilot eligibility. Full postcode is private; companies see city/PC4 area and approximate distance.
-3. Add a few photos if helpful. Explain address/face/contact risks; photo selection is optional, with scan/metadata removal and clear unsupported-format errors.
-4. Enter email for a one-use management link, **not compulsory registration**. Phone is requested only if the client wants telephone callbacks.
-5. Select contact preference. Default “I will contact the companies.” Alternative explains that all published responders may see selected fields; consent is separate, unchecked and editable.
-6. Review safe brief, deletion date and intermediary/no-quality-guarantee wording. Confirm email and publish after automated content/media checks. Flagged material goes to exception review; no promise that every post is manually verified.
-7. Generic notice tells the client an offer exists. Reopen management securely, optionally create an account later.
+## Client task flow
+1. Choose an expanded trade; enter a short brief and postcode/city. Budget/timing/measurements remain optional.
+2. Optionally attach up to six photos, 10 MB each; accept JPEG/PNG/WebP/iPhone HEIC and show upload/processing state. Explain visible address/face risks.
+3. Confirm email before publication; use one-use task-scoped management/recovery links without compulsory account creation.
+4. Preview exactly the safe company-visible fields. Client contact remains private; optional callback consent names the selected fields and every eligible published responder audience.
+5. View all own private offers, contact companies directly and close/delete the task. Reopening preserves the original deadline and resets contact to private.
 
-Use a short-lived one-use email link to establish a scoped session. Do not email a permanently privileged management URL. If lost/expired, request a fresh link with a generic response.
+## Company discovery and plan flow
+1. Confirm account email, declare ZZP/company profile, trades, region/radius and optional alerts.
+2. Choose Free or Subscription. Free clearly says **最多 5 条信息/月 / Maximaal 5 items per maand / Up to 5 items per month**. Subscription says no numerical monthly information limit during its active period; amount/renewal terms remain design decisions.
+3. Browse safe board previews. Under the proposed counting rule, explicitly open details to use one allowance item; prefetch and ordinary back navigation do not spend another item.
+4. Show used/remaining allowance, reset-period wording and clear confirmation before any paid plan checkout. On exhaustion, retain account/own-content access and offer a deliberate subscription action.
+5. Recover checkout through server-owned status across devices; a successful redirect never activates membership by itself.
 
-## 3. Company response
-1. Register profile, confirm email ownership, set trades/base postcode and radius, optionally subscribe to matched alerts.
-2. Read safe task/approved photos free. Check actual category, location approximation and current open/deletion status.
-3. Draft introduction, rough bid/range or “site visit required,” availability, own website/contact details.
-4. Show €1 gross, what publication buys, no guaranteed work/contact/reply, no fixed competitor limit and refund conditions. Client contact is not automatically included.
-5. Hosted checkout -> authenticated server status pending/paid. Only verified payment plus an eligible open task publishes the offer.
-6. If task closed/expired/materially changed before publication, do not post; show refund pending, not a wallet credit or a second purchase prompt.
-7. Company sees own offer/status/receipt only. Edits cost nothing, withdrawal stops its callback access. Other company participation/count is never shown.
+The proposed company-wide/shared allowance and repeat-read treatment need confirmation before the copy is finalized. Do not hide unresolved quota terms behind a working-looking production paywall.
 
-## 4. Client comparison and direct connection
-All published offers appear in a paginated private list, default received order, with each firm's self-declared name, introduction, own website/email/phone, rough bid assumptions and availability. Do not rank the lowest amount as objectively best or expose the list through public URLs.
+## Responding to a client task
+After authorized detail access, prepare a private introduction, indicative price/range or site-visit need and own contacts. Only the client sees all offers; companies cannot see rivals/counts. The founder canceled the old €1 offer-publication fee: authorized offer submission, publication and editing have no separate charge or checkout. Paid checkout is solely for a deliberately selected low-price subscription under approved terms.
 
-Client may click email/phone/website, arrange a site visit and negotiate final work/payment directly. Such clicks are navigation signals, not work awards or completed sales.
+Withdrawal remains final for the original task/company in the current design; client sees company name/withdrawn marker, not body or contacts. Plan expiry must not delete an already published offer or prevent management of a company's own content; new third-party detail/contact access still checks the current entitlement/consent policy.
 
-CLIENT_INITIATED is default. ALLOW_RESPONDERS reveals only explicitly selected email/phone to eligible published responders while task/consent remain active. Show a warning that there is no three-firm limit and details already copied cannot be recalled. Turning it off or closing stops future platform disclosure.
+## Cooperation flow
+The publishing company describes a project and one or more independent work packages: work scope, required trade/capacity, time window, approximate area and proposed collaboration terms. Other companies access details under their plan and privately express interest. The publisher manages interest and closes the listing; no contract is automatically awarded.
 
-## 5. Wireframes
+If a package references an original client task, show a privacy review before publication. Do not inherit client addresses, photos, contacts or other offers. An interested partner gets package access, not original-project ownership.
+
+## Tools/materials flow
+Design a company listing with item category, title, condition, specification, quantity/unit, asking price or negotiation indication, approximate pickup area, delivery options and availability. Let the owner edit, withdraw or mark it unavailable/sold, and provide a report action.
+
+The initial proposal is private inquiry and direct agreement/payment between the parties. Platform cart, escrow, shipping and consumer buying are not approved additions. Quota never forces disclosure of an exact pickup/home address.
+
+## Sketch
 ```text
-[Work Platform - working name] [NL | EN]
-Local companies for home maintenance
-[Post your task free] [I run a company]
-Groningen / Friesland-Fryslân / Drachten pilot
-No account required to post; secure email link to manage.
+[Work Platform] [Opdrachten] [Samenwerken] [Tools/materials] [NL | EN]
+Low-fee community for ZZP and SMEs
+[Post a task free] [Find partners] [Trade tools/materials]
+
+Company account: Free — viewed 3 / 5 this month     [Subscription]
+[Safe preview] [Safe preview] [Safe preview]
+[Open details] — uses allowance according to the published policy
 ```
 
-```text
-Company task view
-Replace internal doors · Drachten · PC4 area
-Description + sanitized photos · approximate distance
-Closes when client chooses; data deleted on [date]
-Reading: free       [Prepare an offer]
-First successfully published offer: EUR 1.00 incl. VAT
-No guaranteed work. No competitor list/count.
-```
-
-```text
-Client-only task page
-[Contact preference] [Close task] [Delete task]
-Offers - received order - page controls
-Firm A: introduction / rough range / own contacts / website
-Firm B: introduction / visit required / own contacts / website
-These offers are private to you, not visible to other firms.
-```
-
-## 6. Required recovery states
-| State | UI and operation |
-|---|---|
-| Guest email pending/link expired | Explain no account is required; resend with rate limits, generic success; preserve only safe temporary draft |
-| Wrong postcode/city/outside trial | Ask correction or show waitlist; no silent nationwide publication |
-| Payment pending/browser return | Show server-known status; reauthenticate if needed; no redirect-based success |
-| Paid but task unavailable | No publication; full €1 refund workflow and case/reference |
-| Duplicate click | Reuse operation; recover original offer/receipt; no double fee |
-| Material edit during payment | Explain scope change; refund this attempt; a new offer needs deliberate review |
-| Task closed | No new response/contact grant/alert; client sees prior permitted offers until deadline |
-| Callback disabled | Company contact section no longer returns client fields; direct previously copied contacts cannot be recalled |
-| Deletion deadline | Content unavailable even before physical purge completes; no misleading recover button |
-| Offline | Public fallback only; no private offers/balance cached, queued payment or automatic message |
-| App suspended/update waiting | Hide stale private data until revalidated; save online/discard before reload |
-| Misbehavior report | Case reference, safety action/status and correction/appeal; no implied site investigation |
-
-## 7. PWA and localization
-Desktop, Android and iPhone share accounts/server records. Installation is optional; no permission gate for ordinary use. Standalone screens need own back/home navigation, safe-area/keyboard handling and file-selection fallback. In-memory unsent drafts may be lost on reload/OS termination; saved server drafts are not offline replicas.
-
-Dutch/English UI/mail follow user's language. Do not auto-translate or modify an offer's meaning silently. Example Dutch labels: “Plaats gratis je klus”, “Offerte indienen: €1,00 incl. btw”, “Ik neem zelf contact op”, “Bedrijven die reageren mogen contact opnemen”, “Sluit mijn klus”, “Gegevens verwijderd op [datum]”. Native-speaker review before release.
-
-## 8. Service handoffs
-Automated publication handles confirmed email and safe content/media; exception queue handles suspected abuse/privacy, not trade certification. Payment worker verifies PSP state and atomically publishes or routes refund. Alert worker matches opt-in radius/category and rechecks eligibility at send. Privacy worker denies at deadline and purges live content/objects. Operators reconcile fees and handle notices/reports; they do not negotiate building work.
+The counter is illustrative; shared-pool and monthly-reset semantics remain proposed. Keep operational notices, GDPR rights, unsubscribe and own-record management available regardless of allowance.

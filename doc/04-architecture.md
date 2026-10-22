@@ -1,73 +1,60 @@
 # Architecture design
-**Version:** 0.3 · **Updated:** 21 October 2026
+**Version:** 0.4 · **Updated:** 22 October 2026
 
-## 1. Small information platform, shared Web/PWA
-Use a TypeScript modular monolith: Next.js responsive Web/PWA UI and server API, PostgreSQL, private EU photo storage and one restartable background worker. All three user surfaces share server-owned identity, task, offer and fee records. No native app build, distributed microservices, wallet service, construction-payment service or work-monitoring system.
+## 1. Modular monolith, three domain boards
+Keep one TypeScript application with internal modules and shared PostgreSQL transactions. Web/PWA requests and bounded job handlers share authorization, membership and allowance services. The scope expands beyond the old single client-task board; it does not require domain microservices or a separate database per board.
 
 ```mermaid
-flowchart LR
-    Guest[Client guest or optional account] --> Web[Desktop Web and Android or iPhone PWA]
-    Firm[Company account] --> Web
-    Staff[Scoped staff with MFA] --> Web
-    Web --> DB[(Private PostgreSQL)]
-    Web --> Media[(Private sanitized media)]
-    Web --> PSP[Stripe hosted Checkout candidate]
-    PSP --> Web
-    Worker[Outbox and deletion worker] --> DB
-    Worker --> Media
-    Worker --> PSP
-    Worker --> Mail[Opt-in alerts and transactional mail]
-    Web --> Geo[Geocoding adapter]
+flowchart TD
+    UI[React Router Web/PWA] --> API[Hono and shared application services]
+    API --> Boards[Tasks / Cooperation / Tools and materials]
+    Boards --> Access[Ownership + entitlement + allowance + consent]
+    Access --> DB[(Render PostgreSQL Frankfurt via Hyperdrive)]
+    API --> PSP[Mollie membership billing adapter]
+    Jobs[PostgreSQL jobs / bounded Cron handlers] --> DB
+    Jobs --> PSP
+    Jobs --> Mail[Resend]
+    Jobs --> Images[Cloudflare Images binding]
+    Images --> R2[(Private EU R2 sanitized variants)]
+    API --> R2
+    API --> Geo[PDOK server-side adapter]
 ```
 
-Construction visits, negotiations, final contracts and payments are direct between parties outside the system. An offer list is not a booking, guarantee or verified completion record.
-
-## 2. Modules
-| Module | Owns | Boundary |
-|---|---|---|
-| Identity | Company accounts, optional client accounts, guest job sessions | Email ownership/session security, not quality certification |
-| Tasks | Lightweight briefs, region, material revision, close/delete deadline | Safe company projection; no rival-response metadata |
-| Companies | Declared profile, contacts, categories, radius, alert preferences | Details are self-declared unless a specific legal check says otherwise |
-| Responses | One company/task record, rough offer, client-private list | Own-only company reads; no public bidder feed |
-| Fee billing | €1 intent, PSP verification, publication/refund effects, accounting | No client charge or contractor payouts; no mandatory prepaid balance |
-| Matching/alerts | Provider adapter, approximate radius/category, email deduplication | Consent and live eligibility rechecked at dispatch |
-| Privacy/operations | Contact permissions, reports, access holds, deletion, minimal audit | No construction supervision or routine workmanship checking |
-
-Keep API adapters separate from server-side domain services so future native clients can reuse rules; no premature native auth/store receipt endpoints.
-
-## 3. Provider choices
-| Component | Recommendation / approval needed |
+## 2. Module boundaries
+| Module | Owns |
 |---|---|
-| Web/PWA | Next.js/React/TypeScript, manifest, static-only offline fallback |
-| Database | Managed PostgreSQL; explicit locks and reviewed migrations |
-| Payment | Preferred candidate: Stripe hosted Checkout + official stripe-node SDK (npm package `stripe`), server-side Node.js; platform legal operator is merchant with approved business settlement account |
-| Location | PDOK Location API candidate for low-cash-cost Dutch matching; Google Geocoding optional with budget/licensing/privacy review |
-| Email | Transactional provider with authenticated sending domain, opt-in preferences, bounces/unsubscribe and processor review |
-| Photos | Private EU object buckets, real-type checks, metadata stripping and safe variants |
-| Auth | Maintained session/magic-link/OIDC implementation; no homegrown password/token crypto |
-| Worker | PostgreSQL inbox/outbox and leased jobs; no separate message broker initially |
+| Identity/companies | Guest task authority, company/ZZP accounts, staff MFA and organization-scoped permissions |
+| Information catalog | Board type, publisher, safe preview, lifecycle/visibility and board-specific detail routing |
+| Tasks/offers | Client briefs, private offers, scope revisions, callback consent, close/reopen/withdrawal |
+| Cooperation | Company work packages, independent project references and private interest |
+| Trade | Tools/material descriptions, condition/quantity/price/area, inquiry and availability |
+| Plans/access | Current membership entitlement, approved monthly counting policy, atomic/idempotent detail access |
+| Billing | Low-price subscription payments/periods/refunds/reconciliation only; no per-offer charge or publication-payment dependency |
+| Matching/notifications | Board/category/region/radius filters, explicit opt-in, no full-detail or consent bypass |
+| Privacy/operations | Rights, erasure, reports/holds, minimal audit and billing/quota exceptions |
 
-Stripe is a candidate following the user's suggestion, not an executed provider contract. The platform sells its own response-publication service: no Stripe Connect accounts/transfers, contractor payouts, subscriptions or wallet are needed in this scope. Keep a small billing adapter for Checkout creation, verified status and refunds; do not build multiple PSP integrations now. Mollie remains a comparison/fallback if merchant eligibility or economics fails. See [payment evaluation](08-payments-and-economics.md).
+## 3. Preserved selected stack
+| Component | Selection and qualification boundary |
+|---|---|
+| Web/API | React Router framework mode + React/Vite/SSR; TypeScript/Hono on Cloudflare Workers |
+| Database | Paid Render PostgreSQL Frankfurt through Hyperdrive; application query caching disabled; external TLS endpoint and reviewed source-IP access |
+| Database tooling | Drizzle ORM + node-postgres (pg), reviewed SQL migrations; explicit locks/constraints and transaction-scoped connections |
+| Identity | Better Auth, company verified-email/password; staff invite-only password/TOTP/one-use recovery; guest task access independent |
+| Payments | Mollie only; requalify new subscription terms/mandates and event association; no Stripe evaluation |
+| Mail/jobs | Resend with dedicated subdomain; durable PostgreSQL inbox/outbox/jobs and bounded Cron, initially one-minute recovery poll with optional post-commit immediate attempts |
+| Photos | Private EU R2 + Images Workers binding; sanitized variants and live authorized reads; metadata/HEIC/runtime/privacy evidence required |
+| Location | Minimum server-side PDOK queries and local approximate matching |
 
-Pin maintained supported versions at implementation. No providers, accounts or billing projects are provisioned by this documentation.
+## 4. Atomic boundaries
+The allowance policy is a new business invariant. Resolve visibility first, then transact plan/period evaluation, unique company-item access and quota update; never allow two parallel sixth accesses. All detail, media/contact and notification paths need consistent access decisions. Quota proposals are not yet approved commercial terms.
 
-## 4. Critical atomic boundaries
-- Guest token exchange: consume token once and create job-scoped session.
-- First response publication: verified payment observation + job eligibility/revision + visible response + retained successful-fee uniqueness + accounting/outbox.
-- Close/contact change: job state/consent version + audit + cancellation of eligible future sends; existing private offer list stays scoped.
-- Refund: unique amount reservation/reference before provider call; confirm provider result before marking complete.
-- Deletion: time-gated authorization first, idempotent relational/object purge and tombstone progress; fee ledger remains content-minimal.
+Billing observations activate only the correct company/period after authenticated provider verification. Creating or cancelling a provider subscription is not proof of settled funds or the complete application entitlement. Keep financial effects unique and reconcile ambiguous outcomes without blind retries.
 
-No external PSP/geocoding/email call while holding a job transaction lock. No client redirect, email link, phone permission or PWA cache decides that money is paid.
+No external provider call is made while holding a domain lock. Request/Cron handlers share the same claims. Optional request wake-up is not durable storage. Privileged migrations are separate from request/job startup.
 
-## 5. Privacy boundaries
-Company task reads are free but authenticated and allowlisted: safe description, approved photos, category, city/PC4 and approximate distance. Full client postcode/contact is separate. Only the client job session sees the full response list; a company never gets rival offers/counts through SQL, DTOs, pagination or analytics.
+## 5. Budget and privacy
+Retain the €100/month ex-VAT infrastructure planning budget; qualify the expanded workload and exact plans before claiming capacity. Human work, domains, legal/accounting, payment fees/reserve, ads and future AI hosting are separate.
 
-Photos/downloads remain private, no-store and time-limited to the earlier of authorization expiry or task delete_at. No live job SEO index. Service worker caches only approved public static assets and a non-personal offline page; private pages/API/media/payment states remain network-only.
+GDPR applies to every board. Parent-project links do not transfer private data rights. EU R2/Render placement does not establish all processing/logging/support locations; retain Resend US and Images processing/retention review. New-board geography, expiry, trading/payment boundary and quota/billing terms need policy before live activation.
 
-## 6. Deployment/recovery
-Single EU primary region, separate web/worker processes from one revision, private PostgreSQL with PITR, isolated staging/test PSP and mail. Confirm subprocessors/support/backup regions; “EU server” alone does not resolve transfers.
-
-Pilot targets: RPO <=1h and RTO <=4h, proven in a restore drill. After restore, apply deletion tombstones and reconcile all PSP activity since backup before serving/purchasing. App rollback must not roll back financial facts. Worker outage never permits expired task access; payment outage never grants an unpaid offer.
-
-Use backward-compatible migrations and retain compatible old public PWA assets during updates. See [Technical design](05-technical-design.md), [PWA](14-cross-platform-and-pwa.md) and [tests](11-test-and-launch-plan.md).
+See [technical design](05-technical-design.md), [data model](06-data-model.md), [v0.4 redesign](22-platform-redesign.md) and the [historical deployment comparison](18-cloudflare-vs-render.md).

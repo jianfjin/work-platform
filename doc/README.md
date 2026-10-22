@@ -1,46 +1,34 @@
-# Work Platform — local home-maintenance marketplace
-**Version:** 0.3 · **Updated:** 21 October 2026 · **Status:** documentation proposal, not implemented
+# Work Platform — semi-public-benefit network for ZZP and SMEs
+**Version:** 0.4 · **Updated:** 22 October 2026 · **Status:** revised design; detailed entitlement/billing policies pending; documentation only
 
-## Current direction
-**Clients pay no platform fee. Companies pay the platform.** The recommended pilot charge is **€1.00 including VAT per company per task when its first rough offer is successfully published**, not to read a task and not a percentage of the construction contract. This charge event is a proposed interpretation requiring founder approval; the payer direction is explicit user instruction.
+The founder revised the platform to a low-fee, semi-public-benefit service with three boards:
 
-Start in **Groningen and Friesland/Fryslân, explicitly including Drachten**; final province-versus-city boundaries must be confirmed. Support Dutch and English, desktop Web, Android PWA and iPhone PWA. Dedicated mobile apps come after maturity and a separate approval.
+1. Clients publish home-maintenance projects and compare private rough offers.
+2. Companies split projects into work packages and find cooperating companies.
+3. Companies trade construction tools and materials.
 
-Clients post a short description, postcode/city and a few optional photos without creating an account. An email-confirmed job-management link provides ownership/security; registration remains optional. Companies register, declare their services/radius and submit private rough offers with website/contact details. The client sees all submitted offers; companies cannot see competitors or competitor counts. There is **no three-company commercial cap**.
+Expand trades to roof repair/new roofing, renovation, insulation, windows, simple plumbing/electrical maintenance, installation and the existing maintenance categories. Free companies may view at most five information items per month; active subscribers receive information without a numerical monthly limit. The founder canceled the old €1 offer-publication fee: only free and low-price subscription services remain, with no separate per-offer charge or checkout. Subscription price/period and exact counting rules remain to be chosen.
 
-Default: the client initiates contact using company details. A separate explicit choice lets responding companies see selected client contact fields. Site visits, final prices, contracts and construction payments are arranged directly.
+Read the [Chinese v0.4 redesign](22-platform-redesign.md) for confirmed requirements versus recommendations. [ADR 0013](../docs/adr/0013-expand-to-three-boards-and-free-subscription-services.md) records the change; the [v0.3 archive](archive/v0.3/README.md) preserves the previously approved design. Its old commercial rules and implementation approval do not approve the new billing details or expanded delivery estimate.
 
-The service is an **information intermediary**, not a workmanship certifier, contractor or construction-payment processor. No routine quality/credential checking or construction monitoring is promised. Email ownership, content security, platform-fee accounting, privacy, abuse reports and applicable legal duties still need operating controls.
+## Preserved architecture and constraints
+TypeScript/Hono and React Router/React/Vite/SSR on Cloudflare Workers; Render PostgreSQL Frankfurt through cache-disabled Hyperdrive; Drizzle/pg; Better Auth company/staff identity; Mollie only; Resend with dedicated subdomain; private EU R2/Images; PDOK; durable PostgreSQL/Cron jobs. Keep the €100/month ex-VAT infrastructure planning budget and GDPR/AVG requirements. Human work, domains, legal/accounting, payment fees/reserve, ads and future AI remain separate.
 
-## Payment addendum — 21 October 2026
-Following the user's suggestion, **Stripe hosted Checkout + stripe-node (npm `stripe`) is the preferred payment candidate**, pending merchant/method/cost approval. Clients remain free; companies pay only the proposed platform-publication fee, with no construction payments or Connect payouts. Architecture, API, payment economics and tests now describe signed webhooks, idempotent fulfillment/refunds and PWA recovery. See [payments](08-payments-and-economics.md) and [technical mapping](05-technical-design.md). No SDK is installed or live payment configured.
+Client-task private offers/contact consent, confirmed-email guest management, three-calendar-month expiry, <=24h live purge and <=30-day isolated backups remain in force. Cooperation/trade privacy, geography, retention and settlement boundaries need explicit design. A subscription bypasses neither data ownership nor client consent. No application, cloud resources or deployment have been created, and no application tests have run.
 
-## Read the documents
+## Documents
 | Document | Purpose |
 |---|---|
-| [Project brief](00-project-brief.md) | Confirmed requirements, assumptions and scope |
-| [Research and positioning](01-research-and-positioning.md) | Competitors and notary-comparison reference |
-| [PRD](02-product-requirements.md) | Authoritative product rules and acceptance requirements |
-| [UX/service blueprint](03-ux-and-service-blueprint.md) | Guest posting, private offer list and contact choices |
-| [DESIGN.md](DESIGN.md) | Original agent-readable visual system |
-| [Architecture](04-architecture.md) | Shared Web/PWA backend and external services |
-| [Technical design](05-technical-design.md) | Guest security, pay-to-publish races, matching, alerts and deletion |
-| [Data model](06-data-model.md) | Entities, constraints and retention boundaries |
-| [API](07-api-contract.md) | Guest/company/operator routes and DTO authorization |
-| [Payments/economics](08-payments-and-economics.md) | Company versus client funding, merchant ownership and viability |
-| [Privacy/security/responsibility](09-security-privacy-and-trust.md) | Contact permission, three-month deletion and abuse handling |
-| [Delivery/to-do](10-delivery-plan-and-todo.md) | Dependency-aware backlog and approval gates |
-| [Tests/launch](11-test-and-launch-plan.md) | Traceable tests and real-device/recovery evidence |
-| [Decisions/risks](12-decisions-and-risks.md) | What is confirmed and what still needs approval |
-| [Sources](13-source-register.md) | First-party evidence and research limits |
-| [Cross-platform](14-cross-platform-and-pwa.md) | PWA now, dedicated apps later |
-| [Operations/growth](15-operations-and-growth.md) | Staff work, opt-in alerts, low-cash-cost launch and Google Ads |
-| [Revision summary](16-requirement-revision.md) | Chinese change summary and migration from version 0.2 |
-
-## Data lifecycle
-Task content, photos, offers, task contact data and guest grants expire **three calendar months after first publication**. Closing, editing, registration or a later offer does not extend this deadline. Access stops at the deadline; the proposed live-store purge target is within 24 hours and rolling backups age out within 30 days. These implementation timings must be disclosed and tested.
-
-Three months is not a promise to erase every financial record: minimum platform-fee accounting records, narrowly justified legal evidence and active company/account/alert preferences have separate lawful purposes and schedules. See the privacy document before publishing retention wording.
-
-## What version 0.3 replaces
-The former Utrecht/carpentry-only, verified-business, paid-thread-reading, three-firm cap, compulsory €10 wallet, in-app chat/award and 12-month content-retention design is superseded. History remains in Git, not as competing active requirements. No application, cloud resource, payment account or advertising campaign has been created. All engineering estimates, policy proposals and commercial assumptions remain subject to their stated gates.
+| [Brief](00-project-brief.md) / [research](01-research-and-positioning.md) | Mission, audience, scope and validation work |
+| [Requirements](02-product-requirements.md) / [UX](03-ux-and-service-blueprint.md) | Current three-board requirements and flows |
+| [Architecture](04-architecture.md) / [technical design](05-technical-design.md) | Selected stack, entitlements, jobs and billing correctness |
+| [Data model](06-data-model.md) / [API contract](07-api-contract.md) | Typed information, plans, quota and scoped operations |
+| [Services/economics](08-payments-and-economics.md) | Free/subscription policy and unresolved subscription price/renewal/refund decisions |
+| [Security/privacy](09-security-privacy-and-trust.md) | GDPR, permissions, deletion and operating evidence |
+| [Delivery](10-delivery-plan-and-todo.md) / [tests](11-test-and-launch-plan.md) | Expanded backlog, planned acceptance and gates |
+| [Decisions](12-decisions-and-risks.md) / [sources](13-source-register.md) | Current decisions, risks and historical/new research |
+| [PWA](14-cross-platform-and-pwa.md) / [operations](15-operations-and-growth.md) | Device/entitlement behavior and three-board operations |
+| [Chinese revision summary](16-requirement-revision.md) / [implementation plan](17-implementation-plan.md) | Scope change and revised delivery sequence |
+| [Cloudflare comparison](18-cloudflare-vs-render.md) / [backend options](19-backend-options.md) | Preserved stack research with historical product context |
+| [Future AI](20-ai-service-and-knowledge-options.md) / [Resend review](21-cloud-mail-and-resend-review.md) | Future-scope assessment and verified existing email integration |
+| [UI design](DESIGN.md) / [glossary](../CONTEXT.md) | Shared product design and vocabulary |

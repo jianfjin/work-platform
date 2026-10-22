@@ -1,47 +1,21 @@
 # Research and positioning
-**Updated:** 21 October 2026 · **Method:** first-party public pages, no competitor purchase or account audit
+**Version:** 0.4 · **Updated:** 22 October 2026
 
-## 1. Evidence and limits
-| Reference | Observed public behavior | Use here |
-|---|---|---|
-| [Profiman professional page](https://profiman.nl/vakman/) | Advertises credit-funded leads, limited competition, checks and invalid-lead support; public starting price observed as €16 excluding VAT | Demonstrates an existing paid-lead approach; do not claim every platform charges the user's estimated €10–15 |
-| [Werkspot public professional help](https://support.werkspot.nl/s/article/How-do-I-get-in-contact-with-a-consumer) | A previously accessible first-party help description linked fees to client contact-sharing; current fetch returned a loading/CSS-error page | Historical mechanism context only, not a verified live price or exhaustive current policy |
-| [DeGoedkoopsteNotaris](https://www.degoedkoopstenotaris.nl/) | Public flow asks service type and postcode/place, presents comparison and offers free tailored quotation requests | Borrow locality/category-first discovery and clear comparison, not its branding or an unverified business fee model |
+## Positioning
+A low-fee, semi-public-benefit network for ZZP and SMEs: maintenance opportunities, project cooperation and building-tool/material trade. Keep simple Dutch/English copy, transparent free/subscription access and a useful free service. Do not imply registered charity status or verified workmanship.
 
-The notary reference supports a client-friendly information/comparison journey. Carpentry/roof/painting scopes are less standardized than notarial products: label rough bid assumptions and a site visit instead of presenting every lowest number as directly comparable.
+The value proposition is affordable information and direct connection. No ranking may promise a work award, cheapest best contractor, guaranteed partner or completed sale. Retain private client offers and explicit client contact choice.
 
-The user describes expensive lead access as the market gap. This is a useful discovery hypothesis, not proof of an industry-wide current tariff. Do not repeat “all competitors charge €10–15” or “only we have privacy/local matching.” Public marketing claims are not verified service outcomes.
+## Research to complete
+| Area | Questions and evidence |
+|---|---|
+| Free/subscription model | Can companies understand the five-item monthly limit, what counts, and the benefit of an unlimited subscription? Test price willingness without inventing an approved subscription price |
+| Client tasks | Demand/supply for each expanded trade across Groningen/Fryslân; postcode and radius accuracy; usable guest posting |
+| Cooperation | How ZZP/SMEs describe work packages, timing, needed capacity and qualification; authority to share project information; safe counterpart contact |
+| Tools/materials | Common items, sale/wanted needs, condition/quantity/unit/price, pickup/delivery and fraud reports; validate whether an information board is sufficient |
+| Trust and operations | Moderation burden, stolen/unsafe/misrepresented goods, confidential client data, complaints and actual support costs |
+| Accessibility | Dutch/English comprehension, phone photo upload including HEIC, plan/allowance copy and a clear no-card free path |
 
-## 2. Recommended positioning
-**A free-to-post northern Netherlands job board where local SMEs choose whether to pay a clearly stated small fee to submit a private rough offer, and the client controls contact.**
+Previous competitor observations and per-€1 economics are historical research, preserved in the [v0.3 archive](archive/v0.3/doc/01-research-and-positioning.md) and [source register](13-source-register.md). They do not validate a subscription price, the three-board demand or new unit economics.
 
-Candidate advantages to test:
-- Free company reading instead of charging just to inspect fit.
-- No compulsory client account, while retaining secure guest ownership.
-- Private offer comparison: competitors cannot see each other's profiles, bids or participation counts.
-- A choice between client-initiated contact and explicit responding-company callbacks.
-- Opt-in local/category/radius email alerts so SMEs need not refresh the site.
-- Short task-data lifecycle with visible deletion date and plain-language limits.
-- One responsive Dutch/English Web/PWA, rather than separate expensive first-release apps.
-
-None is claimed to be globally unique. No quality verification badge, guaranteed work, guaranteed lowest construction price or guaranteed reply.
-
-## 3. Validate before scaling
-Interview at least ten clients and ten local companies in the named trial area. Use real recent jobs to ask:
-- Would a client supply an email for a management link without an account?
-- Does the proposed €1 first-offer fee feel different from paying to read?
-- Do SMEs understand they may lose the work and that all interested firms can respond?
-- Is contact-first preferred, or are responder callbacks useful despite a potentially larger audience?
-- Are postcode-based approximate distances enough?
-- Do clients understand task data disappears after three calendar months?
-- Which categories/areas have enough supply for useful alerts?
-
-Run five moderated mobile tests of both languages and the guest/payment/contact flows. Record task success and misunderstanding, not only stated preference.
-
-## 4. Demand/supply launch
-Start with actual owner-authorized profiles and real client posts. Obtain opt-in alert subscriptions through local partnerships and company self-registration, not a scraped email blast. Use Groningen/Fryslân category landing pages containing generic service information, not private job photos/addresses indexed for SEO.
-
-A near-zero **cash marketing** pilot is possible with founder labor, community permission and supplier referrals. It is not a zero-cost platform: hosting, mail, PSP fees, support and legal/accounting still exist. Google Ads needs a separately capped experiment and measured contribution; see [Operations/growth](15-operations-and-growth.md) and [Payments](08-payments-and-economics.md).
-
-## 5. Geographic assumption
-Drachten is treated as a named priority within the Friesland/Fryslân trial area, not a third province or an extra chargeable market. Confirm the exact Groningen city/province boundary and postcode/municipality allowlist before publication. Radius matching does not automatically authorize jobs outside that allowlist.
+Start with real consenting participants and explicit alert opt-in. Generic regional/trade pages can support discovery; do not index private project details, photos, contact data or confidential work packages for SEO. Paid advertising remains separate from the infrastructure budget.

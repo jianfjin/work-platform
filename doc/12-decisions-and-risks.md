@@ -1,63 +1,50 @@
 # Decisions and risk register
-**Version:** 0.3 · **Updated:** 21 October 2026
+**Version:** 0.4 · **Updated:** 22 October 2026
 
-## 1. Confirmed direction
-| Decision | Source / effect |
+## Confirmed direction
+| Decision | Effect |
 |---|---|
-| Client platform fee zero; companies pay | User's explicit latest instruction overrides contradictory client-€1 examples |
-| Northern pilot, Dutch/English | Groningen, Friesland/Fryslân and Drachten labels; exact boundary still open |
-| Lightweight guest posting | Optional registration; proposed email ownership for safe management |
-| Private rough offers and direct contact | Client sees all eligible responders; companies see only themselves; no commercial three-firm cap |
-| Information intermediary | No routine workmanship certification/site monitoring/construction payment handling |
-| Three-month task data deletion | Clock/technical purge/finance exceptions need precise approved wording |
-| Web/PWA now, dedicated apps later | Earlier user-confirmed cross-platform direction retained |
+| Mission/audience | Semi-public-benefit, low-fee platform primarily for ZZP and SMEs; no implied charity/tax/quality status |
+| Expanded trades | Roof repair/new roofing, renovation, insulation, windows, simple plumbing/electrical maintenance and installation alongside previous maintenance trades |
+| Three boards | Client tasks, company cooperation/work packages, company tools/materials trade |
+| Free service | Companies may view at most five information items per month |
+| Subscription service | No numerical monthly information limit during active subscription; price/terms not selected |
+| Charging model | Only free and low-price subscription tiers; former €1 offer-publication fee explicitly canceled, with no per-offer checkout |
+| Client tasks | Free client posting, email-confirmed guest authority, private offers and selected-field callback consent; no rival visibility or commercial participant cap |
+| Task lifecycle | Three calendar months from first publication, immediate denial, <=24h live purge and <=30-day isolated backups; narrow reviewed finance/company/evidence exceptions |
+| Original pilot | Whole Groningen/Fryslân client-task scope and company-controlled approximate service radius retained |
+| Runtime/data | Cloudflare TypeScript/Hono, React Router/React/Vite/SSR, Render PostgreSQL Frankfurt/Hyperdrive cache disabled, Drizzle/pg and explicit SQL constraints/locks |
+| Identity | Better Auth company email/password; invited staff mandatory TOTP/recovery assurance; guest authority separate |
+| Providers | Mollie only, Resend dedicated subdomain, private EU R2/Images and minimum server-side PDOK queries |
+| Jobs | Durable PostgreSQL inbox/outbox/jobs, bounded Cron initial one-minute recovery, optional immediate attempts after commit |
+| GDPR/budget | GDPR/AVG across the project; €100/month ex-VAT infrastructure planning target retained with original exclusions |
 
-## 2. Proposed decisions needing approval
-| Topic | Current recommendation | Owner / gate |
+[ADR 0013](../docs/adr/0013-expand-to-three-boards-and-free-subscription-services.md) revises the previously approved [v0.3 plan](archive/v0.3/doc/17-implementation-plan.md). The new product direction is confirmed; detailed new policies below are not approved by the old plan acceptance.
+
+## Pending decisions and delivery evidence
+| Topic | Recommendation/status | Gate |
 |---|---|---|
-| Name | Work Platform working label; no final brand selected | Founder, before public branding |
-| Charge event | €1 gross first successfully published company/task offer; free reading; no construction-success percentage | Founder/product/accountant, G0 |
-| Payment provider/SDK | Stripe hosted Checkout + official stripe-node (`stripe`) preferred candidate following user suggestion; Mollie fallback only; no Connect for own fees | Founder/tech/finance, G0; merchant, method, cost and test approval pending |
-| Direct payment vs prepaid | Direct hosted €1 checkout; optional bundles only later | Founder/finance/PSP, G0 |
-| Geographic interpretation | Groningen and Fryslân provinces; Drachten priority inside Fryslân; confirm city-only alternative | Founder, G0 |
-| Client security minimum | Email confirmation/scoped one-use management session; no compulsory account or phone | Product/security, G0 |
-| Callback audience | Every eligible published responder, selected email/phone fields; default client-initiated | Product/privacy/legal, G0 |
-| Deletion clock | Three calendar months from first publication, no reset by edit/closure | Product/privacy/legal, G0 |
-| Purge/backup exception | Access cutoff at deadline, proposed live purge <=24h, backups <=30 days; minimal finance separate | Tech/legal/finance, G0/G2 |
-| Merchant/bank | Actual platform legal operator, approved business settlement account; no assistant/personal shared merchant | Founder/accountant/PSP, before money |
-| Geocoder | PDOK Location API first candidate; Google optional after cost/terms review | Tech/privacy, G0 |
-| Alerts | Confirmed opt-in, daily digest default, optional instant, easy unsubscribe | Product/mail operations, G0 |
-| Native maturity | Stable economics/usage plus demonstrated needs; separate G4 design/budget | Founder/product, later |
+| Allowance unit/scope | Recommend five unique details per company/month shared across boards; own records/rights/billing excluded and same-month repeats count once | Confirm policy before live enforcement |
+| Month and transitions | Define timezone/calendar, cross-month rereads, upgrades/downgrades, refunds/expiry, mail versus viewing | Before live entitlements |
+| Subscription terms | Set low price/tax basis, period, manual versus explicit auto-renew, cancellation/refund/grace and changes | Before real checkout |
+| Recurring methods | Mollie retained; qualify actual mandates/methods; iDEAL first payment does not approve subsequent SEPA automatically | Before recurring collection |
+| Cooperation | Define new-board geography, visibility, work-package relations, interest and retention; no automatic client-data sharing | Before live cooperation data |
+| Trade | Propose listings/private inquiry/direct settlement; decide audience, sale/wanted/rental scope, orders/escrow/delivery and sold/closed retention | Before live trade activation |
+| Operator/name/sender | Legal operator, brand/domain, From/Reply-To and platform/vendor notices/contracts still required | Before relevant real-data/sender use |
+| Runtime/sizing | Compatible versions, actual transactions, quota races, media and new billing callbacks; cost/capacity against €100 infrastructure target | Foundation and release |
+| Operations/legal | Separate tax/invoice/retention review, data rights, reports, support/finance/privacy owners, renewal/refund coverage and funding | Before applicable live use/beta |
 
-## 3. Architecture decisions
-- One responsive Web/PWA and modular backend; SQL transaction for payment-to-publication; server-only authorization/DTOs.
-- One response per company/task, no published rival list/count and no participant slots/counter.
-- Direct platform-fee payments/refunds, no mandatory wallet and no construction payout/escrow.
-- Guest job sessions, not compulsory client-account onboarding.
-- Coarse postcode-based radius, not mandatory GPS or exact-address map.
-- Opt-in safe metadata emails, not forwarding full task/client data to arbitrary businesses.
-- Task content expires after three calendar months, minimal finance and strictly justified evidence purpose-separated.
-- No chat/award/verified-completion/review machinery in current minimum information-platform scope.
+## Main risks and controls
+| Risk | Control/evidence |
+|---|---|
+| Old fee design reappears | Clear v0.4 authority, archived v0.3, no old publication-payment API assumed active |
+| Five-item cap bypass or unfair consumption | Server transaction/unique grant, all-board/path tests, explicit detail action, no quota for previews/forbidden/own-rights management under chosen policy |
+| Subscriber treated as all-data access | Same ownership, consent, expiry and safety checks for both tiers |
+| Confidential parent project copied | Work-package fields independently authorized/minimized; no inherited grants; parent-deletion and DTO tests |
+| Trade scams/unsafe goods/address exposure | Structured listings, reasoned reports/holds, audience/pickup privacy and actual legal/trader-role review |
+| Subscription double charge or stale access | Period-effect uniqueness, finite-cache reconciliation, validated unseen renewal IDs and tested expiry/cancel/refund transitions |
+| Low-fee promise cannot fund operations | Select price from measured utility/costs; budget for human work/refunds/legal separately; no false cost or work guarantee |
+| Scope expansion invalidates schedule | Re-estimate all three boards and entitlement/operations after qualification; old estimates are historical |
+| Retention/backup resurrection | Explicit per-board policies, no indefinite new-board storage, independent tombstones and provider/billing restore replay |
 
-## 4. Risks and stop conditions
-| Risk | Mitigation / evidence | Accountable owner |
-|---|---|---|
-| €1 cannot cover PSP, operations and acquisition | Actual cohort margin, founder-funded bounded experiment; no silent client charges | Founder/finance; stop growth at negative contribution |
-| Too few relevant northern firms/jobs | Recruit genuine supply, monitor category/area coverage, no fake inventory | Product |
-| Unlimited responders overwhelm client | Opt-in callback warning, relevance/rate controls, private paginated list and voluntary close; never hide a commercial cap | Product/trust |
-| No routine quality checks attracts abuse | Honest labels, secure accounts, reports/holds/notices, legal required checks separately scoped | Trust/legal |
-| Callback consent exposes more than intended | Default private, named audience/fields, revoke/close and disclosure tests | Privacy/tech; block release on bypass |
-| Guest link takeover/enumeration | One-use hashed credential, scoped secure session, generic recovery and abuse limits | Tech |
-| Paid-after-close/material-change orphan payment | Locking, unique fulfillment, refund obligation, reconciliation and mobile recovery | Tech/finance; no unresolved captured-unfulfilled funds |
-| Rival offers/count leak | Distinct DTO/query/API tests including search/cursors/exports | Tech; block release on leak |
-| “Three months” incorrectly interpreted as all data vanish | Explicit calendar clock, cutoff/purge/backup tests, finance/evidence separation and plain-language notice | Privacy/finance |
-| Regional/Google geocoding cost or license misuse | Source metadata, provider terms, quota/budget controls, lawful coarse fallback | Tech/privacy |
-| Alert promotion becomes spam | Affirmative subscription, purpose/frequency controls, unsubscribe/bounce/dispatch checks | Mail operations/legal |
-| “Only intermediary” treated as legal immunity | Role-specific legal assessment and reviewed terms | Founder/legal |
-| PWA bank return/update retries payment | Owned attempt recovery, no auto replay, real-device tests | Tech/QA |
-| Google Ads spends beyond simple daily multiplication | Understand average-vs-cap, approval/monitoring/pause and actual margin-based CAC | Founder/growth |
-
-## 5. Change control and current status
-This revision replaces incompatible 0.2 assumptions; Git preserves historical documents. The repository is documentation only: no user/job/PSP data exists to migrate here. Any separately started implementation needs an inventory and an explicit migration plan, not blind deletion or repurposing of its payment records.
-
-Fee payer and PWA direction are user-confirmed. The user suggested considering stripe-node; treating Stripe as the preferred payment candidate does not approve a provider contract, enable live charges or alter who pays. The proposed charge event, exact geography, guest security/retention/merchant details and budgets are not silently approved. No interviews, profitability, legal clearance, application tests or deployment completion is claimed.
+All existing unverified market, tax, runtime, recovery and compliance results remain unverified. No app or paid resources were created.

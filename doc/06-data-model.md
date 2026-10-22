@@ -1,81 +1,40 @@
 # Data model and retention design
-**Version:** 0.3 · **Updated:** 21 October 2026 · **Status:** logical schema, not executable migrations
+**Version:** 0.4 · **Updated:** 22 October 2026 · **Status:** logical schema; no migrations or database deployed
 
-UUID identifiers, UTC timestamptz, integer EUR gross cents. Company fees have a separate lifecycle from job content. There is no prepaid wallet/lot model in the current MVP.
+Use Drizzle/pg with reviewed SQL, UUID/opaque identifiers, UTC instants and integer monetary minor units. Plan periods, free allowance periods and listing lifetimes are separate. The old response-paid-publication schema is [archived](archive/v0.3/doc/06-data-model.md).
 
-## 1. Entities
-| Table | Fields / constraints |
+## Entities
+| Entity | Scope and key constraints |
 |---|---|
-| principals/accounts | Company owner or optional client account; auth subject/email ownership state, locale/status; no mandatory client account row |
-| guest_job_owners | Job-scoped email/ownership reference, purpose and delete_at; no public client identity |
-| guest_tokens/sessions | Token hash UNIQUE, job, purpose, one-use consumed_at, expires_at, revocation; session bound to that job; all expire/revoke with deletion |
-| companies | Owner UNIQUE for MVP, declared legal/display name, own contact/email/phone, optional website/KVK, categories, coarse base area, radius_km, status; no quality-verified flag |
-| alert_preferences | Company, subscription status, categories/radius/frequency/locale, confirmed recipient, consent/time, unsubscribe version |
-| jobs | Owner reference, category, state, current material revision, city/PC4, first_published_at, immutable delete_at, closed_at, version; region validation result |
-| job_content/revisions | Short description, optional budget/timing/measurements, source revision, privacy-safe projection; all task-scoped/deletable |
-| job_private_location_contact | Full postcode and optional selected client email/phone; encrypted/restricted; derived task coordinates and source/licensing metadata; no street address required |
-| contact_preferences | Job UNIQUE, CLIENT_INITIATED or ALLOW_RESPONDERS, allowed fields, consent version/time, revoked_at; default private |
-| responses | UNIQUE(job_id, company_id), state, draft/current version, fee fulfillment reference, published/withdrawn times; no competitor visibility relation |
-| response_versions | Introduction, rough range/site-visit-needed, price basis/assumptions, own contact/website snapshot, job revision; task-scoped content deleted at deadline |
-| photo_assets | Job, uploader owner, storage original/variant/version keys, real type/bytes/pixels, scan/privacy state, delete progress; no public URL |
-| payment_attempts | Response opaque reference, company, price/policy/revision snapshots, EUR gross=100 under R1, stable attempt key, provider/environment/merchant/payment ID, state; Stripe-specific Checkout Session ID, PaymentIntent ID, charge ID, API version and livemode stored distinctly |
-| response_fulfillments | response_id UNIQUE, successful payment/effect UNIQUE, fulfilled_at, fee amount; retain minimum finance-safe projection after content erasure |
-| refunds/disputes | Payment, stable request/provider reference UNIQUE, reason, amount/reservation/state, timestamps; bounded to captured unreturned principal |
-| journal_transactions/entries | Business effect type+ID UNIQUE; balanced debit/credit rows, immutable correction linkage; no full task body/client email |
-| billing_documents | Company billing snapshot, amount/tax/policy/time, original/corrective document link; statutory retention separate |
-| reports/cases | Reporter contact/evidence in restricted store, category/target, reasoned decision, hold/review expiry, appeal; minimize task copies |
-| provider_events | UNIQUE(provider,environment,merchant_id,event_id), signed event type/object reference, event API version, received/processed/retry state; minimal references, not permanent raw webhook/customer payloads |
-| outbox/inbox/deliveries | Minimal IDs/type/lease/attempt data; UNIQUE(company,job,revision,kind) for alerts; no message/photo/guest-token payload |
-| audit_events/deletion_tombstones | Reason/actor/opaque IDs/action/time/progress; purpose-limited retention; do not hide deleted content in audit JSON |
+| principals/accounts/sessions | Company users and scoped staff; verified identity, status, MFA and revocation; no automatic guest ownership |
+| companies/company_members | ZZP/SME participant and authorized members; plan/allowance scope is proposed at company level, not per login |
+| guest_task_owners/tokens | One client task per authority scope; one-use hashed credentials, purpose, expiry and revocation |
+| information_items | Board discriminator, opaque ID, publisher type/ID, safe preview, state, first publication, explicit deadline and policy version |
+| tasks/task_revisions | Client brief/category, scope revision, region proof, closure and immutable three-month deadline |
+| task_private/contact_grants | Restricted postcode/coordinates/selected client fields, consent version and allowed audience; no generic JSON export |
+| task_offers/offer_versions | Unique task/company response, own text/contacts and scope revision; private owner view, final withdrawal marker; no offer-publication payment or payment-fulfillment FK |
+| cooperation_listings/work_packages | Company-owned scope/skills/capacity/timing/area, independent visibility, optional authorized source reference; no inherited client-data grants |
+| cooperation_interest | Company/package interest and minimal private communication/status; uniqueness and audience constraints |
+| trade_listings/trade_inquiries | Tool/material kind/specification/condition/quantity/unit/price/area/availability, publisher and scoped inquiry; no platform order/payment principal by assumption |
+| media_assets | Typed information parent, owner, bounded upload reservation, source/variant keys, real bytes/type/pixels, processing state and erasure progress |
+| plan_definitions | Versioned tier, price/currency/tax/period/terms and numeric allowance semantics; live paid plan disabled until terms selected |
+| memberships/entitlement_periods | Company, current status, coverage bounds, policy/terms version, provider references and entitlement version |
+| allowance_periods/access_grants | Company/period counter and unique company/item/period grant for the proposed rule; operation key/payload binding, reasoned corrections, minimal retention |
+| billing_operations/payments | Stable local key/hash/time/credential version, expected company/plan/period/amount/currency, merchant/environment and distinct provider payment/subscription/customer IDs |
+| billing_effects/refunds/journal/documents | Unique provider/period/business effects, captured/returned/reversed amounts, immutable corrections and purpose-minimal billing evidence |
+| alert_preferences/deliveries | Board/trade/item-category/radius/locale/frequency and explicit opt-in; stable logical delivery identity independent of mode; safe preview delivery does not imply detail entitlement |
+| inbox/outbox/jobs | Minimal IDs and work kind, due time, claim/lease generation, attempt/backoff and state; preserve updates while leased; no ordinary plaintext access-token archive |
+| reports/holds/rights_requests | Board/record/case scope, minimum evidence, staff reason, review/deletion date and request-response deadlines |
+| audit/deletion_tombstones | Minimal actor/reason/opaque target/action/time and progress; recoverable independently of restored content snapshots |
 
-## 2. Constraints and concurrency
-```sql
--- Design fragments, not a full migration.
-CREATE UNIQUE INDEX one_company_response
-  ON responses (job_id, company_id);
+## Atomic constraints
+Unique access/grant identity and a conditional counter update share one transaction; a naive count-then-insert permits overrun. Resolve current ownership/visibility/expiry before allowance changes. Serialize entitlement-version changes with free access decisions; exact upgrade/downgrade/month reset behavior remains a policy input.
 
-CREATE UNIQUE INDEX one_response_fulfillment
-  ON response_fulfillments (response_id);
+Use one response per task/company and enforce final withdrawal without deleting/recreating the response to restore it. Separate work-package/source relations from authorization; foreign-key presence grants no parent access. Reject mismatched board/detail types and owners.
 
-CREATE UNIQUE INDEX one_provider_payment
-  ON payment_attempts (provider, environment, merchant_id, provider_payment_id)
-  WHERE provider_payment_id IS NOT NULL;
+Unique provider resource identities are merchant/environment-scoped. Billing-period activation/journal effects must not duplicate across callbacks/reconciliation; the exact period identity must follow approved subscription terms, not an assumed calendar month. Refund reservations and reversals share principal controls. Keep the financial ledger independent of content erasure.
 
-CREATE UNIQUE INDEX one_business_effect
-  ON journal_transactions (reference_type, reference_id);
-```
+## Retention
+Client-task deadlines and <=24h live/<=30-day backup erasure remain confirmed. New boards, access history, membership events, invoices, suppression and evidence require purpose/field/schedule review. No quota or financial row may reconstruct an expired client task or confidential cooperation project.
 
-Stripe Checkout Session, PaymentIntent, charge, refund and event IDs are not interchangeable. Unique provider-object references are scoped to the configured merchant/environment; nullable charge IDs are filled when available. Persist an outbox verification job in the same transaction as a new provider-event reference so a crash after acknowledgment cannot lose work. Delivery-event deduplication is additional to, not a replacement for, business fulfillment/refund uniqueness. Long-lived finance records retain only the minimum opaque references; raw Stripe payloads must not become a hidden personal-data archive.
-
-One unresolved payable attempt per response is enforced through a partial uniqueness rule on the real state model plus the response lock. A refunded failed attempt can be followed by a new deliberate attempt; the UNIQUE fulfillment and payment/refund logic ensure only one retained successful publication fee. Never pretend a per-row CHECK validates multi-row journal balance; use a reviewed posting procedure/deferred trigger plus tests.
-
-Consistent lock order: job -> response -> payment/refund children. Company owner authority derives from the session; a caller-provided company ID is not sufficient. No commercial participant counter/cap, “remaining slots,” public offer aggregation or wallet balances.
-
-## 3. Read projections
-- Company safe task DTO: category, city/PC4, description, safe photo references, approximate distance, open/revision/deletion status.
-- Company own response DTO: own submitted content, publication/payment/refund status; client contacts only from a separate current-consent read.
-- Client DTO: own task plus private paginated all-response list including each company's self-submitted contacts; no public URL.
-- Finance DTO: own company's fee/refund/document metadata, opaque task reference where needed; no client photos/contact or proposal text.
-- Public SEO: static regional/category education pages, not live task/person data.
-
-Indexes: open-task category+region+delete_at; responses(job_id,published_at,id) under client ownership and company_id for own list; due-deletion index; deliveries recipient/status; pending payment/refund reconciliation. Verify with realistic plans/data.
-
-## 4. Deletion matrix
-| Dataset | Proposed lifecycle |
-|---|---|
-| Published task description, photos/variants, offers/contact snapshots, full postcode/contact, coordinates and guest grants | First publication + three calendar months; access stops then, live purge target <=24h |
-| Unpublished abandoned guest drafts/unverified ownership | Proposed seven days from creation, disclosed; shorter than published-task lifecycle |
-| Active company profile and alert preference | While service/opt-in remains active; review inactivity and deletion requests; not reset/copy client tasks |
-| Closed job | Same original delete_at, not close + three months; client can request earlier deletion |
-| Operational logs | Proposed 30 days, redacted, justified exceptions reviewed |
-| Minimal platform-fee accounting/invoices | Accountant-approved legal schedule, potentially years; no task contents retained automatically |
-| Complaint/legal evidence | Case-specific minimum, purpose, authorized access, review/deletion date; no blanket permanent archive |
-| Backups | Rolling <=30 days, isolated; restore filters/tombstones before access |
-
-Store delete_at once and prohibit ordinary edits/extensions at DB/service boundary. Purge all object versions/thumbs/quarantine and invalidate download capabilities. Keep a minimal non-content deletion marker while needed for backup expiry/recovery, then expire it under the approved schedule. Financial opaque references must not be a route to resurrect erased task data.
-
-## 5. Consent and external copies
-Record exact client contact mode, fields, audience explanation version and action time. Grant checks are dynamic; after withdrawal/close/revocation no future field disclosure. Audit that disclosure occurred without retaining the disclosed value indefinitely. Emails only carry generic/safe metadata; downloaded external copies and off-platform contact cannot be remotely deleted.
-
-## 6. Migration note
-Version 0.3 replaces earlier wallet, entitlement-slot, chat/award/review and 12-month-content tables. Since this repository contains documents only, there is no live database migration to run. If an implementation has started elsewhere, inventory it and plan a separate reviewed migration; do not deploy these sketches over unknown production data.
+Optional parent references must be nullable/opaque or otherwise deletion-safe without extending parent retention. Sold/closed trade listings and removed work packages need explicit visibility/erasure semantics before live use. Restore applies independent tombstones, expiry and membership/billing reconciliation before enabling any board.

@@ -1,93 +1,48 @@
 # API contract proposal
-**Version:** 0.3 · **Base:** /api/v1 · **Status:** design only
+**Version:** 0.4 · **Updated:** 22 October 2026 · **Status:** proposed contract; no running API
 
-## 1. Conventions
-HTTPS, JSON, UTC ISO timestamps, UUID IDs and integer EUR gross cents. Company/account authority and guest job scope come from secure server sessions, never a supplied owner ID. Cookie-authenticated writes require CSRF/origin validation.
+## Common rules
+Prefix /api/v1. Server-side sessions, ownership, board/type, current visibility/expiry, plan/allowance and selected-field consent are authoritative. No caller-supplied subscription flag, balance, fee or consumed-count claim. Use explicit request keys for replay-sensitive mutations and safe allowlisted DTOs. Return generic unauthorized/not-found outcomes without rival or owner enumeration.
 
-All private HTML/RSC/API/media responses are private/no-store and excluded from PWA/CDN caches. Cursor default 20/max 50; every page repeats authorization. No rival response totals in company DTOs.
+Quota counting and subscription terms are pending; live endpoints depend on configured approved policy. The founder canceled the €1 offer-publication fee; version 0.3 publication-payment endpoints are historical and must not be exposed in v0.4. Paid checkout is solely for the selected low-price subscription.
 
-Financial operations use actor+operation+Idempotency-Key and canonical request hash. Same key/different payload -> 409; repeated successful effect -> original resource, no new payment. Job writes take expected version/material revision. Authentication links exchange one-use tokens through a controlled POST; no permanent guest key in a public task URL.
-
-Errors: 400 malformed, 401 login/session, 403 own-account restriction, 404 absent/inaccessible resource, 409 state/revision/idempotency conflict, 422 validation, 429 rate limit, 503 unavailable. An unavailable private object never leaks its owner or offer data. Authenticated owner may receive 410 TASK_EXPIRED after deletion; anonymous probes remain generic.
-
-## 2. Routes
-| Method/path | Principal | Result |
+## Endpoints
+| Endpoint | Actor | Contract |
 |---|---|---|
-| POST /guest/jobs | Prospective guest, rate limited | Draft from short description/postcode/city/email; initiate email confirmation; no account required |
-| POST /guest/access-requests | Guest requester | Generic success; email a fresh scoped link if eligible; no existence enumeration |
-| POST /guest/token-exchanges | One-use valid token | Consume hash once, set scoped session, redirect safely |
-| POST /account/link-guest-job | Authenticated account + proven guest scope | Optional ownership link, no TTL extension |
-| POST /companies | Company owner account | Self-declared profile and confirmed login email workflow, not trade verification |
-| PATCH /companies/me | Owner | Services/base postcode/radius/contacts/optional website |
-| GET/PATCH /companies/me/alerts | Owner | Opt-in categories/radius/frequency/locale |
-| POST /alerts/unsubscribe | Signed purpose-scoped unsubscribe token | Disable alerts without requiring a password; grant no task access |
-| PATCH /jobs/{id} | Guest/account job owner | Draft or material edit, expected version; preview/deletion timestamp |
-| POST /jobs/{id}/publish | Confirmed job owner | Region/privacy/media readiness; first publish sets immutable delete_at |
-| POST /jobs/{id}/close | Job owner | Stop responses/alerts/callback access |
-| POST /jobs/{id}/reopen | Job owner | Voluntary closed task only, before delete_at; no renewal of deadline |
-| DELETE /jobs/{id} | Job owner | Immediate access denial, queued early erasure and minimal accounting separation |
-| GET /jobs | Active company | Safe open task feed, category/region/approximate radius; free reading |
-| GET /jobs/{id} | Active company or owner | Company-safe brief or owner DTO; never all company offers via a company principal |
-| POST /jobs/{id}/response-drafts | Active company | Own rough bid/introduction/contacts; free draft; unique company/task record |
-| PATCH /responses/{id} | Own company | Edit own draft/submitted response without second fee |
-| POST /responses/{id}/publication-payments | Own company | Explicit EUR 1.00 intent, price/policy/material revision; no client fee |
-| GET /me/payments/{id} | Paying company | Server-verified pending/published/refund state and receipt |
-| GET /me/payments | Paying company | Recover owned pending attempts after browser/app termination |
-| GET /me/responses | Own company | Own responses only, no rival IDs/counts |
-| GET /jobs/{id}/responses | Job owner only | All eligible published offers, private cursor pagination |
-| POST /responses/{id}/withdraw | Own company | Withdraw offer and end callback eligibility, no new purchase slot |
-| GET/PATCH /jobs/{id}/contact-preference | Job owner | CLIENT_INITIATED / ALLOW_RESPONDERS and exact allowed fields/version |
-| GET /jobs/{id}/client-contact | Own eligible published-response company | Dynamic callback consent read; no contact in default mode or after close/expiry/withdraw |
-| POST /jobs/{id}/photos | Job owner | Bounded private quarantine upload, real parent scope |
-| POST /photos/{id}/complete | Upload owner | Queue scan/transform, not “safe” by client assertion |
-| GET /photos/{id}/download | Authorized task reader | Clean download capability expiring no later than delete_at |
-| POST /reports | Scoped reporter; bounded public illegal-content intake separately | Case/category/target, minimal evidence, status/correction route |
-| POST /me/privacy-requests | Reauthenticated owner/verified guest | Scoped export/delete request with third-party minimization |
-| POST /webhooks/stripe | Stripe-Signature over bounded raw body, not browser session | 400 invalid signature/payload; 200 durably accepted/duplicate/irrelevant valid event; 503 if cannot durably ingest |
+| POST /tasks/drafts | Narrow draft authority | Create private guest draft; no implicit company feed publication |
+| POST /tasks/{id}/confirm-email | Task-scoped one-use credential | Confirm ownership and publish only eligible validated task |
+| POST /tasks/{id}/recover-access | Generic bounded input | Fresh task-scoped link without account enumeration |
+| GET/PATCH/DELETE /tasks/{id}/manage | Task owner | Own content/lifecycle/contact controls; immutable expiry and erasure |
+| GET /information?board=... | Allowed requester | Typed minimal previews and board/category/area filters; no quota mutation or sensitive details |
+| POST /information/{id}/access | Active company | Explicit, idempotent detail-access request; atomically evaluate approved plan/allowance and current visibility |
+| GET /information/{id}/details | Currently entitled actor | Safe current detail; no anonymous/prefetch grant or stale cached entitlement |
+| GET /me/plan /me/allowance | Own company | Current tier, coverage and published allowance policy/usage; no editing counters via request |
+| GET /plans | Any allowed viewer | Approved plan catalog only; no invented live price or default renewal consent |
+| POST /me/billing/checkout | Reauthenticated company | Deliberate purchase for versioned selected price/terms; local operation before provider call; recover unresolved attempts |
+| GET /me/billing/payments/{id} | Paying company | Verified server-owned payment/entitlement status and permitted receipt fields |
+| POST /me/membership/cancel | Authorized company | Apply chosen cancellation/renewal policy; replay-safe, with no assumed immediate refund |
+| POST /tasks/{id}/offers | Eligible company | Own private draft/publication under current access and task-lifecycle rules; no per-offer charge, checkout dependency or automatic client contact |
+| GET /tasks/{id}/offers | Task owner | All own-task eligible private offers; no company/rival access |
+| PATCH /offers/{id} / POST /offers/{id}/withdraw | Own company | Eligible edits and final withdrawal; owner management not treated as a new information item |
+| GET /tasks/{id}/client-contact | Eligible responder | Current entitlement/access plus task state and explicit selected-field callback permission |
+| POST /cooperation-listings | Company | Publish own validated package/partner need under configured geography/lifecycle; no source-project data inheritance |
+| PATCH/DELETE /cooperation-listings/{id} | Publishing company | Manage only own item; dependent interest/media/deletion handled explicitly |
+| POST /cooperation-listings/{id}/interest | Eligible company | Private interest for currently accessible listing; no automatic contract |
+| POST /trade-listings | Company | Typed tool/material listing; configured audience/lifecycle and safe price/condition/area |
+| PATCH/DELETE /trade-listings/{id} | Publishing company | Own edit/withdraw/availability state; not evidence of settled platform funds |
+| POST /trade-listings/{id}/inquiries | Eligible company | Private counterpart contact/inquiry; no exact-address disclosure by default |
+| POST /information/{id}/photos / POST /photos/{id}/complete | Scoped publisher | Bounded private quarantine and queued conversion; client cannot mark a file safe |
+| GET /photos/{id}/download | Current authorized reader | Sanitized bytes through Worker; same board/entitlement/consent/deadline rules as detail; no public original URL |
+| POST /reports /me/privacy-requests | Scoped reporter/verified requester | Rights/report functions available independently of paid tier or exhausted information allowance |
+| POST /webhooks/mollie | Bounded classic payment-ID hint | Durable accepted work, authenticated association/verification, no body-paid trust; accommodate validated unseen renewal IDs if recurring is enabled |
+| POST /webhooks/resend | Raw body with verified signature/Svix headers | Minimal durable event inbox, dedup and platform-delivery association |
 
-The proposed full webhook URL is `/api/v1/webhooks/stripe`. It replaces the earlier Mollie-specific route in this documentation-only repository; do not deploy both providers by default. Keep raw body intact before SDK verification. Only after signature validation store minimal event/object references and schedule authenticated Stripe retrieval; do not trust body-only payment fields. Company payment APIs stay provider-independent and authorize owned attempts before any return-page verification. Checkout Session IDs are not user credentials. See [technical Stripe mapping](05-technical-design.md).
+Both provider callback routes are narrowly documented CSRF/session exceptions with their own intake controls. Do not disable CSRF/origin protection globally or assume the Mollie classic body is signed like Resend events.
 
-Operator routes under /ops/v1 need staff MFA and action-specific permission: report/hold/notice/appeal, fee exception/refund, delivery suppression, deletion retry and reconciliation. No “verify workmanship” action or arbitrary balance editor.
+## Detail grant and media
+Prefer an explicit POST so GET previews/prefetch cannot spend free allowance. Binding an operation to company/item/policy prevents replay with a different payload. Repeated successful access follows the approved counting period; the same operation cannot increment twice. HTTP retry is not proof of a new human view.
 
-## 3. DTO examples
-```json
-{
-  "id": "00000000-0000-4000-8000-000000000001",
-  "category": "windows_doors",
-  "city": "Drachten",
-  "postcodeArea": "9203",
-  "description": "Replace two internal doors; site measurement preferred.",
-  "approxDistanceKm": 18,
-  "state": "OPEN",
-  "materialRevision": 1,
-  "deleteAt": "2027-01-21T09:00:00Z",
-  "readingFeeGrossCents": 0,
-  "firstPublishedResponseFee": {"grossCents": 100, "currency": "EUR", "vatIncluded": true},
-  "photoIds": []
-}
-```
+Forbidden/expired/removed records expose no protected fields and consume no quota. A prior access grant cannot survive revoked ownership/consent or revive deleted content. Owner management, own offers/billing and rights requests are separately scoped; free allowance exhaustion cannot disable these functions.
 
-No full postcode, client identity/contact, guest credential, response count or competitor object appears. Registered company reading is free; photo authorization still checks task state/deadline.
-
-```json
-{
-  "responseId": "00000000-0000-4000-8000-000000000002",
-  "status": "PAYMENT_PENDING",
-  "paymentId": "00000000-0000-4000-8000-000000000003",
-  "feeGrossCents": 100,
-  "currency": "EUR",
-  "checkoutUrl": "https://psp-approved-checkout.example/opaque"
-}
-```
-
-Example checkout host is illustrative, not a production allowlist. For the Stripe candidate, obtain the URL from the server-created hosted Checkout Session and apply reviewed HTTPS/provider-host controls; reject arbitrary caller-supplied return/checkout URLs. A PUBLISHED result means the server verified payment and committed fulfillment. REFUND_PENDING means no client-visible response on that attempt, not a wallet credit. Same-key replay returns original outcome reference; a previously fulfilled response with a new key must not create a second fee.
-
-## 4. Consent/edit/closure semantics
-A callback-mode write includes expected consent/job version, chosen email/phone fields and acknowledged audience wording. Never default to callback because a phone exists. Contact endpoint checks current mode/fields and published fee-backed own response each request. Previously copied details cannot be revoked remotely.
-
-Material scope edits increment revision. Pending payment snapshots must match at fulfillment or refund. Already published offers show scope-changed status to client/company and remain editable without re-charge. Close/reopen does not reset retention or paid uniqueness. Deleted task response bodies are not recoverable from payment APIs.
-
-## 5. Cross-platform and resilience
-Same endpoints for desktop/Android/iPhone PWA. Browser cookies need not transfer across installed contexts; recover via authenticated /me/payments and owned status. No background/offline write queue or payment-success inference from redirect.
-
-Initial tunable bounds: three guest drafts/email-hour, five access-link requests/hour/target plus network limits, 60 safe feed reads/minute/company, ten response/payment attempts/minute/company and five photos per upload batch within six/task. Adaptive abuse controls may suspend actors; these are not a commercial three-company participant cap. Reject unknown fields, arbitrary PSP redirect URLs, unsupported media and oversized input.
+## Error and device behavior
+Use bounded localized validation errors, quota-exhausted/upgrade guidance, current plan status and explicit payment-pending/processing states. No offline queue, automatic purchase retry, raw-contact response or company-visible rival count. A PWA/bank return on another browser recovers the existing owned operation after appropriate login; callbacks reconcile independently.

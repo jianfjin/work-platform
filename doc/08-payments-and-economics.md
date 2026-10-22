@@ -1,102 +1,33 @@
-# Fees, payment ownership and sustainability
-**Version:** 0.3 · **Updated:** 21 October 2026 · **Status:** proposed company-fee model; accountant/merchant approval required
+# Free/subscription services and platform economics
+**Version:** 0.4 · **Updated:** 22 October 2026 · **Status:** tier direction confirmed; price/collection/refund terms unresolved
 
-## 1. Resolve the conflicting draft
-**Active requirement: client platform fee = €0; companies pay the platform.** The supplied prose also asks whether a client-funded or company-funded €1 model is sustainable. Compare them here, but do not turn that question into a client checkout feature.
+## 1. Confirmed service model
+| Participant/plan | Information service |
+|---|---|
+| Client | Continue free maintenance-task publication and own private comparison |
+| Free company | At most five information items viewed per month |
+| Active subscriber | No numerical monthly information limit; matching, privacy, expiry and abuse controls still apply |
 
-Recommended pilot event: company pays **€1.00 gross including VAT per task for its first successfully published rough offer**. Task reading is free. Same company/task edits and ordinary contact have no further fee. This is a flat response-publication service charge, not a success percentage on final work. The event and gross amount require founder approval; no app or production charges exist.
+The platform is semi-public-benefit and low-fee, primarily serving ZZP/SMEs. Only the free plan and a low-price subscription remain; no separate offer-publication fee applies. No subscription amount, billing period, tax-inclusive price or automatic-renewal policy has been selected. There is no default paid plan or automatic charge after the fifth free item.
 
-## 2. Model comparison
-| Model | Advantages | Cost/risk | Current decision |
-|---|---|---|---|
-| Client €1 posting, companies free | Simple single charge/job, may deter some casual spam | Adds demand friction; one €1 revenue per job regardless of company demand; does not ensure genuine jobs | Comparison only; **not enabled**, conflicts with payer rule |
-| Company €1 first published response, client free | Low-friction demand; companies read fit before deciding; revenue follows professional interest | Firms may not win; PSP cost large relative to fee; no fixed competitor limit, so expectations must be explicit | **Recommended**, subject to event/economics approval |
-| Company success commission | Fee follows reported outcome | Off-platform work/payment is not reliably observable without monitoring, disputes and collection complexity | Not MVP |
-| Company subscription/optional bundles | Better fee amortization/recurring workflow value | Upfront commitment, prepaid/refund or recurring obligations; no demonstrated willingness yet | Future separate design, not compulsory €10 wallet |
-| Both sides free | Useful bounded market-learning subsidy | No service revenue; ongoing costs still exist | Only an explicitly budgeted trial, not default long-term economics |
+## 2. Former €1 fee canceled
+On 22 October 2026 the founder explicitly canceled the former €1 first private offer-publication fee and confirmed only free and low-price subscription services. Authorized offer submission, publication and editing have no separate per-offer charge or checkout. The new tier model also supersedes unlimited-free reading and the subscription deferral; it does not relax access, privacy or offer-lifecycle rules.
 
-Company funding is more aligned with the current requirement and demand acquisition, not automatically profitable. Do not increase spam/participant volume or hide competition solely to make revenue look better.
+The [archived publication/refund rules](archive/v0.3/doc/08-payments-and-economics.md) are historical, not subscription terms. No assumed new price, per-listing charge, wallet, commission, prepaid bundle or hidden offer fee is authorized. The old seven-day incident-refund target does not silently become a subscription refund policy. The earlier one-business-day submission target can inform operations, but its new trigger/eligibility scope must be specified.
 
-## 3. Whose payment account?
-Use **a PSP merchant account owned by the actual platform legal operator**, settling to its approved dedicated business bank account. It is not an assistant-owned account and not an informal shared/personal account. If an existing founder business will operate the platform, verify legal ownership, bookkeeping separation, merchant approval and account permissions; otherwise establish the operator first.
+## 3. Subscription decisions before activation
+Choose and publish price/tax basis, period, manual renewal versus explicit automatic renewal, period start/end, cancellation timing, failed-payment/grace behavior, partial periods, upgrades/downgrades, refunds/reversals and their effect on allowance. Separate optional alert consent from payment consent. Explain no guarantee of work, collaboration or sale.
 
-Required owner decisions: legal entity/trading name, authorized directors/admins, business IBAN, PSP onboarding/merchant checks, VAT/tax status, refund/dispute authority, finance contact and reserve. These concern the platform merchant, not routine workmanship certification of listed firms. No account has been opened or connected in this task.
+Mollie remains the sole PSP. The [recurring-payment guide](https://docs.mollie.com/docs/recurring-payments) distinguishes first-payment mandate setup from later recurring collection. iDEAL first payment may establish directdebit, which requires SEPA Direct Debit activation; this is not approval to add that method or automatically renew. Card recurring paths also need merchant/method/consent qualification. Retain test/live isolation and requalify phone/PWA return, renewal/cancellation, refund and reconciliation for the actual selected policy rather than reusing €1 test evidence.
 
-Preferred candidate following the user's suggestion: **Stripe hosted Checkout + the official stripe-node server SDK (npm package `stripe`)**. This is an evaluation/design choice, not an approved merchant contract. Initially use only merchant-approved, implemented payment methods and show actual availability. Do not collect card/bank credentials ourselves. Construction payments never pass through this merchant account.
+Provider-created renewal payment IDs may be new to the application when a classic callback arrives. Intake/association must verify the resource belongs to a known local subscription/customer/merchant/environment and expected billing period. See [technical design](05-technical-design.md).
 
-### Stripe evaluation and scope
-| Option | Trade-off | Recommendation |
-|---|---|---|
-| Stripe hosted Checkout + stripe-node | Fits the proposed Node.js/TypeScript backend; hosted payment UI; still needs reliable publication/refund/accounting logic | Preferred candidate, gated by merchant approval, method/device tests and actual costs |
-| Stripe custom Elements UI | More UI control, more payment-form integration and testing | Defer; not needed for a €1 pilot |
-| Mollie hosted checkout | Local alternative already evaluated; separate integration if selected | Fallback/comparison only; do not build two PSPs for MVP |
+## 4. Financial correctness
+Keep local operation IDs, immutable request hashes, non-secret credential-version context, provider payment/subscription/refund references and unique period/effect identities. Apply current authenticated payment observations; never grant unlimited access from a redirect, request body, pending charge or unverified webhook.
 
-The [official SDK](https://github.com/stripe/stripe-node) is a server library, not a payment method or a mobile UI. Desktop, Android and iPhone PWA redirect to the same hosted Checkout; dedicated mobile SDKs are not required for this phase. No package was installed and no Stripe account/keys were created.
+Mollie's one-hour credential-scoped idempotency window does not replace durable local uniqueness or permit a new create after timeout/rotation. Reconcile an unknown outcome before another charge/refund. Refund/reversal accounting never exceeds captured unreturned principal; provider acceptance, provider completion and bank receipt remain distinct. Do not collect construction or trading principal merely because the platform contains cooperation/trading boards.
 
-Only the platform's own publication fee is collected. **Stripe Connect is not needed for the current flow**: no connected company merchant accounts, construction fund collection, transfers or escrow. Stripe Billing subscriptions and prepaid wallets also remain out of scope. Stripe Tax is not assumed enabled; any future tax automation must preserve the approved gross price and have a separate cost/configuration review.
+## 5. Economics and funding
+Price remains open. Evaluate subscription revenue excluding applicable VAT, minus actual PSP/refund/reversal costs and variable mail/media/support costs, against fixed infrastructure and human operating work. Use conversion, retained paying companies and actual board utility; no old per-€1 contribution example proves subscription viability.
 
-Suggested company payment methods: approved iDEAL | Wero and cards; bank-app redirects must be tested on both phones. Stripe's [Dutch bank-payment guidance](https://docs.stripe.com/payments/ideal) describes an iDEAL/Wero transition during 2026–2027: recheck current method identifiers, scheme/merchant requirements, availability and refund windows before launch. Do not promise every bank or enable delayed methods without implementing their lifecycle.
-
-## 4. Charge and refund rules (proposed R1)
-- Drafting/reading is free. Show €1 gross, no guaranteed job/reply, all interested companies may respond and contact visibility conditions before checkout.
-- Only server-verified correct paid payment plus current eligible scope publishes first response.
-- Failed/cancelled payment: no visible response or fee service fulfillment.
-- Paid after close/expiry/safety hold/material edit, system unable to publish, or accidental extra capture: no second listing; full €1 cash-refund obligation tracked once to original method.
-- Successfully published offer later loses/receives no reply/client closes/company withdraws: no automatic refund. This service is publication, not a verified connection or completed sale.
-- Substantiated fake/duplicate/misrepresented task: proposed seven-day reporting window from payment, with later genuine evidence reviewed; approved incident refunds use recorded reason. No general 72-hour no-response restoration, because calls/messages happen off-platform.
-- Edits and return visits never create another fee. A failed refunded attempt can be retried only deliberately after resolution; never retain two successful fees for one company/task.
-- Refunds/chargebacks are verified, capped to unreturned captured funds and reconciled. Ambiguous timeout stays pending, not blindly resent.
-- Target initiating confirmed platform-failure refund within one business day of verification; provider bank-arrival time varies and is not promised. Maintain a refund reserve.
-
-The client is never asked to fund refunds or pay a platform commission. Valid construction contracts/prices remain between parties; the platform does not arbitrate workmanship or collect final invoices.
-
-## 5. Direct payment now, bundles later
-Propose direct €1 checkout for simplest initial UX/accounting. This replaces the old compulsory €10 access balance, not a new confirmed user preference. An optional company bundle could reduce PSP fees later, but requires explicit prepaid-service classification, source/refund accounting and onboarding validation before implementation.
-
-PWA browser distribution uses web hosted checkout; same server records on all devices. Bank-app return to another context requires ownership/session recovery, not another automatic purchase. Native apps later need a new storefront/payment/receipt/fee assessment; physical carpentry does not by itself settle rules for paid digital publication.
-
-## 6. Costs and arithmetic
-[Stripe's Netherlands pricing](https://stripe.com/nl/pricing), checked 21 October 2026, lists **€0.29 per iDEAL payment** and **1.5% + €0.25 for standard EEA cards**. These are public indicative rates, not our merchant agreement; other cards/methods, optional products, refunds, disputes and currency conversion can differ. Recheck Wero transition pricing and the actual settlement fee/rounding before launch.
-
-| €1 gross payment scenario | Indicative PSP fee | Before other operating costs, after illustrative 21% VAT and PSP fee |
-|---|---:|---:|
-| Stripe iDEAL baseline | €0.29 | €0.5364 |
-| Stripe standard EEA card | €0.265 arithmetic, before PSP rounding | €0.5614 arithmetic, before PSP rounding |
-| Mollie iDEAL/Wero comparison | €0.32 | €0.5064 |
-
-[Mollie's Dutch pricing](https://www.mollie.com/nl/pricing) remains a comparison, not the Stripe tariff. At an **illustrative** 21% VAT, €1 gross yields 1/1.21 = €0.8264 before costs. Accountant confirms tax classification/tax point/rounding. The baseline below uses Stripe iDEAL €0.29; use actual payment-method mix and settled fees, not a universal SDK fee.
-
-Illustrative cohort model, not observed forecasts:
-- s = original paid response attempts per job; cases shown at 1, 3, 5, not a required/maximum number.
-- 5% cash refunds, assumed lost gross service revenue; PSP fees conservatively not returned.
-- Variable email/support €0.10 and hosting/media/geocoding allocation €0.03 per paid attempt.
-- Basic platform operations allocation €0.20/job; not manual certification/monitoring.
-- Combined client/company acquisition cost and fixed overhead excluded from first contribution column.
-
-```text
-Net service revenue/job = s * 0.95 / 1.21
-Contribution before CAC/fixed overhead =
-    s * (0.95/1.21 - 0.29 - 0.10 - 0.03) - 0.20
-```
-
-| Paid attempts/job | Net revenue after assumed refunds | Contribution before CAC/fixed | With €2 combined CAC/job |
-|---|---:|---:|---:|
-| 1 | €0.785 | €0.165 | -€1.835 |
-| 3 | €2.355 | €0.895 | -€1.105 |
-| 5 | €3.926 | €1.626 | -€0.374 |
-
-A client-funded single €1 posting would produce roughly the one-attempt contribution under the same simplified inputs, even if many companies respond. Company funding has more revenue potential but a fragile margin and no guarantee of sufficient responses.
-
-At three attempts the acquisition ceiling is only about €0.895/job before fixed costs. With assumed CPC €0.50 and click-to-eligible-post conversion 10%, demand CAC alone is €5, well above this ceiling. These CPC/conversion numbers are examples, not Google quotes or measured local demand. Do not spend based on them as facts.
-
-A later fully used ten-response bundle could amortize a single €0.29 payment to €0.029/response, but that is not the current direct-checkout design or permission to implement stored funds. Track actual method fees, refunds, support time, genuine responses and both sides' acquisition cost. Dispute/exception losses are excluded from this simplified table; even rare chargebacks can dominate €1 revenue, so maintain a method-specific reserve and include measured losses before scale.
-
-## 7. Accounting and retained evidence
-Before fulfillment, captured funds are a refundable service obligation; fulfillment records fee revenue under the accountant-approved policy. Refunds append correction/credit-note records, never edit history. No withdrawal balance, contractor payout or job-value commission ledger.
-
-Separate minimum statutory platform-fee records from task data. [Belastingdienst](https://www.belastingdienst.nl/wps/wcm/connect/bldcontentnl/belastingdienst/zakelijk/ondernemen/administratie/) explains that basic business records generally have a seven-year retention period, with other categories differing. Accountant must classify the actual records and start dates. This does not justify retaining every client photo, postcode or offer for years.
-
-Daily reconciliation: PSP paid/refunded/disputed amounts versus attempts, one response fulfillment, journal and billing documents. Flag paid-but-unpublished unresolved attempts. Preserve enough finance-safe identifiers after task deletion to resolve refunds without resurrecting client content.
-
-## 8. Sustainability gate
-Free client posting remains the rule even if margins disappoint. Before scale, approve actual positive contribution after variable operations/acquisition plus a credible fixed-cost plan. If it fails, improve fit/organic acquisition and reconsider prospective company pricing or optional tools with explicit approval; do not silently charge clients, guarantee leads, introduce paid ranking or infer final-work success fees.
+The confirmed infrastructure planning budget is €100/month excluding VAT, including selected services, backups/basic monitoring and necessary staging. Engineering, operations, legal/accounting, domains, payment fees/reserve, ads and future AI are separate. Semi-public-benefit positioning still needs a funded cost/complaint/refund/deletion operating model. Exact tax, invoice/correction and retention classification needs professional review before charging.
